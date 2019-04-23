@@ -1,0 +1,6 @@
+{% spaceless %}
+    {
+        "instruction": "{{ instruction|default('form') }}",
+        "response": "{{ form(form)|escape('html') }}"
+    }
+{% endspaceless %}
