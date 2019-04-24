@@ -2,7 +2,6 @@
 
 namespace EMS\FormBundle\Service;
 
-
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\FormBundle\Components\FormConfiguration;
 use Psr\Log\LoggerInterface;
@@ -31,7 +30,7 @@ class FormClient
     public function getAllowedDomains(string $id): array
     {
         return array_map(
-            function ($domain){
+            function ($domain) {
                 return $domain['domain'];
             },
             //TODO fetch type from config
@@ -87,7 +86,7 @@ class FormClient
     private function replaceValidations(array $validations): array
     {
         return array_map(
-            function ($validationDefinition){
+            function ($validationDefinition) {
                 $validationDefinition['validation'] = $this->client->getByEmsKey($validationDefinition['validation']);
                 return $validationDefinition;
             },

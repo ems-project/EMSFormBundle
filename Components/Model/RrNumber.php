@@ -28,9 +28,9 @@ class RrNumber
      * Rijksregisternummer
      *
      * Dit nummer wordt uitgereikt door het Rijksregister en bestaat uit 11 cijfers. Het heeft de volgende structuur:
-     * •	de eerste 6 cijfers vormen de geboortedatum in het formaat YYMMDD met DD= # dagen, MM= # maanden, YY= # jaren;
-     * •	de volgende 3 cijfers zijn de dagteller van de geboorten; dit getal is paar voor een vrouw en onpaar voor een man;
-     * •	de laatste 2 cijfers vormen het controlegetal.
+     * •    de eerste 6 cijfers vormen de geboortedatum in het formaat YYMMDD met DD= # dagen, MM= # maanden, YY= # jaren;
+     * •    de volgende 3 cijfers zijn de dagteller van de geboorten; dit getal is paar voor een vrouw en onpaar voor een man;
+     * •    de laatste 2 cijfers vormen het controlegetal.
      * De geboortedatum kan onvolledig zijn. Dit betekent dat zowel de maand als de dag de waarde 0 kan hebben.
      * Het controlegetal wordt berekend op basis van de formule:
      * controlegetal = 97 – ((de eerste 9 cijfers van het INSZ) modulo 97)
