@@ -3,21 +3,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services
         http://symfony.com/schema/dic/services/services-1.0.xsd">
-    <parameters>
-        <parameter key="env(EMSCH_ENV)"/>
-    </parameters>
 
     <services>
         <defaults public="false" />
 
-        <service id="emsf.form_client" class="EMS\FormBundle\Service\FormClient" public="true">
-            <argument>%emsch.client%</argument>
-            <argument type="service" id="formFactory" />
-            <argument type="service" id="logger" />
+        <service id="ems_form.form_client" class="EMS\FormBundle\Service\FormClient">
+            <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="logger"/>
         </service>
 
         <!-- controllers -->
-        <service id="emsf.controller.form" class="EMS\FormBundle\Controller\FormController" public="true">
+        <service id="ems_form.controller.form" class="EMS\FormBundle\Controller\FormController">
+            <argument type="service" id="ems_form.form_client"/>
             <tag name="controller.service_arguments"/>
         </service>
     </services>

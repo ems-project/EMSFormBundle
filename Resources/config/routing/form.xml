@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="emsf_frame" path="/form/{domainId}/{formId}" methods="GET|POST">
-        <default key="_controller">emsf.controller.form::getForm</default>
+    <route id="ems_form.frame" path="/form/{domainId}/{formId}" methods="GET|POST">
+        <default key="_controller">ems_form.controller.form::getForm</default>
     </route>
 </routes>

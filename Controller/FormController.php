@@ -3,30 +3,38 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Service\FormClient;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class FormController extends Controller
+class FormController extends AbstractController
 {
-    public function getForm(FormClient $formClient, string $domainId, string $formId, Request $request)
+    /** @var FormClient */
+    private $formClient;
+
+    public function __construct(FormClient $formClient)
+    {
+        $this->formClient = $formClient;
+    }
+
+    public function getForm(Request $request, string $domainId, string $formId)
     {
         //TODO pass locale
-        $form = $formClient->getForm($formId, 'nl');
+        $form = $this->formClient->getForm($formId, 'nl');
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
-            return $this->render('form-api/postmessage-handler.html.twig', [
+            return $this->render('@EMSForm/form-api/postmessage-handler.html.twig', [
                 'form' => $form->createView(),
-                'domains' => $formClient->getAllowedDomains($domainId),
+                'domains' => $this->formClient->getAllowedDomains($domainId),
             ]);
         }
 
         if ($form->isValid()) {
             //TODO use submission handler
-            return $this->render('form-api/success.html.twig');
+            return $this->render('@EMSForm/form-api/success.html.twig');
         }
 
-        return $this->render('form-api/validation-error.html.twig', [
+        return $this->render('@EMSForm/form-api/validation-error.html.twig', [
            'form' => $form->createView(),
         ]);
     }

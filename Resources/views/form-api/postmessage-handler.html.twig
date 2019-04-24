@@ -13,7 +13,7 @@
 
         switch (data.instruction) {
             case 'form':
-                msg = JSON.stringify( {% embed 'form-api/form.html.twig' with {'form': form} %}{% endembed %} );
+                msg = JSON.stringify( {% embed '@EMSForm/form-api/form.html.twig' with {'form': form} %}{% endembed %} );
                 break;
             case 'submit':
                 var xhr = new XMLHttpRequest();
