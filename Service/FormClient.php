@@ -51,6 +51,11 @@ class FormClient
         return $configuration->getForm($this->formFactory);
     }
 
+    public function getCacheKey(): string
+    {
+        return $this->client->getCacheKey();
+    }
+
     private function loadReferencedFieldsAndValidations(array $formDefinition): array
     {
         if (!array_key_exists('fields', $formDefinition)) {

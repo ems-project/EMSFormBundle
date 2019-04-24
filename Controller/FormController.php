@@ -18,12 +18,12 @@ class FormController extends AbstractController
 
     public function getForm(Request $request, string $domainId, string $formId)
     {
-        //TODO pass locale
-        $form = $this->formClient->getForm($formId, 'nl');
+        $form = $this->formClient->getForm($formId, $request->getLocale());
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
             return $this->render('@EMSForm/form-api/postmessage-handler.html.twig', [
+                'trans_default_domain' => $this->formClient->getCacheKey(),
                 'form' => $form->createView(),
                 'domains' => $this->formClient->getAllowedDomains($domainId),
             ]);
@@ -35,7 +35,8 @@ class FormController extends AbstractController
         }
 
         return $this->render('@EMSForm/form-api/validation-error.html.twig', [
-           'form' => $form->createView(),
+            'trans_default_domain' => $this->formClient->getCacheKey(),
+            'form' => $form->createView(),
         ]);
     }
 }

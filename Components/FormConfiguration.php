@@ -36,7 +36,12 @@ class FormConfiguration
 
     public function getForm(FormFactoryInterface $formFactory): FormInterface
     {
-        $builder = $formFactory->createNamedBuilder("$this->id-form", FormType::class, null, ['attr' => ['id' => $this->id]]);
+        $builder = $formFactory->createNamedBuilder(
+            sprintf('%s-form', $this->id),
+            FormType::class,
+            null,
+            ['attr' => ['id' => $this->id, 'class' => $this->locale]]
+        );
 
         array_map(
             function ($field) use ($builder) {
