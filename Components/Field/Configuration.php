@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class Configuration
 {
-    /** @var ?string */
+    /** @var string */
     private $label;
 
     /** @var ?string */
@@ -28,7 +28,7 @@ abstract class Configuration
             throw new \Exception('Field type should be defined to create a field');
         }
 
-        $this->label = $fieldDefinition["label_$locale"] ?? null;
+        $this->label = $fieldDefinition["label_$locale"] ?? 'label';
         $this->help = $fieldDefinition["help_$locale"] ?? null;
         $this->type = $fieldDefinition['type']['_id'];
 
