@@ -30,8 +30,6 @@ class FormController extends AbstractController
         }
 
         if ($form->isValid()) {
-            //TODO use submission handler
-            //return $this->render('@EMSForm/form-api/success.html.twig');
             return $this->forward('EMS\SubmissionBundle\Controller\SubmissionController::submit', [
                 'submissionId' => $formId,
                 'data' => $form->getData(),
