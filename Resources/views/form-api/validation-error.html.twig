@@ -1,0 +1,7 @@
+{% trans_default_domain trans_default_domain %}
+{%- embed '@EMSForm/form-api/form.html.twig'
+    with {
+        'form': form,
+        'instruction': 'validation-error'
+    }
+-%}{%- endembed -%}
