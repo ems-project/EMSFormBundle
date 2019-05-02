@@ -7,3 +7,5 @@
  * 3. Create the minified files with yarn or webpack
  */
 import setNissInszValidation from './js/nissValidation';
+
+window.setNissInszValidation = setNissInszValidation;
