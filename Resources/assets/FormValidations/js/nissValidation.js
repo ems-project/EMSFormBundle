@@ -1,5 +1,4 @@
-window.setNissInszValidation = function(nissId) {
-
+export default function setNissInszValidation(nissId) {
     let niss = document.getElementById(nissId);
 
     niss.addEventListener('change', function() {
