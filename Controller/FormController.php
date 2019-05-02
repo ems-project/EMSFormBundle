@@ -31,8 +31,9 @@ class FormController extends AbstractController
 
         if ($form->isValid()) {
             return $this->forward('EMS\SubmissionBundle\Controller\SubmissionController::submit', [
-                'submissionId' => $formId,
+                'submissionId' => sprintf('%s-%s', $domainId, $formId),
                 'data' => $form->getData(),
+                'locale' => $request->getLocale(),
             ]);
         }
 

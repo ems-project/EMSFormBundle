@@ -31,16 +31,38 @@ Browser side validation
 
 Custom validations
 ---
-Customized validations are available in the js file `form-validations.js`, to expose this file using Webpack, 
+Customized validations are available in the js file `nissValidation.js`, to expose this file using Webpack,
 add the following to your webpack.config.js
 
 ```javascript
-var config = Encore.getWebpackConfig();
-config.resolve.alias.emsf = path.resolve(__dirname, 'vendor/elasticms/form-bundle/Resources/assets/form-validations.js');
+let config = Encore.getWebpackConfig();
+config.resolve.alias.emsf = path.resolve(__dirname, 'vendor/elasticms/form-bundle/Resources/assets/nissValidation.js');
 ```
 
 To expose the frontend validations to other applications, create a new javascript file and import the validation functionalities
 ```javascript
-// src/assets/form-validations.js
+// src/assets/nissValidation.js
 import {} from 'emsf';
+```
+
+Using webpack with multiple configurations (https://symfony.com/doc/current/frontend/encore/advanced-config.html) one could use the following configuration:
+```javascript
+Encore.reset();
+
+Encore
+    .setOutputPath('public/emsform')
+    .setPublicPath('/emsform')
+    .setManifestKeyPrefix('emsform')
+
+    .enableSourceMaps(!Encore.isProduction())
+
+    .addEntry('js/form-validations', './assets/js/form-validations.js')
+;
+
+let formConfig = Encore.getWebpackConfig();
+formConfig.resolve.alias.emsf = path.resolve(__dirname, 'vendor/elasticms/form-bundle/Resources/FormValidation/assets/app.js');
+
+formConfig.name = 'formConfig';
+
+module.exports = [config, formConfig];
 ```
