@@ -16,6 +16,9 @@ abstract class Configuration
     /** @var string */
     private $type;
 
+    /** @var string */
+    private $technicalName;
+
     /** @var ValidationConfiguration[] */
     private $validations = [];
 
@@ -31,6 +34,7 @@ abstract class Configuration
         $this->label = $fieldDefinition["label_$locale"] ?? 'label';
         $this->help = $fieldDefinition["help_$locale"] ?? null;
         $this->type = $fieldDefinition['type']['_id'];
+        $this->technicalName = $fieldDefinition['technical_name'];
 
         array_map([$this, 'addValidation'], $fieldDefinition['type']['_source']['validations'] ?? []);
         array_map([$this, 'addValidation'], $fieldDefinition['validations'] ?? []);
@@ -39,7 +43,7 @@ abstract class Configuration
     public function build(FormBuilderInterface $builder)
     {
         $builder
-            ->add($this->label, $this->getFieldClass(), [
+            ->add($this->technicalName, $this->getFieldClass(), [
                 'required' => $this->isRequired(),
                 'label' => $this->label,
                 'help' => $this->getHelp(),
