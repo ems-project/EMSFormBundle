@@ -18,15 +18,16 @@ class FormController extends AbstractController
 
     public function getFormInstance(Request $request, string $domainId, string $formId)
     {
-        $formInstanceId = sprintf('%s-%s', $domainId, $formId);
-        $form = $this->formClient->getFormInstance($formInstanceId, $request->getLocale());
+        $configuration = $this->formClient->getFormConfiguration($domainId, $formId, $request->getLocale());
+        $form = $this->formClient->getFormInstance($configuration);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {
             return $this->render('@EMSForm/form-api/postmessage-handler.html.twig', [
                 'trans_default_domain' => $this->formClient->getCacheKey(),
                 'form' => $form->createView(),
-                'domains' => $this->formClient->getAllowedDomains($domainId),
+                'form_theme' => $configuration->getFormTheme(),
+                'domains' => $configuration->getDomains(),
             ]);
         }
 
@@ -41,6 +42,7 @@ class FormController extends AbstractController
         return $this->render('@EMSForm/form-api/validation-error.html.twig', [
             'trans_default_domain' => $this->formClient->getCacheKey(),
             'form' => $form->createView(),
+            'form_theme' => $configuration->getFormTheme(),
         ]);
     }
 }

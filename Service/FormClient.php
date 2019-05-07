@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
-//TODO nice to have: generator bundle for backend form config (structure, validations, fields, domains)
+//TODO nice to have: generator bundle for backend form config (instance, structure, validations, fields, domains)
 class FormClient
 {
     /** @var ClientRequest */
@@ -40,8 +40,7 @@ class FormClient
         string $instanceType,
         string $formField,
         string $themeField
-    )
-    {
+    ) {
         $this->client = $client;
         $this->formFactory = $formFactory;
         $this->logger = $logger;
@@ -51,7 +50,31 @@ class FormClient
         $this->themeField = $themeField;
     }
 
-    public function getAllowedDomains(string $id): array
+    public function getFormInstance(FormConfiguration $configuration): FormInterface
+    {
+        return $configuration->getForm($this->formFactory);
+    }
+
+    public function getFormConfiguration(string $domainId, string $formId, string $locale): FormConfiguration
+    {
+        $instanceId = sprintf('%s-%s', $domainId, $formId);
+        $result = ($this->client->get($this->instanceType, $instanceId))['_source'];
+        $domains = $this->getAllowedDomains($domainId);
+        $configuration = new FormConfiguration($this->loadFormStructure($result), $this->themeField, $instanceId, $locale, $domains);
+
+        foreach ($configuration->getFailures() as $failure) {
+            $this->logger->error($failure);
+        }
+
+        return $configuration;
+    }
+
+    public function getCacheKey(): string
+    {
+        return $this->client->getCacheKey();
+    }
+
+    private function getAllowedDomains(string $id): array
     {
         return array_map(
             function ($domain) {
@@ -59,24 +82,6 @@ class FormClient
             },
             ($this->client->get($this->domainType, $id))['_source']['allowed_domains']
         );
-    }
-
-    public function getFormInstance(string $id, string $locale): FormInterface
-    {
-        //TODO: fetch type from config
-        $result = ($this->client->get($this->instanceType, $id))['_source'];
-        $configuration = new FormConfiguration($this->loadFormStructure($result), $id, $locale);
-
-        foreach ($configuration->getFailures() as $failure) {
-            $this->logger->error($failure);
-        }
-
-        return $configuration->getForm($this->formFactory);
-    }
-
-    public function getCacheKey(): string
-    {
-        return $this->client->getCacheKey();
     }
 
     private function loadFormStructure(array $formDefinition): array

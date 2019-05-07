@@ -20,17 +20,31 @@ class FormConfiguration
     private $locale;
 
     /** @var string */
-    private $formTemplate;
+    private $formTheme;
+
+    /** @var string[] */
+    private $domains;
 
     /** @var string[] $failures */
     private $failures = [];
 
-    public function __construct(array $formDefinition, string $id, string $locale)
+    public function __construct(array $formDefinition, string $formThemeField, string $id, string $locale, array $domains)
     {
         $this->id = $id;
         $this->locale = $locale;
-        $this->formTemplate = $formDefinition['theme_template'];
+        $this->formTheme = $formDefinition[$formThemeField];
+        $this->domains = $domains;
         array_map([$this, 'addField'], $formDefinition['form']['fields'] ?? []);
+    }
+
+    public function getFormTheme(): string
+    {
+        return $this->formTheme;
+    }
+
+    public function getDomains(): array
+    {
+        return $this->domains;
     }
 
     public function getFailures(): array
