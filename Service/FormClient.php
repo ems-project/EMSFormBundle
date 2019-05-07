@@ -20,11 +20,35 @@ class FormClient
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(ClientRequest $client, FormFactoryInterface $formFactory, LoggerInterface $logger)
+    /** @var string */
+    private $domainType;
+
+    /** @var string */
+    private $instanceType;
+
+    /** @var string */
+    private $formField;
+
+    /** @var string */
+    private $themeField;
+
+    public function __construct(
+        ClientRequest $client,
+        FormFactoryInterface $formFactory,
+        LoggerInterface $logger,
+        string $domainType,
+        string $instanceType,
+        string $formField,
+        string $themeField
+    )
     {
         $this->client = $client;
         $this->formFactory = $formFactory;
         $this->logger = $logger;
+        $this->domainType = $domainType;
+        $this->instanceType = $instanceType;
+        $this->formField = $formField;
+        $this->themeField = $themeField;
     }
 
     public function getAllowedDomains(string $id): array
@@ -33,15 +57,14 @@ class FormClient
             function ($domain) {
                 return $domain['domain'];
             },
-            //TODO fetch type from config
-            ($this->client->get('form_domain', $id))['_source']['allowed_domains']
+            ($this->client->get($this->domainType, $id))['_source']['allowed_domains']
         );
     }
 
     public function getFormInstance(string $id, string $locale): FormInterface
     {
         //TODO: fetch type from config
-        $result = ($this->client->get('form_instance', $id))['_source'];
+        $result = ($this->client->get($this->instanceType, $id))['_source'];
         $configuration = new FormConfiguration($this->loadFormStructure($result), $id, $locale);
 
         foreach ($configuration->getFailures() as $failure) {
@@ -58,12 +81,12 @@ class FormClient
 
     private function loadFormStructure(array $formDefinition): array
     {
-        if (!array_key_exists('form', $formDefinition)) {
+        if (!array_key_exists($this->formField, $formDefinition)) {
             return [];
         }
 
-        $formStructure = ($this->client->getByEmsKey($formDefinition['form']))['_source'];
-        $formDefinition['form'] = $this->loadReferencedFieldsAndValidations($formStructure);
+        $formStructure = ($this->client->getByEmsKey($formDefinition[$this->formField]))['_source'];
+        $formDefinition[$this->formField] = $this->loadReferencedFieldsAndValidations($formStructure);
         return $formDefinition;
     }
 
