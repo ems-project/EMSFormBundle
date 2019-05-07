@@ -16,9 +16,10 @@ class FormController extends AbstractController
         $this->formClient = $formClient;
     }
 
-    public function getForm(Request $request, string $domainId, string $formId)
+    public function getFormInstance(Request $request, string $domainId, string $formId)
     {
-        $form = $this->formClient->getForm($formId, $request->getLocale());
+        $formInstanceId = sprintf('%s-%s', $domainId, $formId);
+        $form = $this->formClient->getFormInstance($formInstanceId, $request->getLocale());
         $form->handleRequest($request);
 
         if (!$form->isSubmitted()) {

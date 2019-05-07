@@ -38,11 +38,11 @@ class FormClient
         );
     }
 
-    public function getForm(string $id, string $locale): FormInterface
+    public function getFormInstance(string $id, string $locale): FormInterface
     {
         //TODO: fetch type from config
-        $result = ($this->client->get('form_structure', $id))['_source'];
-        $configuration = new FormConfiguration($this->loadReferencedFieldsAndValidations($result), $id, $locale);
+        $result = ($this->client->get('form_instance', $id))['_source'];
+        $configuration = new FormConfiguration($this->loadFormStructure($result), $id, $locale);
 
         foreach ($configuration->getFailures() as $failure) {
             $this->logger->error($failure);
@@ -54,6 +54,17 @@ class FormClient
     public function getCacheKey(): string
     {
         return $this->client->getCacheKey();
+    }
+
+    private function loadFormStructure(array $formDefinition): array
+    {
+        if (!array_key_exists('form', $formDefinition)) {
+            return [];
+        }
+
+        $formStructure = ($this->client->getByEmsKey($formDefinition['form']))['_source'];
+        $formDefinition['form'] = $this->loadReferencedFieldsAndValidations($formStructure);
+        return $formDefinition;
     }
 
     private function loadReferencedFieldsAndValidations(array $formDefinition): array

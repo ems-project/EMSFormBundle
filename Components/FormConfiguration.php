@@ -19,6 +19,9 @@ class FormConfiguration
     /** @var string */
     private $locale;
 
+    /** @var string */
+    private $formTemplate;
+
     /** @var string[] $failures */
     private $failures = [];
 
@@ -26,7 +29,8 @@ class FormConfiguration
     {
         $this->id = $id;
         $this->locale = $locale;
-        array_map([$this, 'addField'], $formDefinition['fields'] ?? []);
+        $this->formTemplate = $formDefinition['theme_template'];
+        array_map([$this, 'addField'], $formDefinition['form']['fields'] ?? []);
     }
 
     public function getFailures(): array
