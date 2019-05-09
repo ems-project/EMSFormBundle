@@ -80,8 +80,7 @@ class FormConfiguration
         }
 
         try {
-            $className = preg_replace('/\s/', '', ucwords(strtolower($field['type']['_source']['name'])));
-            $class = sprintf('%s\Field\%s', __NAMESPACE__, $className);
+            $class = $field['type']['_source']['classname'];
             /** @var FieldConfiguration $field */
             $field = new $class($field, $this->locale);
             $this->fields[] = $field;

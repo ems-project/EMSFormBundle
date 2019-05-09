@@ -18,4 +18,9 @@ class NissInsz extends Configuration
     {
         return new IsNissInsz($this->value);
     }
+
+    public function getHtml5Attribute(): array
+    {
+        return [];
+    }
 }

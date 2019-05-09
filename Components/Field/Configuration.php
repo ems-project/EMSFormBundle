@@ -104,8 +104,7 @@ abstract class Configuration
         }
 
         try {
-            $className = preg_replace('/\s/', '', ucwords(strtolower($validation['validation']['_source']['name'])));
-            $class = sprintf('EMS\FormBundle\Components\Validation\%s', $className);
+            $class = $validation['validation']['_source']['classname'];
             /** @var ValidationConfiguration $validation */
             $validation = new $class($validation);
             $this->validations[$validation->getId()] = $validation;
