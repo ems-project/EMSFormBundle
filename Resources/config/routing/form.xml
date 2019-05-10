@@ -5,6 +5,6 @@
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="ems_form_frame" path="/form/{domainId}/{formId}" methods="GET|POST">
-        <default key="_controller">EMS\FormBundle\Controller\FormController::getForm</default>
+        <default key="_controller">EMS\FormBundle\Controller\FormController::getFormInstance</default>
     </route>
 </routes>

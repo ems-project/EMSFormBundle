@@ -14,11 +14,7 @@ class Email extends Configuration
 
     public function build(): Constraint
     {
-        if ($this->type === 'html5') {
-            return new EmailValidation(['mode' => EmailValidation::VALIDATION_MODE_HTML5]);
-        }
-
-        return new EmailValidation();
+        return new EmailValidation(['mode' => EmailValidation::VALIDATION_MODE_HTML5]);
     }
 
     public function getHtml5Attribute(): array

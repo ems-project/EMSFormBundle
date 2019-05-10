@@ -19,14 +19,32 @@ class FormConfiguration
     /** @var string */
     private $locale;
 
+    /** @var string */
+    private $formTheme;
+
+    /** @var string[] */
+    private $domains;
+
     /** @var string[] $failures */
     private $failures = [];
 
-    public function __construct(array $formDefinition, string $id, string $locale)
+    public function __construct(array $formDefinition, string $formThemeField, string $id, string $locale, array $domains)
     {
         $this->id = $id;
         $this->locale = $locale;
-        array_map([$this, 'addField'], $formDefinition['fields'] ?? []);
+        $this->formTheme = $formDefinition[$formThemeField];
+        $this->domains = $domains;
+        array_map([$this, 'addField'], $formDefinition['form']['fields'] ?? []);
+    }
+
+    public function getFormTheme(): string
+    {
+        return $this->formTheme;
+    }
+
+    public function getDomains(): array
+    {
+        return $this->domains;
     }
 
     public function getFailures(): array
@@ -62,8 +80,7 @@ class FormConfiguration
         }
 
         try {
-            $className = preg_replace('/\s/', '', ucwords(strtolower($field['type']['_source']['name'])));
-            $class = sprintf('%s\Field\%s', __NAMESPACE__, $className);
+            $class = $field['type']['_source']['classname'];
             /** @var FieldConfiguration $field */
             $field = new $class($field, $this->locale);
             $this->fields[] = $field;

@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
-//TODO nice to have: generator bundle for backend form config (structure, validations, fields, domains)
+//TODO nice to have: generator bundle for backend form config (instance, structure, validations, fields, domains)
 class FormClient
 {
     /** @var ClientRequest */
@@ -20,40 +20,79 @@ class FormClient
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(ClientRequest $client, FormFactoryInterface $formFactory, LoggerInterface $logger)
-    {
+    /** @var string */
+    private $domainType;
+
+    /** @var string */
+    private $instanceType;
+
+    /** @var string */
+    private $formField;
+
+    /** @var string */
+    private $themeField;
+
+    public function __construct(
+        ClientRequest $client,
+        FormFactoryInterface $formFactory,
+        LoggerInterface $logger,
+        string $domainType,
+        string $instanceType,
+        string $formField,
+        string $themeField
+    ) {
         $this->client = $client;
         $this->formFactory = $formFactory;
         $this->logger = $logger;
+        $this->domainType = $domainType;
+        $this->instanceType = $instanceType;
+        $this->formField = $formField;
+        $this->themeField = $themeField;
     }
 
-    public function getAllowedDomains(string $id): array
+    public function getFormInstance(FormConfiguration $configuration): FormInterface
     {
-        return array_map(
-            function ($domain) {
-                return $domain['domain'];
-            },
-            //TODO fetch type from config
-            ($this->client->get('form_domain', $id))['_source']['allowed_domains']
-        );
+        return $configuration->getForm($this->formFactory);
     }
 
-    public function getForm(string $id, string $locale): FormInterface
+    public function getFormConfiguration(string $domainId, string $formId, string $locale): FormConfiguration
     {
-        //TODO: fetch type from config
-        $result = ($this->client->get('form_structure', $id))['_source'];
-        $configuration = new FormConfiguration($this->loadReferencedFieldsAndValidations($result), $id, $locale);
+        $instanceId = sprintf('%s-%s', $domainId, $formId);
+        $result = ($this->client->get($this->instanceType, $instanceId))['_source'];
+        $domains = $this->getAllowedDomains($domainId);
+        $configuration = new FormConfiguration($this->loadFormStructure($result), $this->themeField, $instanceId, $locale, $domains);
 
         foreach ($configuration->getFailures() as $failure) {
             $this->logger->error($failure);
         }
 
-        return $configuration->getForm($this->formFactory);
+        return $configuration;
     }
 
     public function getCacheKey(): string
     {
         return $this->client->getCacheKey();
+    }
+
+    private function getAllowedDomains(string $id): array
+    {
+        return array_map(
+            function ($domain) {
+                return $domain['domain'];
+            },
+            ($this->client->get($this->domainType, $id))['_source']['allowed_domains']
+        );
+    }
+
+    private function loadFormStructure(array $formDefinition): array
+    {
+        if (!array_key_exists($this->formField, $formDefinition)) {
+            return [];
+        }
+
+        $formStructure = ($this->client->getByEmsKey($formDefinition[$this->formField]))['_source'];
+        $formDefinition[$this->formField] = $this->loadReferencedFieldsAndValidations($formStructure);
+        return $formDefinition;
     }
 
     private function loadReferencedFieldsAndValidations(array $formDefinition): array
