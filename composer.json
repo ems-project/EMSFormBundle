@@ -17,14 +17,14 @@
 		"elasticms/client-helper-bundle" : "^3.0",
 		"elasticms/submission-bundle" : "~0.0.1",
 		"twig/twig" : "^2.4",
-		"symfony/form": "~4.1.0",
-		"symfony/routing": "~4.1.0",
-		"symfony/http-foundation": "~4.1.0",
-		"symfony/framework-bundle": "~4.1.0",
-		"symfony/options-resolver": "~4.1.0",
-		"symfony/validator": "~4.1.0",
-		"symfony/twig-bridge": "~4.1.0",
-		"symfony/security": "~4.1.0"
+		"symfony/form": "^4.1",
+		"symfony/routing": "^4.1",
+		"symfony/http-foundation": "^4.1",
+		"symfony/framework-bundle": "^4.1",
+		"symfony/options-resolver": "^4.1",
+		"symfony/validator": "^4.1",
+		"symfony/twig-bridge": "^4.1",
+		"symfony/security": "^4.1"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "^5.7",
