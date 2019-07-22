@@ -44,7 +44,7 @@ class FormClient
         $this->client = $client;
         $this->formFactory = $formFactory;
         $this->logger = $logger;
-        $this->domainType = $domainType;
+        $this->domainType = $domainType; //@todo remove deprecated, we have an emsLink
         $this->instanceType = $instanceType;
         $this->formField = $formField;
         $this->themeField = $themeField;
@@ -55,12 +55,12 @@ class FormClient
         return $configuration->getForm($this->formFactory);
     }
 
-    public function getFormConfiguration(string $domainId, string $formId, string $locale): FormConfiguration
+    public function getFormConfiguration(string $ouuid, string $locale)
     {
-        $instanceId = sprintf('%s-%s', $domainId, $formId);
-        $result = ($this->client->get($this->instanceType, $instanceId))['_source'];
-        $domains = $this->getAllowedDomains($domainId);
-        $configuration = new FormConfiguration($this->loadFormStructure($result), $this->themeField, $instanceId, $locale, $domains);
+        $result = ($this->client->get($this->instanceType, $ouuid))['_source'];
+
+        $domains = $this->getAllowedDomains($result['domain']);
+        $configuration = new FormConfiguration($this->loadFormStructure($result), $this->themeField, $ouuid, $locale, $domains);
 
         foreach ($configuration->getFailures() as $failure) {
             $this->logger->error($failure);
@@ -74,14 +74,22 @@ class FormClient
         return $this->client->getCacheKey();
     }
 
-    private function getAllowedDomains(string $id): array
+    private function getAllowedDomains(string $emsId): array
     {
-        return array_map(
+        $arrayEms = explode(':', $emsId);
+        $type = array_shift($arrayEms);
+        $id = implode(':', $arrayEms);
+
+        if (null == $type || null == $id) {
+            return [];
+        }
+
+        return array_values(array_map(
             function ($domain) {
                 return $domain['domain'];
             },
-            ($this->client->get($this->domainType, $id))['_source']['allowed_domains']
-        );
+            ($this->client->get($type, $id))['_source']['allowed_domains']
+        ));
     }
 
     private function loadFormStructure(array $formDefinition): array

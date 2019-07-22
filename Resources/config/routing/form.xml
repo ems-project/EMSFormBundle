@@ -4,7 +4,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="ems_form_frame" path="/form/{domainId}/{formId}" methods="GET|POST">
-        <default key="_controller">EMS\FormBundle\Controller\FormController::getFormInstance</default>
-    </route>
+        <route id="ems_iframe" path="/form/{ouuid}" methods="GET|POST">
+            <default key="_controller">emsf.controller.form::iframe</default>
+        </route>
+
+        <route id="ems_ajax_form" path="/form/{ouuid}/instance" methods="GET|POST">
+            <default key="_controller">emsf.controller.form::getForm</default>
+        </route>
 </routes>
