@@ -37,6 +37,11 @@ class FormConfiguration
         array_map([$this, 'addField'], $formDefinition['form']['fields'] ?? []);
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function getFormTheme(): string
     {
         return $this->formTheme;

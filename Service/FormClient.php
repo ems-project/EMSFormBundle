@@ -3,6 +3,7 @@
 namespace EMS\FormBundle\Service;
 
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
+use EMS\CommonBundle\Common\EMSLink;
 use EMS\FormBundle\Components\FormConfiguration;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -44,7 +45,7 @@ class FormClient
         $this->client = $client;
         $this->formFactory = $formFactory;
         $this->logger = $logger;
-        $this->domainType = $domainType;
+        $this->domainType = $domainType; //@todo remove deprecated, we have an emsLink
         $this->instanceType = $instanceType;
         $this->formField = $formField;
         $this->themeField = $themeField;
@@ -55,12 +56,12 @@ class FormClient
         return $configuration->getForm($this->formFactory);
     }
 
-    public function getFormConfiguration(string $domainId, string $formId, string $locale): FormConfiguration
+    public function getFormConfiguration(string $ouuid, string $locale)
     {
-        $instanceId = sprintf('%s-%s', $domainId, $formId);
-        $result = ($this->client->get($this->instanceType, $instanceId))['_source'];
-        $domains = $this->getAllowedDomains($domainId);
-        $configuration = new FormConfiguration($this->loadFormStructure($result), $this->themeField, $instanceId, $locale, $domains);
+        $result = ($this->client->get($this->instanceType, $ouuid))['_source'];
+
+        $domains = $this->getAllowedDomains($result['domain']);
+        $configuration = new FormConfiguration($this->loadFormStructure($result), $this->themeField, $ouuid, $locale, $domains);
 
         foreach ($configuration->getFailures() as $failure) {
             $this->logger->error($failure);
@@ -74,14 +75,16 @@ class FormClient
         return $this->client->getCacheKey();
     }
 
-    private function getAllowedDomains(string $id): array
+    private function getAllowedDomains(string $emsId): array
     {
-        return array_map(
+        $emsLink = EMSLink::fromText($emsId);
+
+        return array_values(array_map(
             function ($domain) {
                 return $domain['domain'];
             },
-            ($this->client->get($this->domainType, $id))['_source']['allowed_domains']
-        );
+            ($this->client->get($emsLink->getContentType(), $emsLink->getOuuid()))['_source']['allowed_domains']
+        ));
     }
 
     private function loadFormStructure(array $formDefinition): array

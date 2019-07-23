@@ -1,0 +1,11 @@
+{% trans_default_domain trans_default_domain %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta property="id" data-id="{{ config.id }}" />
+    <meta property="domains" data-list="{{ config.domains|json_encode }}" />
+</head>
+<body>
+    <script src="{{ asset('bundles/emsform/js/backend.js') }}"></script>
+</body>

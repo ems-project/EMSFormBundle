@@ -1,8 +1,0 @@
-{% trans_default_domain trans_default_domain %}
-{% form_theme form form_theme|default('bootstrap_4_layout.html.twig') %}
-{% spaceless %}
-    {
-        "instruction": "{{ instruction|default('form') }}",
-        "response": "{{ form(form)|replace({"\n":''})|escape('html') }}"
-    }
-{% endspaceless %}

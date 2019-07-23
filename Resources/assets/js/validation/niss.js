@@ -1,11 +1,10 @@
-export default function setNissInszValidation(nissId) {
-    let niss = document.getElementById(nissId);
-
-    niss.addEventListener('change', function() {
-        if(validateNissInsz(niss.value))
+export function setNissInszValidation(element) {
+    element.addEventListener('change', function() {
+        if(validateNissInsz(this.value)) {
             this.setCustomValidity('');
-        else
+        } else {
             this.setCustomValidity('NISS-INSZ format error');
+        }
     });
 
     function validateNissInsz(value) {
@@ -25,9 +24,9 @@ export default function setNissInszValidation(nissId) {
 
             let base = m[1];
             let control = m[2];
-            valid = control == (97 - (base % 97));
+            valid = parseInt(control) === (97 - (base % 97));
             if (!valid) {
-                valid = control == (97 - ('2'.concat(base) % 97));
+                valid = parseInt(control) === (97 - ('2'.concat(base) % 97));
             }
         }
         return valid;
