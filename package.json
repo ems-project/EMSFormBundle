@@ -18,6 +18,11 @@
   "bugs": {
     "url": "https://github.com/ems-project/EMSFormBundle/issues"
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "IE 10"
+  ],
   "homepage": "https://github.com/ems-projectEMSFormBundle#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",

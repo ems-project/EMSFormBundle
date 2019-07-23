@@ -1,12 +1,17 @@
 const DEFAULT_CONFIG = {
-    "domains": []
+    "id": false,
+    "domains": [],
 };
 
 class emsReceiver {
     constructor(options) {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
         this.domains = config.domains;
-        window.addEventListener("message", evt => this.onMessage(evt));
+        this.id = config.id;
+
+        if (this.id !== false) {
+            window.addEventListener("message", evt => this.onMessage(evt));
+        }
     }
 
     onMessage(message) {
@@ -18,14 +23,14 @@ class emsReceiver {
 
         switch (data.instruction) {
             case "form":
-                this.ajax("/form/ap10-ap10_contact/instance", message);
+                this.ajax("/form/"+this.id+"/instance", message);
                 break;
             case "submit": {
                 let urlEncoded = [];
                 for (let key in data.form) {
                     urlEncoded.push(encodeURI(key.concat('=').concat(data.form[key])));
                 }
-                this.ajax("/form/ap10-ap10_contact/instance", message, urlEncoded.join('&'));
+                this.ajax("/form/"+this.id+"/instance", message, urlEncoded.join('&'));
                 break;
             }
             default:

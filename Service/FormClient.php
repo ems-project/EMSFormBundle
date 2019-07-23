@@ -3,6 +3,7 @@
 namespace EMS\FormBundle\Service;
 
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
+use EMS\CommonBundle\Common\EMSLink;
 use EMS\FormBundle\Components\FormConfiguration;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -76,19 +77,13 @@ class FormClient
 
     private function getAllowedDomains(string $emsId): array
     {
-        $arrayEms = explode(':', $emsId);
-        $type = array_shift($arrayEms);
-        $id = implode(':', $arrayEms);
-
-        if (null == $type || null == $id) {
-            return [];
-        }
+        $emsLink = EMSLink::fromText($emsId);
 
         return array_values(array_map(
             function ($domain) {
                 return $domain['domain'];
             },
-            ($this->client->get($type, $id))['_source']['allowed_domains']
+            ($this->client->get($emsLink->getContentType(), $emsLink->getOuuid()))['_source']['allowed_domains']
         ));
     }
 
