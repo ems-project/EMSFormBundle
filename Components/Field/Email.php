@@ -4,9 +4,9 @@ namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
-class Email extends Configuration
+class Email extends AbstractField
 {
-    protected function getFieldClass(): string
+    public function getFieldClass(): string
     {
         return EmailType::class;
     }

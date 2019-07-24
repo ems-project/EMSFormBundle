@@ -5,14 +5,14 @@ namespace EMS\FormBundle\Components\Validation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class Required extends Configuration
+class Required extends AbstractValidation
 {
     public function getId(): string
     {
         return 'required';
     }
 
-    public function build(): Constraint
+    public function getConstraint(): Constraint
     {
         return new NotBlank();
     }

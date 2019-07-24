@@ -4,9 +4,9 @@ namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class NissInsz extends Configuration
+class NissInsz extends AbstractField
 {
-    protected function getFieldClass(): string
+    public function getFieldClass(): string
     {
         return TextType::class;
     }

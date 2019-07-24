@@ -4,9 +4,9 @@ namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
-class Number extends Configuration
+class Number extends AbstractField
 {
-    protected function getFieldClass(): string
+    public function getFieldClass(): string
     {
         return NumberType::class;
     }

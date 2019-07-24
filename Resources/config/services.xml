@@ -7,6 +7,14 @@
     <services>
         <defaults public="false" />
 
+        <service id="emsf.form.factory" class="EMS\FormBundle\Form\FormFactory">
+            <argument type="service" id="emsf.form_config.factory"/>
+            <argument type="service" id="form.factory"/>
+        </service>
+        <service id="emsf.form_config.factory" class="EMS\FormBundle\FormConfig\FormConfigFactory">
+            <argument type="service" id="emsch.manager.client_request"/>
+        </service>
+
         <service id="emsf.client" class="EMS\FormBundle\Service\FormClient">
             <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
             <argument type="service" id="form.factory"/>
@@ -19,6 +27,7 @@
         <!-- controllers -->
         <service id="emsf.controller.form" class="EMS\FormBundle\Controller\FormController"  public="true">
             <argument type="service" id="emsf.client"/>
+            <argument type="service" id="emsf.form.factory"/>
             <argument type="service" id="emss.client"/>
             <argument type="service" id="twig" />
         </service>
