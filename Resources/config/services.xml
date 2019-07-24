@@ -11,7 +11,6 @@
             <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="logger"/>
-            <argument type="string">%emsf.domain.type%</argument>
             <argument type="string">%emsf.instance.type%</argument>
             <argument type="string">%emsf.instance.form-field%</argument>
             <argument type="string">%emsf.instance.theme-field%</argument>

@@ -22,9 +22,6 @@ class FormClient
     private $logger;
 
     /** @var string */
-    private $domainType;
-
-    /** @var string */
     private $instanceType;
 
     /** @var string */
@@ -37,7 +34,6 @@ class FormClient
         ClientRequest $client,
         FormFactoryInterface $formFactory,
         LoggerInterface $logger,
-        string $domainType,
         string $instanceType,
         string $formField,
         string $themeField
@@ -45,7 +41,6 @@ class FormClient
         $this->client = $client;
         $this->formFactory = $formFactory;
         $this->logger = $logger;
-        $this->domainType = $domainType; //@todo remove deprecated, we have an emsLink
         $this->instanceType = $instanceType;
         $this->formField = $formField;
         $this->themeField = $themeField;
