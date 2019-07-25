@@ -9,33 +9,38 @@ class FormConfigFactory
 {
     /** @var ClientRequest */
     private $client;
+    /** @var array */
+    private $emsFields;
 
-    public function __construct(ClientRequestManager $manager)
+    public function __construct(ClientRequestManager $manager, array $emsFields)
     {
         $this->client = $manager->getDefault();
+        $this->emsFields = $emsFields;
     }
 
     public function create(string $ouuid, string $locale): FormConfig
     {
-        $source = $this->client->get('form_instance', $ouuid)['_source'];
+        $source = $this->client->get($this->emsFields['type'], $ouuid)['_source'];
         $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
 
-        if (isset($source['theme_template'])) {
+        if (isset($source[$this->emsFields['theme-field']])) {
             $formConfig->setTheme($source['theme_template']);
         }
         if (isset($source['domain'])) {
             $this->addDomain($formConfig, $source['domain']);
         }
 
-        $formSource = isset($source['form']) ? $this->client->getByEmsKey($source['form'], ['fields'])['_source'] : false;
+        if(isset($source[$this->emsFields['form-field']])) {
+            $formSource = $this->client->getByEmsKey($source[$this->emsFields['form-field']], ['fields'])['_source'];
 
-        if ($formSource && isset($formSource['fields'])) {
-            foreach ($formSource['fields'] as $field) {
-                $this->addField($formConfig, $field, $locale);
+            if (isset($formSource['fields'])) {
+                foreach ($formSource['fields'] as $field) {
+                    $this->addField($formConfig, $field, $locale);
+                }
             }
         }
 
-       return $formConfig;
+        return $formConfig;
     }
 
     private function addDomain(FormConfig $formConfig, string $emsLinkDomain): void

@@ -7,6 +7,7 @@ use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory as SymfonyFormFactory;
 
@@ -32,6 +33,9 @@ class FormFactory
             $field = $this->createField($fieldConfig);
             $builder->add($fieldConfig->getName(), $field->getFieldClass(), $field->getOptions());
         }
+
+        //@todo submit/buttons should be dynamic
+        $builder->add('submit', SubmitType::class, ['attr' => ['class' => 'btn-primary']]);
 
         return new Form($builder->getForm(), $config);
     }

@@ -34,6 +34,11 @@ class FormConfig
         $this->fields[$field->getName()] = $field;
     }
 
+    public function getDomains(): array
+    {
+        return $this->domains;
+    }
+
     /**
      * @return FieldConfig[]
      */
@@ -60,11 +65,6 @@ class FormConfig
     public function getTranslationDomain(): string
     {
         return $this->translationDomain;
-    }
-
-    public function isAllowedDomain(string $domain): bool
-    {
-        return \in_array($domain, $this->domains, true);
     }
 
     public function setTheme(string $theme): void
