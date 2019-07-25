@@ -57,6 +57,11 @@ class FormController
         $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
         $form->handleRequest($request);
 
-        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView()]));
+        $response = null;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $response = $this->submissionClient->submit($ouuid, $request->getLocale(), $form->getData());
+        }
+
+        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView(), 'response' => $response]));
     }
 }
