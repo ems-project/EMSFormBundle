@@ -32,9 +32,6 @@ class Form extends AbstractType
             $field = $this->createField($fieldConfig);
             $builder->add($fieldConfig->getName(), $field->getFieldClass(), $field->getOptions());
         }
-
-        //@todo submit/buttons should be dynamic
-        $builder->add('submit', SubmitType::class, ['attr' => ['class' => 'btn-primary']]);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
