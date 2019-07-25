@@ -5,14 +5,14 @@ namespace EMS\FormBundle\Components\Validation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Email as EmailValidation;
 
-class Email extends Configuration
+class Email extends AbstractValidation
 {
     public function getId(): string
     {
         return 'email';
     }
 
-    public function build(): Constraint
+    public function getConstraint(): Constraint
     {
         return new EmailValidation(['mode' => EmailValidation::VALIDATION_MODE_HTML5]);
     }

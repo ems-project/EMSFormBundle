@@ -27,7 +27,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('theme-field')->defaultValue('theme_template')->end()
                     ->end()
                 ->end()
-                ->scalarNode('domain-type')->defaultValue('form_domain')->end()
             ->end()
         ;
         

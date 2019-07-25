@@ -1,9 +1,9 @@
-{% trans_default_domain trans_default_domain %}
+{% trans_default_domain config.translationDomain %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta property="id" data-id="{{ config.id }}" />
+    <meta property="id" data-id="{{ config.name }}" />
     <meta property="domains" data-list="{{ config.domains|json_encode }}" />
 </head>
 <body>
