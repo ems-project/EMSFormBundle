@@ -14,7 +14,7 @@ class FormConfig
     private $domains = [];
     /** @var FieldConfig[] */
     private $fields = [];
-    /** @var string */
+    /** @var ?string */
     private $theme;
 
     public function __construct(string $name, string $locale, string $translationDomain)
@@ -57,7 +57,7 @@ class FormConfig
         return $this->name;
     }
 
-    public function getTheme(): string
+    public function getTheme(): ?string
     {
         return $this->theme;
     }

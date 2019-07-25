@@ -9,7 +9,7 @@ use EMS\FormBundle\FormConfig\ValidationConfig;
 abstract class AbstractField implements FieldInterface
 {
     /** @var FieldConfig */
-    private $config;
+    protected $config;
     /** @var ValidationInterface[] */
     private $validations = [];
 
@@ -17,20 +17,20 @@ abstract class AbstractField implements FieldInterface
     {
         $this->config = $config;
 
-        foreach ($config->getValidations() as $validationConfig) {
-            $validation = $this->createValidation($validationConfig);
-            $this->validations[$validation->getId()] = $validation;
+        foreach ($config->getValidations() as $id => $validationConfig) {
+            $this->validations[$id] = $this->createValidation($validationConfig);
         }
     }
 
     public function getOptions(): array
     {
         return [
-            'required' => $this->isRequired(),
-            'label' => $this->config->getLabel(),
-            'help' => $this->config->getHelp(),
             'attr' => $this->getAttributes(),
             'constraints' => $this->getValidationConstraints(),
+            'data' => $this->config->getDefaultValue(),
+            'help' => $this->config->getHelp(),
+            'label' => $this->config->getLabel(),
+            'required' => $this->isRequired(),
         ];
     }
 
