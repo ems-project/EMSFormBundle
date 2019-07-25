@@ -33,6 +33,6 @@ class ValidationConfig
 
     public function getValue()
     {
-        return null === $this->value ? $this->defaultValue : $this->value;
+        return null === $this->value ?? $this->defaultValue;
     }
 }
