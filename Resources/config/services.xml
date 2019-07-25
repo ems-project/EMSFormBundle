@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
@@ -9,7 +9,9 @@
 
         <service id="emsf.form_config.factory" class="EMS\FormBundle\FormConfig\FormConfigFactory">
             <argument type="service" id="emsch.manager.client_request"/>
+            <argument type="service" id="logger" />
             <argument type="string">%emsf.ems_fields%</argument>
+            <tag name="monolog.logger" channel="ems_common"/>
         </service>
         <service id="emsf.form" class="EMS\FormBundle\Components\Form">
             <argument type="service" id="emsf.form_config.factory"/>

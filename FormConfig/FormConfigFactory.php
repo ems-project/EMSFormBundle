@@ -4,17 +4,21 @@ namespace EMS\FormBundle\FormConfig;
 
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
+use Psr\Log\LoggerInterface;
 
 class FormConfigFactory
 {
     /** @var ClientRequest */
     private $client;
+    /** @var LoggerInterface */
+    private $logger;
     /** @var array */
     private $emsFields;
 
-    public function __construct(ClientRequestManager $manager, array $emsFields)
+    public function __construct(ClientRequestManager $manager, LoggerInterface $logger, array $emsFields)
     {
         $this->client = $manager->getDefault();
+        $this->logger = $logger;
         $this->emsFields = $emsFields;
     }
 
@@ -31,13 +35,7 @@ class FormConfigFactory
         }
 
         if (isset($source[$this->emsFields['form-field']])) {
-            $formSource = $this->client->getByEmsKey($source[$this->emsFields['form-field']], ['fields'])['_source'];
-
-            if (isset($formSource['fields'])) {
-                foreach ($formSource['fields'] as $field) {
-                    $this->addField($formConfig, $field, $locale);
-                }
-            }
+            $this->addForm($formConfig, $source[$this->emsFields['form-field']], $locale);
         }
 
         return $formConfig;
@@ -45,7 +43,7 @@ class FormConfigFactory
 
     private function addDomain(FormConfig $formConfig, string $emsLinkDomain): void
     {
-        $domain = $this->client->getByEmsKey($emsLinkDomain, ['allowed_domains'])['_source'];
+        $domain = $this->getSource($emsLinkDomain, ['allowed_domains']);
         $allowedDomains = $domain['allowed_domains'] ?? [];
 
         foreach ($allowedDomains as $allowedDomain) {
@@ -55,18 +53,17 @@ class FormConfigFactory
 
     private function addField(FormConfig $formConfig, array $source, string $locale): void
     {
-        $type = $this->client->getByEmsKey($source['type'], ['name', 'classname', 'validations'])['_source'];
-        $fieldConfig = new FieldConfig($source['technical_name'], $type['name'], $type['classname']);
+        $fieldType = $this->getSource($source['type'], ['name', 'classname', 'validations']);
+        $fieldConfig = new FieldConfig($source['technical_name'], $fieldType['id'], $fieldType['classname']);
 
-        $validations = array_merge($type['validations'] ?? [], $source['validations'] ?? []);
+        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
-        foreach ($validations as $v) {
-            $validation = $this->client->getByEmsKey($v['validation'], ['classname', 'default_value', 'name'])['_source'];
+        if (isset($source['choices'])) {
+            $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
+        }
 
-            $value = $v['value'] ?? null;
-            $defaultValue = $validation['default_value'] ?? null;
-
-            $fieldConfig->addValidation(new ValidationConfig($validation['name'], $validation['classname'], $defaultValue, $value));
+        if (isset($source['default'])) {
+            $fieldConfig->setDefaultValue($source['default']);
         }
 
         if (isset($source['label_'.$locale])) {
@@ -77,5 +74,65 @@ class FormConfigFactory
         }
 
         $formConfig->addField($fieldConfig);
+    }
+
+    private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
+    {
+        $choices = $this->getSource($emsLink, ['values', 'labels_'.$locale]);
+        $decoder = function (string $input) {
+            return \json_decode($input, true);
+        };
+
+        $fieldConfig->setChoices(new FieldChoicesConfig(
+            $choices['id'],
+            $decoder($choices['values']),
+            $decoder($choices['labels_'.$locale])
+        ));
+    }
+
+    private function addFieldValidations(FieldConfig $fieldConfig, array $typeValidations = [], array $fieldValidations = []): void
+    {
+        $allValidations = array_merge($typeValidations, $fieldValidations);
+
+        foreach ($allValidations as $v) {
+            try {
+                $validation = $this->getSource($v['validation'], ['classname', 'default_value']);
+                $fieldConfig->addValidation(new ValidationConfig(
+                    $validation['id'],
+                    $validation['classname'],
+                    ($validation['default_value'] ?? null),
+                    ($v['value'] ?? null)
+                ));
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+            }
+        }
+    }
+
+    private function addForm(FormConfig $formConfig, string $emsLinkForm, string $locale): void
+    {
+        $form = $this->getSource($emsLinkForm, ['fields']);
+
+        foreach ($form['fields'] as $field) {
+            try {
+                $this->addField($formConfig, $field, $locale);
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage());
+            }
+        }
+    }
+
+    private function getSource(string $emsLink, array $fields = []): array
+    {
+        $document = $this->client->getByEmsKey($emsLink, $fields);
+
+        if (!$document) {
+            throw new \LogicException(sprintf('Document type "%s" not found!', $emsLink));
+        }
+
+        $source = $document['_source'];
+        $source['id'] = $document['_id'];
+
+        return $source;
     }
 }
