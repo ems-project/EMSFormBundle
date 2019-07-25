@@ -17,7 +17,7 @@ abstract class AbstractField implements FieldInterface
     {
         $this->config = $config;
 
-        foreach($config->getValidations() as $validationConfig) {
+        foreach ($config->getValidations() as $validationConfig) {
             $validation = $this->createValidation($validationConfig);
             $this->validations[$validation->getId()] = $validation;
         }

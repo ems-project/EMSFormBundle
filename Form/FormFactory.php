@@ -50,10 +50,10 @@ class FormFactory
     private function createBuilder(FormConfig $config): FormBuilderInterface
     {
          return $this->formFactory->createNamedBuilder(
-            sprintf('%s-form', $config->getName()),
-            FormType::class,
-            null,
-            ['attr' => ['id' => $config->getName(), 'class' => $config->getLocale()]]
-        );
+             sprintf('%s-form', $config->getName()),
+             FormType::class,
+             null,
+             ['attr' => ['id' => $config->getName(), 'class' => $config->getLocale()]]
+         );
     }
 }

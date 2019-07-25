@@ -8,7 +8,7 @@
             <default key="_controller">emsf.controller.form::iframe</default>
         </route>
 
-        <route id="ems_ajax_form" path="/form/{ouuid}/instance" methods="GET|POST">
+        <route id="ems_json_form" path="/form/{ouuid}/instance" methods="GET|POST">
             <default key="_controller">emsf.controller.form::jsonForm</default>
         </route>
 </routes>

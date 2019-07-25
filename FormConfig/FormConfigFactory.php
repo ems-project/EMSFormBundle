@@ -30,7 +30,7 @@ class FormConfigFactory
             $this->addDomain($formConfig, $source['domain']);
         }
 
-        if(isset($source[$this->emsFields['form-field']])) {
+        if (isset($source[$this->emsFields['form-field']])) {
             $formSource = $this->client->getByEmsKey($source[$this->emsFields['form-field']], ['fields'])['_source'];
 
             if (isset($formSource['fields'])) {
@@ -60,7 +60,7 @@ class FormConfigFactory
 
         $validations = array_merge($type['validations'] ?? [], $source['validations'] ?? []);
 
-        foreach($validations as $v) {
+        foreach ($validations as $v) {
             $validation = $this->client->getByEmsKey($v['validation'], ['classname', 'default_value', 'name'])['_source'];
 
             $value = $v['value'] ?? null;
