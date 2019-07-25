@@ -4,13 +4,12 @@ namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Service\FormClient;
 use EMS\SubmissionBundle\Service\SubmissionClient;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
-class FormController extends AbstractController
+class FormController
 {
     /** @var FormClient */
     private $formClient;
@@ -34,7 +33,7 @@ class FormController extends AbstractController
         ]));
     }
 
-    public function getForm(Request $request, $ouuid)
+    public function jsonForm(Request $request, $ouuid)
     {
         $configuration = $this->formClient->getFormConfiguration($ouuid, $request->getLocale());
         $form = $this->formClient->getFormInstance($configuration);
@@ -54,5 +53,18 @@ class FormController extends AbstractController
         ]);
 
         return new JsonResponse(json_decode($render));
+    }
+
+    public function debugForm(Request $request, $ouuid)
+    {
+        $configuration = $this->formClient->getFormConfiguration($ouuid, $request->getLocale());
+        $form = $this->formClient->getFormInstance($configuration);
+        $form->handleRequest($request);
+
+        return new Response($this->twig->render('@EMSForm/debug.html.twig', [
+            'trans_default_domain' => $this->formClient->getCacheKey(),
+            'form' => $form->createView(),
+            'form_theme' => $configuration->getFormTheme(),
+        ]));
     }
 }
