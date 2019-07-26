@@ -5,7 +5,7 @@ namespace EMS\FormBundle\FormConfig;
 class FormConfig
 {
     /** @var string */
-    private $name;
+    private $id;
     /** @var string */
     private $locale;
     /** @var string */
@@ -17,9 +17,9 @@ class FormConfig
     /** @var ?string */
     private $theme;
 
-    public function __construct(string $name, string $locale, string $translationDomain)
+    public function __construct(string $id, string $locale, string $translationDomain)
     {
-        $this->name = $name;
+        $this->id = $id;
         $this->locale = $locale;
         $this->translationDomain = $translationDomain;
     }
@@ -31,7 +31,7 @@ class FormConfig
 
     public function addField(FieldConfig $field): void
     {
-        $this->fields[$field->getName()] = $field;
+        $this->fields[$field->getId()] = $field;
     }
 
     public function getDomains(): array
@@ -52,9 +52,9 @@ class FormConfig
         return $this->locale;
     }
 
-    public function getName(): string
+    public function getId(): string
     {
-        return $this->name;
+        return $this->id;
     }
 
     public function getTheme(): ?string

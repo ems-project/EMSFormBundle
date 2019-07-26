@@ -5,7 +5,7 @@ namespace EMS\FormBundle\FormConfig;
 class FieldConfig
 {
     /** @var string */
-    private $name;
+    private $id;
     /** @var string */
     private $type;
     /** @var string */
@@ -21,13 +21,13 @@ class FieldConfig
     /** @var FieldChoicesConfig */
     private $choices;
 
-    public function __construct(string $name, string $type, string $class)
+    public function __construct(string $id, string $type, string $class)
     {
         if (!class_exists($class)) {
             throw new \Exception(sprintf('Error field class "%s" does not exists!', $class));
         }
 
-        $this->name = $name;
+        $this->id = $id;
         $this->type = $type;
         $this->class = $class;
     }
@@ -62,9 +62,9 @@ class FieldConfig
         return $this->label;
     }
 
-    public function getName(): string
+    public function getId(): string
     {
-        return $this->name;
+        return $this->id;
     }
 
     /**

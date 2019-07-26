@@ -53,7 +53,7 @@ class FormConfigFactory
 
     private function addField(FormConfig $formConfig, array $source, string $locale): void
     {
-        $fieldType = $this->getSource($source['type'], ['name', 'classname', 'validations']);
+        $fieldType = $this->getSource($source['type'], ['classname', 'validations']);
         $fieldConfig = new FieldConfig($source['technical_name'], $fieldType['id'], $fieldType['classname']);
 
         $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
