@@ -19,6 +19,11 @@
         </service>
 
         <!-- controllers -->
+        <service id="emsf.controller.debug" class="EMS\FormBundle\Controller\DebugController"  public="true">
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="twig" />
+            <argument type="string">%emsch.locales%</argument>
+        </service>
         <service id="emsf.controller.form" class="EMS\FormBundle\Controller\FormController"  public="true">
             <argument type="service" id="form.factory"/>
             <argument type="service" id="emss.client"/>

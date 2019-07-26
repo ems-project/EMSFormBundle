@@ -51,12 +51,4 @@ class FormController
 
         return new JsonResponse(json_decode($render));
     }
-
-    public function debugForm(Request $request, $ouuid)
-    {
-        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
-        $form->handleRequest($request);
-
-        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView()]));
-    }
 }

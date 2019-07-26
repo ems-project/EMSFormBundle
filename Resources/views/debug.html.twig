@@ -10,8 +10,25 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="bg-dark">
-    <div class="wrapper m-5 p-5 bg-light">
-        {{ form(form) }}
+    <div class="wrapper m-5 bg-light">
+        <div class="bg-secondary px-4 py-2">
+            {% set requestQuery = app.request.query.all %}
+            <div class="btn-group" role="group" aria-label="Basic example">
+                {% for l in locales %}
+                    {% set lQuery = requestQuery|merge({'_locale': l }) %}
+                      <a href="?{{ lQuery|url_encode }}" class="btn btn-sm btn-outline-warning {{ l == config.locale ? "active" }}"><b>{{ l|upper }}</b></a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="wrapper-form" class="px-4 pt-4">
+            {{ form(form) }}
+        </div>
+
+
+
+
+
         {{ dump(config) }}
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
