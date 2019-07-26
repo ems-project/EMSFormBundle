@@ -19,11 +19,10 @@ class ChoiceSelectMultiple extends AbstractField
     public function getOptions(): array
     {
         $options = parent::getOptions();
-
+        $options['choices'] = $this->config->getChoices()->list();
         $options['data'] = [$this->config->getDefaultValue()];
         $options['expanded'] = false;
         $options['multiple'] = true;
-        $options['choices'] = $this->config->getChoices()->list();
 
         return $options;
     }

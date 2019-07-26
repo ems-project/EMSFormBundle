@@ -19,10 +19,9 @@ class ChoiceRadios extends AbstractField
     public function getOptions(): array
     {
         $options = parent::getOptions();
-
+        $options['choices'] = $this->config->getChoices()->list();
         $options['expanded'] = true;
         $options['multiple'] = false;
-        $options['choices'] = $this->config->getChoices()->list();
 
         return $options;
     }
