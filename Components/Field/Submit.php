@@ -19,7 +19,7 @@ class Submit extends AbstractField
     public function getOptions(): array
     {
         return [
-            'attr' => array_merge($this->getAttributes(), ['class' => 'btn-primary']),
+            'attr' => $this->getAttributes(),
             'label' => $this->config->getLabel(),
         ];
     }

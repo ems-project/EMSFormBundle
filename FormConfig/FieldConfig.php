@@ -8,6 +8,8 @@ class FieldConfig
     private $id;
     /** @var string */
     private $type;
+    /** @var array */
+    private $class = [];
     /** @var string */
     private $className;
     /** @var ?string */
@@ -30,6 +32,12 @@ class FieldConfig
         $this->id = $id;
         $this->type = $type;
         $this->className = $className;
+        $this->class[] = $id;
+    }
+
+    public function addClass(string $class): void
+    {
+        $this->class[] = $class;
     }
 
     public function addValidation(ValidationConfig $validation)
@@ -40,6 +48,11 @@ class FieldConfig
     public function getChoices(): FieldChoicesConfig
     {
         return $this->choices;
+    }
+
+    public function getClass(): string
+    {
+        return implode(' ', $this->class);
     }
 
     public function getClassName(): string
