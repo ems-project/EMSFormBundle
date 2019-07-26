@@ -21,6 +21,7 @@ class Submit extends AbstractField
         return [
             'attr' => $this->getAttributes(),
             'label' => $this->config->getLabel(),
+            'translation_domain' => false,
         ];
     }
 }

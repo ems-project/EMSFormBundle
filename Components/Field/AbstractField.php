@@ -31,6 +31,7 @@ abstract class AbstractField implements FieldInterface
             'help' => $this->config->getHelp(),
             'label' => $this->config->getLabel(),
             'required' => $this->isRequired(),
+            'translation_domain' => false,
         ];
     }
 
