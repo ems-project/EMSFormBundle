@@ -77,7 +77,7 @@ class Form extends AbstractType
 
     private function createField(FieldConfig $config): FieldInterface
     {
-        $class = $config->getClass();
+        $class = $config->getClassName();
 
         return new $class($config);
     }

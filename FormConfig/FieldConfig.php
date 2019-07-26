@@ -9,7 +9,7 @@ class FieldConfig
     /** @var string */
     private $type;
     /** @var string */
-    private $class;
+    private $className;
     /** @var ?string */
     private $defaultValue;
     /** @var ?string */
@@ -21,15 +21,15 @@ class FieldConfig
     /** @var FieldChoicesConfig */
     private $choices;
 
-    public function __construct(string $id, string $type, string $class)
+    public function __construct(string $id, string $type, string $className)
     {
-        if (!class_exists($class)) {
-            throw new \Exception(sprintf('Error field class "%s" does not exists!', $class));
+        if (!class_exists($className)) {
+            throw new \Exception(sprintf('Error field class "%s" does not exists!', $className));
         }
 
         $this->id = $id;
         $this->type = $type;
-        $this->class = $class;
+        $this->className = $className;
     }
 
     public function addValidation(ValidationConfig $validation)
@@ -42,9 +42,9 @@ class FieldConfig
         return $this->choices;
     }
 
-    public function getClass(): string
+    public function getClassName(): string
     {
-        return $this->class;
+        return $this->className;
     }
 
     public function getDefaultValue(): ?string
