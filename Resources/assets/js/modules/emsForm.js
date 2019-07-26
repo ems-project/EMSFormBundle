@@ -1,4 +1,4 @@
-import {setNissInszValidation} from "../validation/niss";
+import {addValidation} from "../validation";
 
 export const DEFAULT_CONFIG = {
     'iframe': 'ems-form-iframe',
@@ -47,9 +47,7 @@ export class emsForm {
         let form = this.form.querySelector('form');
         form.addEventListener('submit', evt => this.onSubmitForm(evt));
 
-        Array.from(document.getElementsByClassName("niss-insz")).forEach(function(item) {
-            setNissInszValidation(item);
-        });
+        addValidation(form);
     }
     onMessage(e) {
         if (e.origin !== this.origin) {

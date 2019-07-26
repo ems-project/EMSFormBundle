@@ -27,8 +27,13 @@ class DebugController
     public function form(Request $request, $ouuid)
     {
         $locale = $request->query->get('_locale', $request->getLocale());
+        $formOptions = ['ouuid' => $ouuid, 'locale' => $locale];
 
-        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $locale]);
+        if ($request->query->has('novalidate')) {
+            $formOptions['attr'] = ['novalidate' => 'novalidate'];
+        }
+
+        $form = $this->formFactory->create(Form::class, [], $formOptions);
         $form->handleRequest($request);
 
         return new Response($this->twig->render('@EMSForm/debug.html.twig', [

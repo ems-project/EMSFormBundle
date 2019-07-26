@@ -1,4 +1,5 @@
 {% set config = form.vars.form_config %}
+{% set noValidate = app.request.query.has('novalidate') %}
 {% trans_default_domain config.translationDomain %}
 {% form_theme form config.theme|default('bootstrap_4_layout.html.twig') %}
 <!DOCTYPE html>
@@ -11,26 +12,33 @@
 </head>
 <body class="bg-dark">
     <div class="wrapper m-5 bg-light">
-        <div class="bg-secondary px-4 py-2">
+        <div class="bg-secondary px-2 py-2">
             {% set requestQuery = app.request.query.all %}
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="btn-group px-2" role="group" aria-label="Locales">
                 {% for l in locales %}
-                    {% set lQuery = requestQuery|merge({'_locale': l }) %}
-                      <a href="?{{ lQuery|url_encode }}" class="btn btn-sm btn-outline-warning {{ l == config.locale ? "active" }}"><b>{{ l|upper }}</b></a>
+                    <a href="?{{ requestQuery|merge({'_locale': l })|url_encode }}" class="btn btn-sm btn-outline-warning {{ l == config.locale ? "active" }}"><b>{{ l|upper }}</b></a>
                 {% endfor %}
             </div>
+            <div class="btn-group px-2" role="group" aria-label="Validation">
+                <button class="btn btn-sm btn-light" disabled>JS validation</button>
+                <a href="?{{ requestQuery|filter((v, k) => k != 'novalidate')|url_encode }}" class="btn btn-sm {{ noValidate == false ? 'btn-success' : 'btn-outline-success' }}"><b>ON</b></a>
+                <a href="?{{ requestQuery|merge({'novalidate': '1' })|url_encode }}" class="btn btn-sm {{ noValidate == false ? 'btn-outline-danger' : 'btn-danger' }}"><b>OFF</b></a>
+            </div>
         </div>
-
         <div id="wrapper-form" class="px-4 pt-4">
             {{ form(form) }}
         </div>
-
-
-
-
-
         {{ dump(config) }}
     </div>
+    {% if noValidate == false %}
+        <script type="application/javascript" src="{{ asset('bundles/emsform/js/validation.js') }}"></script>
+        <script type="application/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                let form = document.getElementById("{{ form.vars.id }}");
+                formValidation(form);
+            });
+        </script>
+    {% endif %}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
