@@ -3,7 +3,7 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
-use EMS\SubmissionBundle\FormConfig\SubmitResponse;
+use EMS\SubmissionBundle\Submission\SubmitResponse;
 use EMS\SubmissionBundle\Service\SubmissionClient;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
