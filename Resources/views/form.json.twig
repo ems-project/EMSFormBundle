@@ -1,6 +1,6 @@
 {% set config = form.vars.form_config %}
 {% trans_default_domain config.translationDomain %}
-{% form_theme form config.theme|default('bootstrap_4_layout.html.twig') %}
+{% form_theme form with config.themes %}
 {% spaceless %}
 {
     "instruction": "{{ instruction|default('form') }}",

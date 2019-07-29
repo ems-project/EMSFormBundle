@@ -2,7 +2,7 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-class FieldConfig
+class FieldConfig implements ElementInterface
 {
     /** @var string */
     private $id;
@@ -35,7 +35,7 @@ class FieldConfig
         $this->name = $name;
         $this->type = $type;
         $this->className = $className;
-        $this->class[] = $id;
+        $this->class[] = $name;
     }
 
     public function addClass(string $class): void

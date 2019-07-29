@@ -1,7 +1,7 @@
 {% set config = form.vars.form_config %}
 {% set noValidate = app.request.query.has('novalidate') %}
 {% trans_default_domain config.translationDomain %}
-{% form_theme form config.theme|default('bootstrap_4_layout.html.twig') %}
+{% form_theme form with config.themes %}
 <!DOCTYPE html>
 <html lang="en">
 <head>

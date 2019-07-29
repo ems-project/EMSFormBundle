@@ -3,11 +3,12 @@
 namespace EMS\FormBundle\Components;
 
 use EMS\FormBundle\Components\Field\FieldInterface;
+use EMS\FormBundle\Components\Form\MarkupType;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
+use EMS\FormBundle\FormConfig\MarkupConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -28,9 +29,13 @@ class Form extends AbstractType
     {
         $config = $this->getConfig($options);
 
-        foreach ($config->getFields() as $fieldConfig) {
-            $field = $this->createField($fieldConfig);
-            $builder->add($fieldConfig->getName(), $field->getFieldClass(), $field->getOptions());
+        foreach ($config->getElements() as $element) {
+            if ($element instanceof FieldConfig) {
+                $field = $this->createField($element);
+                $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
+            } elseif ($element instanceof MarkupConfig) {
+                $builder->add($element->getName(), $element->getClassName(), ['data' => $element->getMarkup()]);
+            }
         }
     }
 

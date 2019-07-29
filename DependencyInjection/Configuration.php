@@ -23,6 +23,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('type')->defaultValue('form_instance')->end()
+                        ->scalarNode('type-form-field')->defaultValue('form_structure_field')->end()
+                        ->scalarNode('type-form-markup')->defaultValue('form_structure_markup')->end()
                         ->scalarNode('form-field')->defaultValue('form')->end()
                         ->scalarNode('theme-field')->defaultValue('theme_template')->end()
                     ->end()

@@ -12,16 +12,18 @@ class FormConfig
     private $translationDomain;
     /** @var array */
     private $domains = [];
-    /** @var FieldConfig[] */
-    private $fields = [];
-    /** @var ?string */
-    private $theme;
+    /** @var ElementInterface[] */
+    private $elements = [];
+    /** @var array */
+    private $themes = [];
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
         $this->id = $id;
         $this->locale = $locale;
         $this->translationDomain = $translationDomain;
+
+        $this->themes[] = '@EMSForm/form_theme.html.twig';
     }
 
     public function addDomain(string $domain): void
@@ -29,9 +31,14 @@ class FormConfig
         $this->domains[] = $domain;
     }
 
-    public function addField(FieldConfig $field): void
+    public function addElement(ElementInterface $element): void
     {
-        $this->fields[$field->getName()] = $field;
+        $this->elements[$element->getName()] = $element;
+    }
+
+    public function addTheme(string $theme): void
+    {
+        array_unshift($this->themes, $theme);
     }
 
     public function getDomains(): array
@@ -40,11 +47,11 @@ class FormConfig
     }
 
     /**
-     * @return FieldConfig[]
+     * @return ElementInterface[]
      */
-    public function getFields(): array
+    public function getElements(): array
     {
-        return $this->fields;
+        return $this->elements;
     }
 
     public function getLocale(): string
@@ -57,18 +64,13 @@ class FormConfig
         return $this->id;
     }
 
-    public function getTheme(): ?string
+    public function getThemes(): array
     {
-        return $this->theme;
+        return $this->themes;
     }
 
     public function getTranslationDomain(): string
     {
         return $this->translationDomain;
-    }
-
-    public function setTheme(string $theme): void
-    {
-        $this->theme = $theme;
     }
 }
