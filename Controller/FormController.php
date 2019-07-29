@@ -3,6 +3,7 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
+use EMS\SubmissionBundle\Submission\SubmitResponse;
 use EMS\SubmissionBundle\Service\SubmissionClient;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,9 +42,11 @@ class FormController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var SubmitResponse $response */
+            $response = $this->submissionClient->submit($form);
             return new JsonResponse([
                 'instruction' => 'submitted',
-                'response' => $this->submissionClient->submit($ouuid, $request->getLocale(), $form->getData()),
+                'response' => \json_encode($response->getResponses()),
             ]);
         }
 
@@ -57,6 +60,12 @@ class FormController
         $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
         $form->handleRequest($request);
 
-        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView()]));
+        $response = null;
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var SubmitResponse $response */
+            $response = \json_encode(($this->submissionClient->submit($form))->getResponses());
+        }
+
+        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView(), 'response' => $response]));
     }
 }
