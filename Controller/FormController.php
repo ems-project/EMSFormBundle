@@ -63,9 +63,9 @@ class FormController
         $response = null;
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var SubmitResponse $response */
-            $response = $this->submissionClient->submit($form);
+            $response = \json_encode(($this->submissionClient->submit($form))->getResponses());
         }
 
-        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView(), 'response' => \json_encode($response->getResponses())]));
+        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView(), 'response' => $response]));
     }
 }

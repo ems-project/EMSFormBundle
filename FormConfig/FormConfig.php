@@ -85,4 +85,9 @@ class FormConfig
     {
         $this->theme = $theme;
     }
+
+    public function setSubmissions(array $submissions): void
+    {
+        $this->submissions = $submissions;
+    }
 }

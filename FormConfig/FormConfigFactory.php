@@ -35,7 +35,7 @@ class FormConfigFactory
             $this->addDomain($formConfig, $source['domain']);
         }
         if (isset($source[$this->emsFields['submission-field']])) {
-            $this->addSubmissions($formConfig, $source[$this->emsFields['submission-field']]);
+            $formConfig->setSubmissions($source[$this->emsFields['submission-field']]);
         }
 
         if (isset($source[$this->emsFields['form-field']])) {
