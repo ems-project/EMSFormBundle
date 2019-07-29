@@ -37,7 +37,13 @@ abstract class AbstractField implements FieldInterface
 
     private function isRequired(): bool
     {
-        return array_key_exists('required', $this->validations);
+        foreach ($this->validations as $validation) {
+            if ($validation->getId() === 'required') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function createValidation(ValidationConfig $config): ValidationInterface

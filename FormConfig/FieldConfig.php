@@ -7,6 +7,8 @@ class FieldConfig
     /** @var string */
     private $id;
     /** @var string */
+    private $name;
+    /** @var string */
     private $type;
     /** @var array */
     private $class = [];
@@ -20,16 +22,17 @@ class FieldConfig
     private $help;
     /** @var ValidationConfig[] */
     private $validations = [];
-    /** @var FieldChoicesConfig */
+    /** @var ?FieldChoicesConfig */
     private $choices;
 
-    public function __construct(string $id, string $type, string $className)
+    public function __construct(string $id, string $name, string $type, string $className)
     {
         if (!class_exists($className)) {
             throw new \Exception(sprintf('Error field class "%s" does not exists!', $className));
         }
 
         $this->id = $id;
+        $this->name = $name;
         $this->type = $type;
         $this->className = $className;
         $this->class[] = $id;
@@ -42,12 +45,12 @@ class FieldConfig
 
     public function addValidation(ValidationConfig $validation)
     {
-        $this->validations[$validation->getId()] = $validation;
+        $this->validations[$validation->getName()] = $validation;
     }
 
-    public function getChoices(): FieldChoicesConfig
+    public function getChoices(): array
     {
-        return $this->choices;
+        return $this->choices ? $this->choices->list() : [];
     }
 
     public function getClass(): string
@@ -75,9 +78,9 @@ class FieldConfig
         return $this->label;
     }
 
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**

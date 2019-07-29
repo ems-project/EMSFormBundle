@@ -31,7 +31,7 @@ class FormConfig
 
     public function addField(FieldConfig $field): void
     {
-        $this->fields[$field->getId()] = $field;
+        $this->fields[$field->getName()] = $field;
     }
 
     public function getDomains(): array

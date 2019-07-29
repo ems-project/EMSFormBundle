@@ -30,7 +30,7 @@ class Form extends AbstractType
 
         foreach ($config->getFields() as $fieldConfig) {
             $field = $this->createField($fieldConfig);
-            $builder->add($fieldConfig->getId(), $field->getFieldClass(), $field->getOptions());
+            $builder->add($fieldConfig->getName(), $field->getFieldClass(), $field->getOptions());
         }
     }
 

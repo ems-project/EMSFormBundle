@@ -24,7 +24,7 @@ class DebugController
         $this->locales = $locales;
     }
 
-    public function form(Request $request, $ouuid)
+    public function form(Request $request, string $ouuid)
     {
         $locale = $request->query->get('_locale', $request->getLocale());
         $formOptions = ['ouuid' => $ouuid, 'locale' => $locale];
