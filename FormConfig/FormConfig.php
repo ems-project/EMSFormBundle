@@ -2,6 +2,8 @@
 
 namespace EMS\FormBundle\FormConfig;
 
+use EMS\SubmissionBundle\FormConfig\SubmissionConfig;
+
 class FormConfig
 {
     /** @var string */
@@ -16,6 +18,8 @@ class FormConfig
     private $elements = [];
     /** @var array */
     private $themes = [];
+    /** @var array */
+    private $submissions;
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
@@ -41,6 +45,11 @@ class FormConfig
         array_unshift($this->themes, $theme);
     }
 
+    public function addSubmission(SubmissionConfig $submission): void
+    {
+        $this->submissions[] = $submission;
+    }
+
     public function getDomains(): array
     {
         return $this->domains;
@@ -52,6 +61,11 @@ class FormConfig
     public function getElements(): array
     {
         return $this->elements;
+    }
+
+    public function getSubmissions(): array
+    {
+        return $this->submissions;
     }
 
     public function getLocale(): string
@@ -72,5 +86,10 @@ class FormConfig
     public function getTranslationDomain(): string
     {
         return $this->translationDomain;
+    }
+
+    public function setSubmissions(array $submissions): void
+    {
+        $this->submissions = $submissions;
     }
 }

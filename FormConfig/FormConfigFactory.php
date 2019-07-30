@@ -9,6 +9,7 @@ use EMS\CommonBundle\Common\EMSLink;
 use EMS\FormBundle\Components\Field\Markup;
 use EMS\FormBundle\Components\Form;
 use Psr\Log\LoggerInterface;
+use EMS\SubmissionBundle\FormConfig\SubmissionConfig;
 
 class FormConfigFactory
 {
@@ -36,6 +37,9 @@ class FormConfigFactory
         }
         if (isset($source['domain'])) {
             $this->addDomain($formConfig, $source['domain']);
+        }
+        if (isset($source[$this->emsConfig['submission-field']])) {
+            $formConfig->setSubmissions($source[$this->emsConfig['submission-field']]);
         }
 
         if (isset($source[$this->emsConfig['form-field']])) {
@@ -187,5 +191,13 @@ class FormConfigFactory
 
             return null;
         }, $emsLinks));
+    }
+
+    private function addSubmissions(FormConfig $formConfig, array $emsLinkSubmissions): void
+    {
+        foreach ($emsLinkSubmissions as $emsLinkSubmission) {
+            $submission = $this->client->getByEmsKey($emsLinkSubmission, [])['_source'];
+            $formConfig->addSubmission(new SubmissionConfig($submission['type'], $submission['endpoint'], $submission['message']));
+        }
     }
 }

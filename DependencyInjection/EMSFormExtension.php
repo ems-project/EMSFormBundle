@@ -26,6 +26,7 @@ class EMSFormExtension extends Extension
             'type-form-markup' => $config['instance']['type-form-markup'],
             'form-field' => $config['instance']['form-field'],
             'theme-field' => $config['instance']['theme-field'],
+            'submission-field' => $config['instance']['submission-field'],
         ]);
     }
 }
