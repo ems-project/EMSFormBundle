@@ -54,7 +54,9 @@ abstract class AbstractField implements FieldInterface
 
     protected function getAttributes(): array
     {
-        return array_merge($this->getValidationHtml5Attribute(), ['class' => $this->config->getClass()]);
+        return array_merge($this->getValidationHtml5Attribute(), [
+            'class' => \implode(' ', [$this->getId(), $this->config->getClass()])
+        ]);
     }
 
     private function getValidationConstraints(): array
