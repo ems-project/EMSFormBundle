@@ -40,9 +40,9 @@ export class emsForm {
         }
 
         let parser = new DOMParser;
-        let dom = parser.parseFromString('<!doctype html><body>' + response.trim(), 'text/html');
+        let dom = parser.parseFromString('<!doctype html><body>' + response, 'text/html');
 
-        this.form.innerHTML = dom.body.textContent;
+        this.form.innerHTML = dom.body.innerHTML;
 
         let form = this.form.querySelector('form');
         form.addEventListener('submit', evt => this.onSubmitForm(evt));
