@@ -3,13 +3,14 @@
 namespace EMS\FormBundle\Components;
 
 use EMS\FormBundle\Components\Field\FieldInterface;
-use EMS\FormBundle\Components\Form\MarkupType;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
 use EMS\FormBundle\FormConfig\MarkupConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -28,15 +29,23 @@ class Form extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->getConfig($options);
+        $removeSubmit = [];
 
         foreach ($config->getElements() as $element) {
             if ($element instanceof FieldConfig) {
                 $field = $this->createField($element);
                 $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
             } elseif ($element instanceof MarkupConfig) {
-                $builder->add($element->getName(), $element->getClassName(), ['data' => $element->getMarkup()]);
+                $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
+                $removeSubmit[] = $element->getName();
             }
         }
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($removeSubmit) {
+            foreach ($removeSubmit as $name) {
+                $event->getForm()->remove($name);
+            }
+        });
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
