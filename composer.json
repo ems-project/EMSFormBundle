@@ -15,7 +15,7 @@
 	"require" : {
 		"php" : ">=7.1",
 		"elasticms/client-helper-bundle" : "^3.0",
-		"elasticms/submission-bundle" : "~0.0.1",
+		"elasticms/submission-bundle" : "dev-master",
 		"twig/twig" : "^2.4",
 		"symfony/form": "^4.1",
 		"symfony/routing": "^4.1",
