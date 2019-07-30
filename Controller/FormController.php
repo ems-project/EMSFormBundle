@@ -47,8 +47,9 @@ class FormController
             ]);
         }
 
-        $render = $this->twig->render('@EMSForm/form.json.twig', ['form' => $form->createView()]);
-
-        return new JsonResponse(json_decode($render));
+        return new JsonResponse([
+            'instruction' => 'form',
+            'response' => $this->twig->render('@EMSForm/form.html.twig', ['form' => $form->createView()]),
+        ]);
     }
 }
