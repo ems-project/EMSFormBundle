@@ -31,23 +31,32 @@ abstract class AbstractField implements FieldInterface
             'help' => $this->config->getHelp(),
             'label' => $this->config->getLabel(),
             'required' => $this->isRequired(),
+            'translation_domain' => false,
         ];
     }
 
     private function isRequired(): bool
     {
-        return array_key_exists('required', $this->validations);
+        foreach ($this->validations as $validation) {
+            if ($validation->getId() === 'required') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function createValidation(ValidationConfig $config): ValidationInterface
     {
-        $class = $config->getClass();
+        $class = $config->getClassName();
         return new $class($config);
     }
 
-    private function getAttributes(): array
+    protected function getAttributes(): array
     {
-        return array_merge($this->getValidationHtml5Attribute(), ['class' => $this->getId()]);
+        return array_merge($this->getValidationHtml5Attribute(), [
+            'class' => \implode(' ', [$this->getId(), $this->config->getClass()])
+        ]);
     }
 
     private function getValidationConstraints(): array

@@ -54,18 +54,4 @@ class FormController
 
         return new JsonResponse(json_decode($render));
     }
-
-    public function debugForm(Request $request, $ouuid)
-    {
-        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
-        $form->handleRequest($request);
-
-        $response = null;
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var SubmitResponse $response */
-            $response = \json_encode(($this->submissionClient->submit($form))->getResponses());
-        }
-
-        return new Response($this->twig->render('@EMSForm/debug.html.twig', ['form' => $form->createView(), 'response' => $response]));
-    }
 }

@@ -7,25 +7,27 @@ use EMS\SubmissionBundle\FormConfig\SubmissionConfig;
 class FormConfig
 {
     /** @var string */
-    private $name;
+    private $id;
     /** @var string */
     private $locale;
     /** @var string */
     private $translationDomain;
     /** @var array */
     private $domains = [];
-    /** @var FieldConfig[] */
-    private $fields = [];
-    /** @var ?string */
-    private $theme;
+    /** @var ElementInterface[] */
+    private $elements = [];
+    /** @var array */
+    private $themes = [];
     /** @var array */
     private $submissions;
 
-    public function __construct(string $name, string $locale, string $translationDomain)
+    public function __construct(string $id, string $locale, string $translationDomain)
     {
-        $this->name = $name;
+        $this->id = $id;
         $this->locale = $locale;
         $this->translationDomain = $translationDomain;
+
+        $this->themes[] = '@EMSForm/form_theme.html.twig';
     }
 
     public function addDomain(string $domain): void
@@ -33,9 +35,14 @@ class FormConfig
         $this->domains[] = $domain;
     }
 
-    public function addField(FieldConfig $field): void
+    public function addElement(ElementInterface $element): void
     {
-        $this->fields[$field->getName()] = $field;
+        $this->elements[$element->getName()] = $element;
+    }
+
+    public function addTheme(string $theme): void
+    {
+        array_unshift($this->themes, $theme);
     }
 
     public function addSubmission(SubmissionConfig $submission): void
@@ -49,11 +56,11 @@ class FormConfig
     }
 
     /**
-     * @return FieldConfig[]
+     * @return ElementInterface[]
      */
-    public function getFields(): array
+    public function getElements(): array
     {
-        return $this->fields;
+        return $this->elements;
     }
 
     public function getSubmissions(): array
@@ -66,24 +73,19 @@ class FormConfig
         return $this->locale;
     }
 
-    public function getName(): string
+    public function getId(): string
     {
-        return $this->name;
+        return $this->id;
     }
 
-    public function getTheme(): ?string
+    public function getThemes(): array
     {
-        return $this->theme;
+        return $this->themes;
     }
 
     public function getTranslationDomain(): string
     {
         return $this->translationDomain;
-    }
-
-    public function setTheme(string $theme): void
-    {
-        $this->theme = $theme;
     }
 
     public function setSubmissions(array $submissions): void

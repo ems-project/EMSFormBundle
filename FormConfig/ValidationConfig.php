@@ -7,32 +7,35 @@ class ValidationConfig
     /** @var string */
     private $id;
     /** @var string */
-    private $class;
+    private $name;
+    /** @var string */
+    private $className;
     /** @var mixed */
     private $defaultValue;
     /** @var mixed */
     private $value;
 
-    public function __construct(string $id, string $class, $defaultValue = null, $value = null)
+    public function __construct(string $id, string $name, string $className, $defaultValue = null, $value = null)
     {
-        if (!class_exists($class)) {
-            throw new \Exception(sprintf('Error validation class "%s" does not exists!', $class));
+        if (!class_exists($className)) {
+            throw new \Exception(sprintf('Error validation class "%s" does not exists!', $className));
         }
 
         $this->id = $id;
-        $this->class = $class;
+        $this->name = $name;
+        $this->className = $className;
         $this->defaultValue = $defaultValue;
         $this->value = $value;
     }
 
-    public function getClass(): string
+    public function getClassName(): string
     {
-        return $this->class;
+        return $this->className;
     }
 
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     public function getValue()
