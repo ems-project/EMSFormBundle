@@ -2,8 +2,5 @@
 {% trans_default_domain config.translationDomain %}
 {% form_theme form with config.themes %}
 {% spaceless %}
-{
-    "instruction": "{{ instruction|default('form') }}",
-    "response": "{{ form(form)|replace({"\n":''})|escape('html') }}"
-}
+{{ form(form) }}
 {% endspaceless %}
