@@ -5,7 +5,8 @@ module.exports = {
     mode: 'production',
     entry: {
         'form': './Resources/assets/js/form.js',
-        'backend': './Resources/assets/js/backend.js'
+        'backend': './Resources/assets/js/backend.js',
+        'validation': './Resources/assets/js/validation.js'
     },
     plugins: [
         new CleanWebpackPlugin(),

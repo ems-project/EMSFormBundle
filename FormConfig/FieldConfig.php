@@ -2,14 +2,18 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-class FieldConfig
+class FieldConfig implements ElementInterface
 {
+    /** @var string */
+    private $id;
     /** @var string */
     private $name;
     /** @var string */
     private $type;
+    /** @var array */
+    private $class = [];
     /** @var string */
-    private $class;
+    private $className;
     /** @var ?string */
     private $defaultValue;
     /** @var ?string */
@@ -18,33 +22,45 @@ class FieldConfig
     private $help;
     /** @var ValidationConfig[] */
     private $validations = [];
-    /** @var FieldChoicesConfig */
+    /** @var ?FieldChoicesConfig */
     private $choices;
 
-    public function __construct(string $name, string $type, string $class)
+    public function __construct(string $id, string $name, string $type, string $className)
     {
-        if (!class_exists($class)) {
-            throw new \Exception(sprintf('Error field class "%s" does not exists!', $class));
+        if (!class_exists($className)) {
+            throw new \Exception(sprintf('Error field class "%s" does not exists!', $className));
         }
 
+        $this->id = $id;
         $this->name = $name;
         $this->type = $type;
-        $this->class = $class;
+        $this->className = $className;
+        $this->class[] = $name;
+    }
+
+    public function addClass(string $class): void
+    {
+        $this->class[] = $class;
     }
 
     public function addValidation(ValidationConfig $validation)
     {
-        $this->validations[$validation->getId()] = $validation;
+        $this->validations[$validation->getName()] = $validation;
     }
 
-    public function getChoices(): FieldChoicesConfig
+    public function getChoices(): array
     {
-        return $this->choices;
+        return $this->choices ? $this->choices->list() : [];
     }
 
     public function getClass(): string
     {
-        return $this->class;
+        return implode(' ', $this->class);
+    }
+
+    public function getClassName(): string
+    {
+        return $this->className;
     }
 
     public function getDefaultValue(): ?string

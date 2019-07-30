@@ -4,7 +4,7 @@ namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class Radio extends AbstractField
+class ChoiceRadios extends AbstractField
 {
     public function getFieldClass(): string
     {
@@ -13,16 +13,15 @@ class Radio extends AbstractField
 
     public function getId(): string
     {
-        return 'text';
+        return 'choice_radios';
     }
 
     public function getOptions(): array
     {
         $options = parent::getOptions();
-
+        $options['choices'] = $this->config->getChoices();
         $options['expanded'] = true;
         $options['multiple'] = false;
-        $options['choices'] = $this->config->getChoices()->list();
 
         return $options;
     }

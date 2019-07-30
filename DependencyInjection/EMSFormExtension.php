@@ -20,8 +20,10 @@ class EMSFormExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('emsf.ems_fields', [
+        $container->setParameter('emsf.ems_config', [
             'type' => $config['instance']['type'],
+            'type-form-field' => $config['instance']['type-form-field'],
+            'type-form-markup' => $config['instance']['type-form-markup'],
             'form-field' => $config['instance']['form-field'],
             'theme-field' => $config['instance']['theme-field'],
         ]);

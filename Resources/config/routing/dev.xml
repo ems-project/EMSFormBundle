@@ -5,6 +5,6 @@
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
         <route id="_ems_debug_form" path="/debug/{ouuid}" methods="GET|POST">
-            <default key="_controller">emsf.controller.form::debugForm</default>
+            <default key="_controller">emsf.controller.debug::form</default>
         </route>
 </routes>
