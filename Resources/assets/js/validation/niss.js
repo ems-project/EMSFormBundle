@@ -1,9 +1,11 @@
+import {i18n} from "../modules/translations";
+
 export function setNissInszValidation(element) {
     element.addEventListener('change', function() {
         if(validateNissInsz(this.value)) {
             this.setCustomValidity('');
         } else {
-            this.setCustomValidity('NISS-INSZ format error');
+            this.setCustomValidity(i18n.trans('niss_insz', {string: this.value}));
         }
     });
 

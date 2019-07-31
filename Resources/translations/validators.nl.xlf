@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="nl" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="niss_insz">
+                <source>The social security number "{{string}}" has an invalid format.</source>
+                <target>Het rijksregisternummer "{{string}}" is ongeldig.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
