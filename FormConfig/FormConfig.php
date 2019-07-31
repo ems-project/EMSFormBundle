@@ -19,7 +19,7 @@ class FormConfig
     /** @var array */
     private $themes = [];
     /** @var array */
-    private $submissions;
+    private $submissions = [];
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
