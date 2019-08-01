@@ -46,11 +46,6 @@
 			"EMS\\FormBundle\\Tests\\" : "tests/"
 		}
 	},
-	"extra" : {
-		"branch-alias" : {
-			"dev-master" : "0.1-dev"
-		}
-	},
 	"scripts": {
 		"phpcs": "phpcs --standard=phpcs.xml.dist --extensions=php,lib,inc",
 		"phpcbf": "phpcbf --standard=phpcs.xml.dist --extensions=php,lib,inc",
