@@ -22,6 +22,7 @@ class ChoiceRadios extends AbstractField
         $options['choices'] = $this->config->getChoices();
         $options['expanded'] = true;
         $options['multiple'] = false;
+        $options['placeholder'] = false;
 
         return $options;
     }
