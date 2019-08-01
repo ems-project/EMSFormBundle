@@ -4,8 +4,12 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-        <route id="_ems_debug_form" path="/debug/{ouuid}/{_locale}" methods="GET|POST">
+        <route id="_emsf_debug_form" path="/debug/form/{ouuid}/{_locale}" methods="GET|POST">
             <default key="_controller">emsf.controller.debug::form</default>
+            <default key="_locale">%locale%</default>
+        </route>
+        <route id="_emsf_debug_iframe" path="/debug/iframe/{ouuid}/{_locale}" methods="GET">
+            <default key="_controller">emsf.controller.debug::iframe</default>
             <default key="_locale">%locale%</default>
         </route>
 </routes>

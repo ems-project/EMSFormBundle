@@ -46,10 +46,19 @@ class DebugController
             $response = \json_encode(($this->submissionClient->submit($form))->getResponses());
         }
 
-        return new Response($this->twig->render('@EMSForm/debug.html.twig', [
+        return new Response($this->twig->render('@EMSForm/debug/form.html.twig', [
             'form' => $form->createView(),
             'locales' => $this->locales,
             'response' => $response,
+        ]));
+    }
+
+    public function iframe(Request $request, string $ouuid)
+    {
+        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
+
+        return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
+            'config' => $form->getConfig()->getOption('config'),
         ]));
     }
 }

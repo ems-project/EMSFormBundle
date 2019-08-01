@@ -1,0 +1,17 @@
+{% extends '@EMSForm/debug/base.html.twig' %}
+
+{% block title %}Debug iFrame{% endblock %}
+
+{% block content %}
+    <div id="ems-form"></div>
+{% endblock %}
+
+{% block footer %}
+    <iframe id="ems-form-iframe" style="width: 100%;" src="{{ url('ems_iframe', {'ouuid': config.id }) }}"></iframe>
+    {{ dump(config) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/emsform/js/form.js') }}"></script>
+    {{ parent() }}
+{% endblock %}

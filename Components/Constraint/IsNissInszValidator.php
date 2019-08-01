@@ -35,7 +35,7 @@ class IsNissInszValidator extends ConstraintValidator
 
         if (!$this->isNissInsz($value)) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ string }}', $value)
+                ->setParameter('{{string}}', $value)
                 ->addViolation();
         }
     }
