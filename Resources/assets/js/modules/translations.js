@@ -9,17 +9,20 @@ class Translator
             resources: {
                 en: {
                     translation: {
-                        "niss_insz": "The social security number \"{{string}}\" has an invalid format."
+                        "niss_insz": "The social security number \"{{string}}\" has an invalid format.",
+                        "max_length_count": "Remaining characters: {{count}}"
                     }
                 },
                 "fr": {
                     translation: {
-                        "niss_insz": "Le numéro de registre national \"{{string}}\" est invalide."
+                        "niss_insz": "Le numéro de registre national \"{{string}}\" est invalide.",
+                        "max_length_count": "Caractères restants: {{count}}"
                     }
                 },
                 "nl": {
                     translation: {
-                        "niss_insz": "Het rijksregisternummer \"{{string}}\" is ongeldig."
+                        "niss_insz": "Het rijksregisternummer \"{{string}}\" is ongeldig.",
+                        "max_length_count": "Resterende tekens: {{count}}"
                     }
                 }
             }
