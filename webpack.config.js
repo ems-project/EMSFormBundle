@@ -9,7 +9,9 @@ module.exports = {
         'validation': './Resources/assets/js/validation.js'
     },
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: ['js/*', '!static/*'],
+        }),
     ],
     output: {
         filename: 'js/[name].js',
