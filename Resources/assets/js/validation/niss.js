@@ -15,7 +15,12 @@ export function setNissInszValidation(element) {
         if (numbers === null) {
             return false;
         }
+
         let niss = numbers.map(String).join('');
+        if (niss.length !== 11) {
+            return false;
+        }
+        
         let m;
         let valid;
         while ((m = regex.exec(niss)) !== null) {
