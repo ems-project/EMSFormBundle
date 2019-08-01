@@ -31,8 +31,7 @@ class DebugController
 
     public function form(Request $request, string $ouuid)
     {
-        $locale = $request->query->get('_locale', $request->getLocale());
-        $formOptions = ['ouuid' => $ouuid, 'locale' => $locale];
+        $formOptions = ['ouuid' => $ouuid, 'locale' => $request->getLocale()];
 
         if ($request->query->has('novalidate')) {
             $formOptions['attr'] = ['novalidate' => 'novalidate'];

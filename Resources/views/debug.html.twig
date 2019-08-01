@@ -1,9 +1,10 @@
 {% set config = form.vars.form_config %}
+{% set locale = app.request.locale %}
 {% set noValidate = app.request.query.has('novalidate') %}
 {% trans_default_domain config.translationDomain %}
 {% form_theme form with config.themes %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ locale }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,7 +17,7 @@
             {% set requestQuery = app.request.query.all %}
             <div class="btn-group px-2" role="group" aria-label="Locales">
                 {% for l in locales %}
-                    <a href="?{{ requestQuery|merge({'_locale': l })|url_encode }}" class="btn btn-sm btn-outline-warning {{ l == config.locale ? "active" }}"><b>{{ l|upper }}</b></a>
+                    <a href="{{ path('_ems_debug_form', {'_locale': l, 'ouuid': config.id }) }}?{{ requestQuery|url_encode }}" class="btn btn-sm btn-outline-warning {{ l == locale ? "active" }}"><b>{{ l|upper }}</b></a>
                 {% endfor %}
             </div>
             <div class="btn-group px-2" role="group" aria-label="Validation">
