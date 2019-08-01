@@ -1,0 +1,42 @@
+{% extends '@EMSForm/debug/base.html.twig' %}
+
+{% set config = form.vars.form_config %}
+{% set noValidate = app.request.query.has('novalidate') %}
+{% trans_default_domain config.translationDomain %}
+{% form_theme form with config.themes %}
+
+{% block title %}Debug form{% endblock %}
+
+{% block actions %}
+    {% set requestQuery = app.request.query.all %}
+    <div class="btn-group px-2" role="group" aria-label="Locales">
+        {% for l in locales %}
+            <a href="{{ path(app.request.get('_route'), {'_locale': l, 'ouuid': config.id }) }}?{{ requestQuery|url_encode }}" class="btn btn-sm btn-outline-warning {{ l == locale ? "active" }}"><b>{{ l|upper }}</b></a>
+        {% endfor %}
+    </div>
+    <div class="btn-group px-2" role="group" aria-label="Validation">
+        <button class="btn btn-sm btn-light" disabled>JS validation</button>
+        <a href="?{{ requestQuery|filter((v, k) => k != 'novalidate')|url_encode }}" class="btn btn-sm {{ noValidate == false ? 'btn-success' : 'btn-outline-success' }}"><b>ON</b></a>
+        <a href="?{{ requestQuery|merge({'novalidate': '1' })|url_encode }}" class="btn btn-sm {{ noValidate == false ? 'btn-outline-danger' : 'btn-danger' }}"><b>OFF</b></a>
+    </div>
+{% endblock %}
+
+{% block content %}{{ form(form) }}{% endblock %}
+
+{% block footer %}
+    {{ dump(config) }}
+    {{ dump(response) }}
+{% endblock %}
+
+{% block javascripts %}
+    {% if noValidate == false %}
+        <script type="application/javascript" src="{{ asset('bundles/emsform/js/validation.js') }}"></script>
+        <script type="application/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                let form = document.getElementById("{{ form.vars.id }}");
+                formValidation(form);
+            });
+        </script>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
