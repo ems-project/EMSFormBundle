@@ -43,11 +43,6 @@ class FormConfig
         array_unshift($this->themes, $theme);
     }
 
-    public function addSubmission(SubmissionConfig $submission): void
-    {
-        $this->submissions[] = $submission;
-    }
-
     public function getDomains(): array
     {
         return $this->domains;

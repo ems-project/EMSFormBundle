@@ -55,11 +55,14 @@ class Client
     private function loadSubmissions(FormConfig $config): void
     {
         $emsLinkSubmissions = $config->getSubmissions();
-        $config->setSubmissions([]);
+
+        $submissions = [];
 
         foreach ($emsLinkSubmissions as $emsLinkSubmission) {
             $submission = $this->clientRequest->getByEmsKey($emsLinkSubmission, [])['_source'];
-            $config->addSubmission(new SubmissionConfig($submission['type'], $submission['endpoint'], $submission['message']));
+            $submissions[] = new SubmissionConfig($submission['type'], $submission['endpoint'], $submission['message']);
         }
+
+        $config->setSubmissions($submissions);
     }
 }
