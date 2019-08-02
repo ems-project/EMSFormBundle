@@ -3,8 +3,7 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
-use EMS\SubmissionBundle\Submission\SubmitResponse;
-use EMS\SubmissionBundle\Service\SubmissionClient;
+use EMS\FormBundle\Submit\Client;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +14,15 @@ class FormController
 {
     /** @var FormFactory */
     private $formFactory;
-    /** @var SubmissionClient */
-    private $submissionClient;
+    /** @var Client */
+    private $client;
     /** @var Environment */
     private $twig;
 
-    public function __construct(FormFactory $formFactory, SubmissionClient $submissionClient, Environment $twig)
+    public function __construct(FormFactory $formFactory, Client $client, Environment $twig)
     {
         $this->formFactory = $formFactory;
-        $this->submissionClient = $submissionClient;
+        $this->client = $client;
         $this->twig = $twig;
     }
 
@@ -42,12 +41,7 @@ class FormController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var SubmitResponse $response */
-            $response = $this->submissionClient->submit($form);
-            return new JsonResponse([
-                'instruction' => 'submitted',
-                'response' => \json_encode($response->getResponses()),
-            ]);
+            return new JsonResponse($this->client->submit($form));
         }
 
         return new JsonResponse([

@@ -2,8 +2,6 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-use EMS\SubmissionBundle\FormConfig\SubmissionConfig;
-
 class FormConfig
 {
     /** @var string */
@@ -43,11 +41,6 @@ class FormConfig
     public function addTheme(string $theme): void
     {
         array_unshift($this->themes, $theme);
-    }
-
-    public function addSubmission(SubmissionConfig $submission): void
-    {
-        $this->submissions[] = $submission;
     }
 
     public function getDomains(): array
