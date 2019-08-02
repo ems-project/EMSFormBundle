@@ -2,8 +2,6 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-use EMS\SubmissionBundle\FormConfig\SubmissionConfig;
-
 class FormConfig
 {
     /** @var string */
