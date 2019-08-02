@@ -1,33 +1,34 @@
 import {addValidation} from "../validation";
+import {generate} from 'hashcash-token';
 
 export const DEFAULT_CONFIG = {
-    'iframe': 'ems-form-iframe',
-    'form': 'ems-form'
+    idIframe: 'ems-form-iframe',
+    idForm: 'ems-form'
 };
 
 export function defaultCheck()
 {
-    let iframe = document.getElementById(DEFAULT_CONFIG.iframe);
-    let form = document.getElementById(DEFAULT_CONFIG.form);
+    let elementIframe = document.getElementById(DEFAULT_CONFIG.idIframe);
+    let elementForm = document.getElementById(DEFAULT_CONFIG.idForm);
 
-    return null !== iframe && null !== form;
+    return null !== elementIframe && null !== elementForm;
 }
 
 export class emsForm {
     constructor(options) {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
-        this.iframe = document.getElementById(config.iframe);
-        this.form = document.getElementById(config.form);
+        this.elementIframe = document.getElementById(config.idIframe);
+        this.elementForm = document.getElementById(config.idForm);
 
-        if (this.iframe !== null) {
-            const url = new URL(this.iframe.getAttribute('src'));
+        if (this.elementIframe !== null) {
+            const url = new URL(this.elementIframe.getAttribute('src'));
             this.origin = url.origin;
 
             window.addEventListener( 'message', evt => this.onMessage(evt) );
         }
     }
     isValid() {
-        return this.iframe !== null && this.form !== null;
+        return this.elementIframe !== null && this.elementForm !== null;
     }
     init() {
         if (this.isValid()) {
@@ -35,16 +36,12 @@ export class emsForm {
         }
     }
     insertForm(response) {
-        if (null === this.form) {
-            return;
-        }
-
         let parser = new DOMParser;
         let dom = parser.parseFromString('<!doctype html><body>' + response, 'text/html');
 
-        this.form.innerHTML = dom.body.innerHTML;
+        this.elementForm.innerHTML = dom.body.innerHTML;
 
-        let form = this.form.querySelector('form');
+        let form = this.elementForm.querySelector('form');
         form.addEventListener('submit', evt => this.onSubmitForm(evt));
 
         addValidation(form);
@@ -60,9 +57,10 @@ export class emsForm {
             case 'form':
             case 'validation-error':
                 this.insertForm(data.response);
+                this.difficulty = parseInt(data.difficulty);
                 break;
             case 'submitted':
-                this.form.innerHTML = data.response;
+                this.elementForm.innerHTML = data.response;
                 break;
             default:
                return;
@@ -77,11 +75,22 @@ export class emsForm {
             data[key] = value;
         });
 
-        this.postMessage({'instruction': 'submit', 'form': data})
+        this.postMessage({'instruction': 'submit', 'form': data, 'token': this.createToken(data['form[_token]'])})
     }
     postMessage(msg)
     {
-        this.iframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
+        this.elementIframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
+    }
+    createToken(crsfToken)
+    {
+        if (0 === this.difficulty) {
+            return false;
+        }
+
+        return generate({
+            difficulty: parseInt(this.difficulty),
+            data: crsfToken
+        });
     }
 }
 

@@ -20,6 +20,7 @@ class EMSFormExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('emsf.hashcash.difficulty', $config['hashcash_difficulty']);
         $container->setParameter('emsf.ems_config', [
             'type' => $config['instance']['type'],
             'type-form-field' => $config['instance']['type-form-field'],

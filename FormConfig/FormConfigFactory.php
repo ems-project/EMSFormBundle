@@ -96,7 +96,9 @@ class FormConfigFactory
 
     private function addForm(FormConfig $formConfig, string $emsLinkForm, string $locale): void
     {
-        $form = $this->getDocument($emsLinkForm, ['elements']);
+        $form = $this->getDocument($emsLinkForm, ['name', 'elements']);
+
+        $formConfig->setName($form->getSource()['name']);
         $elements = $this->getElements($form->getSource()['elements']);
 
         foreach ($elements as $element) {

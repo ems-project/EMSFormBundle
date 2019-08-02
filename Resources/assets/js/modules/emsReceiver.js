@@ -21,33 +21,41 @@ class emsReceiver {
 
         let data = JSON.parse(message.data);
 
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener("load", evt => emsReceiver.onResponse(evt, xhr, message));
+
         switch (data.instruction) {
-            case "form":
-                this.ajax("/form/"+this.id+"/instance", message);
+            case "form": {
+                xhr.open("GET", "/form/"+this.id+"/instance");
+                xhr.setRequestHeader("Content-Type",  "application/json");
+                xhr.send();
                 break;
+            }
             case "submit": {
                 let urlEncoded = [];
                 for (let key in data.form) {
                     urlEncoded.push(encodeURI(key.concat('=').concat(data.form[key])));
                 }
-                this.ajax("/form/"+this.id+"/instance", message, urlEncoded.join('&'));
+
+                xhr.open("POST", "/form/"+this.id+"/instance");
+                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
+
+                if ('token' in data) {
+                    let token = data.token;
+                    xhr.setRequestHeader('x-hashcash', [token.hash, token.nonce, token.data].join('|'));
+                }
+
+                xhr.send(urlEncoded.join('&'));
                 break;
             }
             default:
                 return;
         }
     }
-
-    ajax(url, message, postData = null) {
-        let xhr = new XMLHttpRequest();
-        xhr.open(postData ? "POST" : "GET", url, true);
-        xhr.setRequestHeader("Content-Type", postData ? "application/x-www-form-urlencoded" : "application/json");
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                message.source.postMessage(xhr.responseText, message.origin);
-            }
-        };
-        xhr.send(postData);
+    static onResponse(evt, xhr, message) {
+        if (xhr.status === 200) {
+            message.source.postMessage(xhr.responseText, message.origin);
+        }
     }
 }
 
