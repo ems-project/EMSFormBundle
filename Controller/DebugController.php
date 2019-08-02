@@ -4,7 +4,6 @@ namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
 use EMS\FormBundle\Submit\Client;
-use EMS\FormBundle\Submit\Responses;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,8 +41,7 @@ class DebugController
 
         $responses = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Responses $responses */
-            $responses = \json_encode(($this->client->submit($form))->getResponses());
+            $responses = $this->client->submit($form);
         }
 
         return new Response($this->twig->render('@EMSForm/debug/form.html.twig', [

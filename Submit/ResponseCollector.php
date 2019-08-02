@@ -2,7 +2,7 @@
 
 namespace EMS\FormBundle\Submit;
 
-class Responses
+class ResponseCollector
 {
     /** @var ResponseInterface[] */
     private $responses = [];
@@ -12,7 +12,12 @@ class Responses
         $this->responses[] = $response;
     }
 
-    public function getResponses(): array
+    public function toJson(): string
+    {
+        return \json_encode($this->getResponses());
+    }
+
+    private function getResponses(): array
     {
         return array_map(
             function (ResponseInterface $response) {

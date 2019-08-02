@@ -22,22 +22,25 @@ class Client
         $this->handlers = $handlers;
     }
 
-    public function submit(FormInterface $form): Responses
+    public function submit(FormInterface $form): array
     {
         /** @var FormConfig $config */
         $config = $form->getConfig()->getOption('config');
         $this->loadSubmissions($config);
 
-        $responses = new Responses();
+        $collector = new ResponseCollector();
 
         foreach ($config->getSubmissions() as $submission) {
-            $this->handle($submission, $responses, $form, $config);
+            $this->handle($submission, $collector, $form, $config);
         }
 
-        return $responses;
+        return [
+            'instruction' => 'submitted',
+            'response' => $collector->toJson(),
+        ];
     }
 
-    private function handle(SubmissionConfig $submission, Responses $response, FormInterface $form, FormConfig $config) : void
+    private function handle(SubmissionConfig $submission, ResponseCollector $response, FormInterface $form, FormConfig $config) : void
     {
         foreach ($this->handlers as $handler) {
             if (! $handler instanceof AbstractHandler) {
