@@ -17,7 +17,7 @@ class ResponseCollector
         $json = \json_encode($this->getResponses());
 
         if ($json === false) {
-            return '';
+            return "";
         }
 
         return $json;
