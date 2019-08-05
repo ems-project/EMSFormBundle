@@ -4,6 +4,7 @@ EMSFormBundle
 Generate forms based on ElasticMS content configuration
 
 [How to implement?](../master/Resources/doc/example.md)
+[Handle Submitted data](../master/Resources/doc/handlers.md)
 
 Coding standards 
 ----------------
