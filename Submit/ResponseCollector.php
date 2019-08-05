@@ -15,12 +15,7 @@ class ResponseCollector
     public function toJson(): string
     {
         $json = \json_encode($this->getResponses());
-
-        if ($json === false) {
-            return "";
-        }
-
-        return $json;
+        return $json !== false ? $json : "";
     }
 
     private function getResponses(): array
