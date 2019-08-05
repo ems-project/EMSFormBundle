@@ -46,7 +46,7 @@ class Guard
 
         $header = $request->headers->get('x-hashcash');
 
-        if (null === $header) {
+        if (null === $header || !is_string($header)) {
             throw new \Exception('x-hashcash header missing');
         }
 
