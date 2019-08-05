@@ -38,10 +38,10 @@ class Guard
         }
     }
 
-    private function validateHashcash(Request $request)
+    private function validateHashcash(Request $request): void 
     {
         if (0 === $this->difficulty) {
-            return true;
+            return;
         }
 
         $header = $request->headers->get('x-hashcash');
