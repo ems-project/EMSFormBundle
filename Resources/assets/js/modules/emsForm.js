@@ -69,6 +69,11 @@ export class emsForm {
     onSubmitForm(e) {
         e.preventDefault();
 
+        let submits = e.target.getElementsByClassName('submit');
+        Array.prototype.forEach.call(submits, function(submit) {
+            submit.disabled = true;
+        });
+
         let formData = new FormData(e.target);
         let data = {};
         formData.forEach(function(value, key){
