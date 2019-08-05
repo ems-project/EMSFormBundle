@@ -3,11 +3,13 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
+use EMS\FormBundle\Security\Guard;
 use EMS\FormBundle\Submit\Client;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Twig\Environment;
 
 class FormController
@@ -16,13 +18,16 @@ class FormController
     private $formFactory;
     /** @var Client */
     private $client;
+    /** @var Guard */
+    private $guard;
     /** @var Environment */
     private $twig;
 
-    public function __construct(FormFactory $formFactory, Client $client, Environment $twig)
+    public function __construct(FormFactory $formFactory, Client $client, Guard $guard, Environment $twig)
     {
         $this->formFactory = $formFactory;
         $this->client = $client;
+        $this->guard = $guard;
         $this->twig = $twig;
     }
 
@@ -37,6 +42,10 @@ class FormController
 
     public function jsonForm(Request $request, $ouuid)
     {
+        if (!$this->guard->check($request)) {
+            throw new AccessDeniedHttpException('access denied');
+        }
+
         $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
         $form->handleRequest($request);
 
@@ -47,6 +56,7 @@ class FormController
         return new JsonResponse([
             'instruction' => 'form',
             'response' => $this->twig->render('@EMSForm/form.html.twig', ['form' => $form->createView()]),
+            'difficulty' => $this->guard->getDifficulty(),
         ]);
     }
 }

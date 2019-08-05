@@ -7,6 +7,8 @@ class FormConfig
     /** @var string */
     private $id;
     /** @var string */
+    private $name;
+    /** @var string */
     private $locale;
     /** @var string */
     private $translationDomain;
@@ -71,6 +73,11 @@ class FormConfig
         return $this->id;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function getThemes(): array
     {
         return $this->themes;
@@ -79,6 +86,11 @@ class FormConfig
     public function getTranslationDomain(): string
     {
         return $this->translationDomain;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function setSubmissions(array $submissions): void

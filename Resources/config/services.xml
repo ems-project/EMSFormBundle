@@ -22,6 +22,10 @@
             <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
             <argument type="tagged" tag="emsf.handler"/>
         </service>
+        <service id="emsf.security.guard" class="EMS\FormBundle\Security\Guard">
+            <argument type="service" id="logger" />
+            <argument type="string">%emsf.hashcash.difficulty%</argument>
+        </service>
 
         <!-- controllers -->
         <service id="emsf.controller.debug" class="EMS\FormBundle\Controller\DebugController"  public="true">
@@ -33,6 +37,7 @@
         <service id="emsf.controller.form" class="EMS\FormBundle\Controller\FormController"  public="true">
             <argument type="service" id="form.factory"/>
             <argument type="service" id="emsf.submit.client"/>
+            <argument type="service" id="emsf.security.guard"/>
             <argument type="service" id="twig" />
         </service>
     </services>

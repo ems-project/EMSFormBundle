@@ -46,7 +46,7 @@ The form or messages will be placed in this container.
         <div id="ems-form"></div>
     </div>
     <iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/form/myCommunicationId"></iframe>
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/emsForm.js"></script>
+    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
 </body>
 </html>
 ```
@@ -58,13 +58,13 @@ and pass the correct values for the **form** and **iframe** option.
 If you want to add multiple forms you need to have 2 iframes.
 
 ```html
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/emsForm.js"></script>
+    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
     <script>
         document.getElementById('ems-form-iframe1').onload = function() {
-            new emsForm({ 'form': 'ems-form1', 'iframe': 'ems-form-iframe1'}).init(); 
+            new emsForm({ 'idForm': 'form1', 'idIframe': 'iframe1'}).init(); 
         };
         document.getElementById('ems-form-iframe2').onload = function() {
-            new emsForm({ 'form': 'ems-form2', 'iframe': 'ems-form-iframe2'}).init(); 
+            new emsForm({ 'idForm': 'form2', 'idIframe': 'iframe2'}).init(); 
         };
     </script>
  ```

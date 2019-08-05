@@ -39,3 +39,4 @@ Documentation
 -------------
 
 [Installation](../master/Resources/doc/install.md)
+[Config](../master/Resources/doc/config.md)

@@ -19,6 +19,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->variableNode('hashcash_difficulty')->defaultValue(16384)->end()
                 ->arrayNode('instance')
                     ->addDefaultsIfNotSet()
                     ->children()

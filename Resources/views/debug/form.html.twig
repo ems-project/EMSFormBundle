@@ -21,7 +21,11 @@
     </div>
 {% endblock %}
 
-{% block content %}{{ form(form) }}{% endblock %}
+{% block content %}
+    {{ form_start(form, {'name': config.name}) }}
+    {{ form(form) }}
+    {{ form_end(form) }}
+{% endblock %}
 
 {% block footer %}
     {{ dump(config) }}
