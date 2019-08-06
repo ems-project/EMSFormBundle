@@ -4,12 +4,12 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-        <route id="ems_iframe" path="/iframe/{ouuid}/{_locale}" methods="GET">
+        <route id="emsf_iframe" path="/iframe/{ouuid}/{_locale}" methods="GET">
             <default key="_controller">emsf.controller.form::iframe</default>
             <default key="_locale">%locale%</default>
         </route>
 
-        <route id="ems_form" path="/form/{ouuid}/{_locale}" methods="GET|POST">
+        <route id="emsf_form" path="/form/{ouuid}/{_locale}" methods="GET|POST">
             <default key="_controller">emsf.controller.form::form</default>
             <default key="_locale">%locale%</default>
         </route>

@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block footer %}
-    <iframe id="ems-form-iframe" style="width: 100%;" src="{{ url('ems_iframe', {'ouuid': config.id, '_locale': locale }) }}"></iframe>
+    <iframe id="ems-form-iframe" style="width: 100%;" src="{{ url('emsf_iframe', {'ouuid': config.id, '_locale': locale }) }}"></iframe>
     {{ dump(config) }}
 {% endblock %}
 
