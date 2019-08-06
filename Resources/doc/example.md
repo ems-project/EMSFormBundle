@@ -45,7 +45,7 @@ The form or messages will be placed in this container.
         </p>
         <div id="ems-form"></div>
     </div>
-    <iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/form/myCommunicationId"></iframe>
+    <iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/iframe/{ouuid}/{locale}"></iframe>
     <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
 </body>
 </html>
