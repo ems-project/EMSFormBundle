@@ -31,7 +31,7 @@ class FormController
         $this->twig = $twig;
     }
 
-    public function iframe(Request $request, $ouuid)
+    public function iframe(Request $request, string $ouuid): Response
     {
         $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
 
@@ -40,7 +40,7 @@ class FormController
         ]));
     }
 
-    public function jsonForm(Request $request, $ouuid)
+    public function form(Request $request, string $ouuid): JsonResponse
     {
         if (!$this->guard->check($request)) {
             throw new AccessDeniedHttpException('access denied');

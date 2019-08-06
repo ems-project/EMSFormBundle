@@ -8,6 +8,7 @@ class emsReceiver {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
         this.domains = config.domains;
         this.id = config.id;
+        this.lang = document.documentElement.lang;
 
         if (this.id !== false) {
             window.addEventListener("message", evt => this.onMessage(evt));
@@ -26,7 +27,7 @@ class emsReceiver {
 
         switch (data.instruction) {
             case "form": {
-                xhr.open("GET", "/form/"+this.id+"/instance");
+                xhr.open("GET", "/form/"+this.id+'/'+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/json");
                 xhr.send();
                 break;

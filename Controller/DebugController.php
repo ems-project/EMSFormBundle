@@ -28,11 +28,21 @@ class DebugController
         $this->locales = $locales;
     }
 
-    public function form(Request $request, string $ouuid)
+    public function iframe(Request $request, string $ouuid): Response
+    {
+        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
+
+        return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
+            'config' => $form->getConfig()->getOption('config'),
+            'locales' => $this->locales,
+        ]));
+    }
+
+    public function form(Request $request, string $ouuid): Response
     {
         $formOptions = ['ouuid' => $ouuid, 'locale' => $request->getLocale()];
 
-        if ($request->query->has('novalidate')) {
+        if (!$request->query->get('validate', true)) {
             $formOptions['attr'] = ['novalidate' => 'novalidate'];
         }
 
@@ -48,15 +58,6 @@ class DebugController
             'form' => $form->createView(),
             'locales' => $this->locales,
             'response' => $responses,
-        ]));
-    }
-
-    public function iframe(Request $request, string $ouuid)
-    {
-        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
-
-        return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
-            'config' => $form->getConfig()->getOption('config'),
         ]));
     }
 }
