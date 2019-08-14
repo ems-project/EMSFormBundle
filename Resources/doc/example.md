@@ -9,10 +9,16 @@ Your html page needs the following **3 elements** for getting a EMSForm.
 ### form.js
 Includes the javascript for sending and receiving postMessage from or to the ems form skeleton.
 ```html
-<script src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
+<script type="application/javascript" src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
 ```
 
 The hash can be found in the manifest.json: https://emsforms-skeleton.test/bundles/emsform/manifest.js
+Always use this manifest file, because on new releases you can get broken links.
+For ems skeletons there is the ems_manifest filter:
+
+```twig
+<script type="application/javascript" src="{{ "#{app.request.getSchemeAndHttpHost}/bundles/emsform/manifest.json"|ems_manifest('form.js') }}"></script>
+```
 
 ### ems-form-iframe
 This iframe is used for sending postMessage to the ems form skeleton. 
@@ -60,8 +66,8 @@ and pass the correct values for the **form** and **iframe** option.
 If you want to add multiple forms you need to have 2 iframes.
 
 ```html
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
-    <script>
+    <script type="application/javascript" src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
+    <script type="application/javascript">
         document.getElementById('ems-form-iframe1').onload = function() {
             new emsForm({ 'idForm': 'form1', 'idIframe': 'iframe1'}).init(); 
         };
