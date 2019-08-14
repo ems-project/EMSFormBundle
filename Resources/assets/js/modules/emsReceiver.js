@@ -38,7 +38,7 @@ class emsReceiver {
                     urlEncoded.push(encodeURI(key.concat('=').concat(data.form[key])));
                 }
 
-                xhr.open("POST", "/form/"+this.id+"/instance");
+                xhr.open("POST", "/form/"+this.id+"/"+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
 
                 if ('token' in data) {
