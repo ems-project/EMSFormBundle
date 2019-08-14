@@ -6,22 +6,16 @@ forms:
   resource: '@EMSFormBundle/Resources/config/routing/form.xml'
 ```
 
-The system is using the client request from the EMS\ClientHelper namespace. Make sure to define it in your `services.yaml` configuration:
-```yaml
-EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest: '@emsch.client_request.website'
-```
-
-Server side validation
+Framework configuration
 ===
-
-Email
----
-Email validation is handled by the Symfony framework configuration. To activate HTML5 email validation,
-use the following configuration:
 ```yaml
 framework:
     validation:
         enabled:              true
         translation_domain:   validators
         email_validation_mode: html5
+    assets:
+        packages:
+            emsform:
+                json_manifest_path: '%kernel.project_dir%/public/bundles/emsform/manifest.json'
 ```

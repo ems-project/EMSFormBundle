@@ -9,7 +9,15 @@ Your html page needs the following **3 elements** for getting a EMSForm.
 ### form.js
 Includes the javascript for sending and receiving postMessage from or to the ems form skeleton.
 ```html
-<script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
+<script type="application/javascript" src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
+```
+
+The hash can be found in the manifest.json: https://emsforms-skeleton.test/bundles/emsform/manifest.js
+Always use this manifest file, because on new releases you can get broken links.
+For ems skeletons there is the ems_manifest filter:
+
+```twig
+<script type="application/javascript" src="{{ 'https://emsforms-skeleton.test/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
 ```
 
 ### ems-form-iframe
@@ -29,7 +37,7 @@ The form or messages will be placed in this container.
 
 ### full example
 
-```html
+```twig
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,7 +54,7 @@ The form or messages will be placed in this container.
         <div id="ems-form"></div>
     </div>
     <iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/iframe/{ouuid}/{locale}"></iframe>
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
+    <script src="{{ 'https://emsforms-skeleton.test/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
 </body>
 </html>
 ```
@@ -57,9 +65,9 @@ If you change the ids you need to initialize the form yourself
 and pass the correct values for the **form** and **iframe** option.
 If you want to add multiple forms you need to have 2 iframes.
 
-```html
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
-    <script>
+```twig
+    <script type="application/javascript" src="{{ 'https://emsforms-skeleton.test/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+    <script type="application/javascript">
         document.getElementById('ems-form-iframe1').onload = function() {
             new emsForm({ 'idForm': 'form1', 'idIframe': 'iframe1'}).init(); 
         };

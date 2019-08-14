@@ -24,6 +24,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('bundles/emsform/js/form.js') }}"></script>
+    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('form.js') }} "></script>
     {{ parent() }}
 {% endblock %}
