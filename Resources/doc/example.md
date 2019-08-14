@@ -9,8 +9,10 @@ Your html page needs the following **3 elements** for getting a EMSForm.
 ### form.js
 Includes the javascript for sending and receiving postMessage from or to the ems form skeleton.
 ```html
-<script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
+<script src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
 ```
+
+The hash can be found in the manifest.json: https://emsforms-skeleton.test/bundles/emsform/manifest.js
 
 ### ems-form-iframe
 This iframe is used for sending postMessage to the ems form skeleton. 
@@ -46,7 +48,7 @@ The form or messages will be placed in this container.
         <div id="ems-form"></div>
     </div>
     <iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/iframe/{ouuid}/{locale}"></iframe>
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
+    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
 </body>
 </html>
 ```
@@ -58,7 +60,7 @@ and pass the correct values for the **form** and **iframe** option.
 If you want to add multiple forms you need to have 2 iframes.
 
 ```html
-    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.js"></script>
+    <script src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
     <script>
         document.getElementById('ems-form-iframe1').onload = function() {
             new emsForm({ 'idForm': 'form1', 'idIframe': 'iframe1'}).init(); 
