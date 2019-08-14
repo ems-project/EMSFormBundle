@@ -7,5 +7,5 @@
     <meta property="domains" data-list="{{ config.domains|json_encode }}" />
 </head>
 <body>
-    <script src="{{ asset('backend.js', 'emsform') }}"></script>
+    <script src="{{ (app.request.getSchemeAndHttpHost~'/bundles/emsform/manifest.json')|ems_manifest('backend.js') }}"></script>
 </body>
