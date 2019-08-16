@@ -61,7 +61,7 @@ class FormConfigFactory
 
     private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
     {
-        $choices = $this->getDocument($emsLink, ['values', 'labels_'.$locale]);
+        $choices = $this->getDocument($emsLink, ['values', 'labels_' . $locale]);
 
         $decoder = function (string $input) {
             return \json_decode($input, true);
@@ -70,7 +70,7 @@ class FormConfigFactory
         $fieldConfig->setChoices(new FieldChoicesConfig(
             $choices->getOuuid(),
             $decoder($choices->getSource()['values']),
-            $decoder($choices->getSource()['labels_'.$locale])
+            $decoder($choices->getSource()['labels_' . $locale])
         ));
     }
 
@@ -117,7 +117,7 @@ class FormConfigFactory
             case $this->emsConfig['type-form-field']:
                 return $this->createFieldConfig($element, $locale);
             case $this->emsConfig['type-form-markup']:
-                return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
+                return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_' . $locale]);
         }
     }
 
@@ -135,11 +135,11 @@ class FormConfigFactory
         if (isset($source['default'])) {
             $fieldConfig->setDefaultValue($source['default']);
         }
-        if (isset($source['label_'.$locale])) {
-            $fieldConfig->setLabel($source['label_'.$locale]);
+        if (isset($source['label_' . $locale])) {
+            $fieldConfig->setLabel($source['label_' . $locale]);
         }
-        if (isset($source['help_'.$locale])) {
-            $fieldConfig->setHelp($source['help_'.$locale]);
+        if (isset($source['help_' . $locale])) {
+            $fieldConfig->setHelp($source['help_' . $locale]);
         }
         if (isset($fieldType['class'])) {
             $fieldConfig->addClass($fieldType['class']);
