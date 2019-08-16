@@ -29,7 +29,6 @@ class Form extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $config = $this->getConfig($options);
-        $removeSubmit = [];
 
         foreach ($config->getElements() as $element) {
             if ($element instanceof FieldConfig) {
@@ -37,15 +36,8 @@ class Form extends AbstractType
                 $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
             } elseif ($element instanceof MarkupConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
-                $removeSubmit[] = $element->getName();
             }
         }
-
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($removeSubmit) {
-            foreach ($removeSubmit as $name) {
-                $event->getForm()->remove($name);
-            }
-        });
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
