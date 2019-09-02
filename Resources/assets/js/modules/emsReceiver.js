@@ -14,13 +14,23 @@ class emsReceiver {
             window.addEventListener("message", evt => this.onMessage(evt));
         }
     }
-
+    static jsonParse(string) {
+        try {
+            return JSON.parse(string);
+        } catch (e) {
+            return false;
+        }
+    }
     onMessage(message) {
         if ( !this.domains.includes(message.origin) ) {
             return;
         }
 
-        let data = JSON.parse(message.data);
+        let data = emsReceiver.jsonParse(message.data);
+
+        if (!data) {
+            return;
+        }
 
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("load", evt => emsReceiver.onResponse(evt, xhr, message));

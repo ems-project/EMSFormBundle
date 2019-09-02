@@ -46,12 +46,23 @@ export class emsForm {
 
         addValidation(form);
     }
+    static jsonParse(string) {
+        try {
+            return JSON.parse(string);
+        } catch (e) {
+            return false;
+        }
+    }
     onMessage(e) {
         if (e.origin !== this.origin) {
             return;
         }
 
-        let data = JSON.parse(e.data);
+        let data = emsForm.jsonParse(e.data);
+
+        if (!data) {
+            return;
+        }
 
         switch (data.instruction) {
             case 'form':
