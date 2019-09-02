@@ -9,6 +9,7 @@ class emsReceiver {
         this.domains = config.domains;
         this.id = config.id;
         this.lang = document.documentElement.lang;
+        this.basePath = window.location.pathname.replace(/\/iframe\/.*/g, '');
 
         if (this.id !== false) {
             window.addEventListener("message", evt => this.onMessage(evt));
@@ -35,9 +36,10 @@ class emsReceiver {
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("load", evt => emsReceiver.onResponse(evt, xhr, message));
 
+
         switch (data.instruction) {
             case "form": {
-                xhr.open("GET", "/form/"+this.id+'/'+this.lang);
+                xhr.open("GET", this.basePath+"/form/"+this.id+'/'+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/json");
                 xhr.send();
                 break;
@@ -48,7 +50,7 @@ class emsReceiver {
                     urlEncoded.push(encodeURI(key.concat('=').concat(data.form[key])));
                 }
 
-                xhr.open("POST", "/form/"+this.id+"/"+this.lang);
+                xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
 
                 if ('token' in data) {
