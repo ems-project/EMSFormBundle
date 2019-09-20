@@ -4,7 +4,8 @@ namespace EMS\FormBundle\Handler;
 
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
-use EMS\FormBundle\Submit\ResponseInterface;
+use EMS\FormBundle\Submit\ResponseCollector;
+use EMS\FormBundle\Submit\AbstractResponse;
 use Symfony\Component\Form\FormInterface;
 
 abstract class AbstractHandler
@@ -14,5 +15,5 @@ abstract class AbstractHandler
         return $class === get_called_class();
     }
 
-    abstract public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config): ResponseInterface;
+    abstract public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, ResponseCollector $respones): AbstractResponse;
 }

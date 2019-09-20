@@ -28,26 +28,26 @@ class Client
         $config = $form->getConfig()->getOption('config');
         $this->loadSubmissions($config);
 
-        $collector = new ResponseCollector();
+        $responseCollector = new ResponseCollector();
 
         foreach ($config->getSubmissions() as $submission) {
-            $this->handle($submission, $collector, $form, $config);
+            $this->handle($submission, $responseCollector, $form, $config);
         }
 
         return [
             'instruction' => 'submitted',
-            'response' => $collector->toJson(),
+            'response' => $responseCollector->toJson(),
         ];
     }
 
-    private function handle(SubmissionConfig $submission, ResponseCollector $response, FormInterface $form, FormConfig $config) : void
+    private function handle(SubmissionConfig $submission, ResponseCollector $responseCollector, FormInterface $form, FormConfig $config) : void
     {
         foreach ($this->handlers as $handler) {
             if (! $handler instanceof AbstractHandler) {
                 continue;
             }
             if ($handler->canHandle($submission->getClass())) {
-                $response->addResponse($handler->handle($submission, $form, $config));
+                $responseCollector->addResponse($handler->handle($submission, $form, $config, $responseCollector));
             }
         }
     }
