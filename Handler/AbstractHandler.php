@@ -15,5 +15,5 @@ abstract class AbstractHandler
         return $class === get_called_class();
     }
 
-    abstract public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, ResponseCollector $respones): AbstractResponse;
+    abstract public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, AbstractResponse $respones): AbstractResponse;
 }

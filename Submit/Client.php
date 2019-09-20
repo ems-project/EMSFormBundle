@@ -47,7 +47,7 @@ class Client
                 continue;
             }
             if ($handler->canHandle($submission->getClass())) {
-                $responseCollector->addResponse($handler->handle($submission, $form, $config, $responseCollector));
+                $responseCollector->addResponse($handler->handle($submission, $form, $config, $responseCollector->getLastResponse()));
             }
         }
     }
