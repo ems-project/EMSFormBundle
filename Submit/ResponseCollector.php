@@ -4,12 +4,20 @@ namespace EMS\FormBundle\Submit;
 
 class ResponseCollector
 {
-    /** @var ResponseInterface[] */
+    /** @var AbstractResponse[] */
     private $responses = [];
 
-    public function addResponse(ResponseInterface $response): void
+    public function addResponse(AbstractResponse $response): void
     {
         $this->responses[] = $response;
+    }
+
+    public function getLastResponse(): ?AbstractResponse
+    {
+        $last = end($this->responses);
+        reset($this->responses);
+
+        return $last === false ? null : $last;
     }
 
     public function toJson(): string
@@ -21,7 +29,7 @@ class ResponseCollector
     private function getResponses(): array
     {
         return array_map(
-            function (ResponseInterface $response) {
+            function (AbstractResponse $response) {
                 return $response->getResponse();
             },
             $this->responses

@@ -15,19 +15,14 @@ Inspire yourself on the implementations found in the [SubmissionBundle](https://
 //EmailHandler.php
 
 namespace EMS\SubmissionBundle\Handler;
-
-use EMS\FormBundle\FormConfig\FormConfig;
-use EMS\FormBundle\Handler\AbstractHandler;
-use EMS\FormBundle\FormConfig\SubmissionConfig;
-use EMS\FormBundle\Submit\FailedResponse;
-use EMS\FormBundle\Submit\ResponseInterface;
+               
 //...
 
 class EmailHandler extends AbstractHandler
 {
     //... setup removed for simplicity
 
-    public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config): ResponseInterface
+    public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, ResponseCollector $responses): AbstractResponse
     {
         try {
             //render the email template
@@ -48,9 +43,7 @@ class EmailHandler extends AbstractHandler
 
 namespace EMS\SubmissionBundle\Submit;
 
-use EMS\FormBundle\Submit\ResponseInterface;
-
-class EmailResponse implements ResponseInterface
+class EmailResponse extends AbstractResponse
 {
     public function getResponse(): string
     {
@@ -65,4 +58,35 @@ Let the form-bundle find your handler by tagging it:
     <!-- ... arguments -->
     <tag name="emsf.handler" />
 </service>
+```
+
+Chained Handlers
+----------------
+
+Handlers are called one-by-one, each handler's response is collected and useable for the next Handler using the ResponseCollector.
+In the Handlers 'handle' function this object is passed. To get the result of the previous handler simply call 'lastResone'.
+
+```php
+<?php
+//EmailHandler.php
+
+namespace EMS\SubmissionBundle\Handler;
+               
+//...
+
+public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, ResponseCollector $responses): AbstractResponse
+    {
+        try {
+            if ($responses->hasLastResponse()) {
+                //do something with $responses->getLastResponse();
+            }
+            //render the email template
+        } catch (\Exception $exception) {
+            return new FailedResponse(sprintf('Submission failed, contact your admin. %s', $exception->getMessage()));
+        }
+
+        // other checks / manipulations
+
+        return new EmailResponse();
+    }
 ```
