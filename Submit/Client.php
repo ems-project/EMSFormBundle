@@ -40,7 +40,7 @@ class Client
         ];
     }
 
-    private function handle(SubmissionConfig $submission, ResponseCollector $responseCollector, FormInterface $form, FormConfig $config) : void
+    private function handle(SubmissionConfig $submission, ResponseCollector $responseCollector, FormInterface $form, FormConfig $config): void
     {
         foreach ($this->handlers as $handler) {
             if (! $handler instanceof AbstractHandler) {
