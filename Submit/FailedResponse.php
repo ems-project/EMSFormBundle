@@ -4,17 +4,8 @@ namespace EMS\FormBundle\Submit;
 
 class FailedResponse extends AbstractResponse
 {
-    /** @var string */
-    private $response;
-
-    public function __construct(string $response)
+    public function __construct(string $data)
     {
-        parent::__construct(null);
-        $this->response = $response;
-    }
-
-    public function getResponse(): string
-    {
-        return $this->response;
+        parent::__construct(self::STATUS_ERROR, $data, null);
     }
 }
