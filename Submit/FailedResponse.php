@@ -6,6 +6,6 @@ class FailedResponse extends AbstractResponse
 {
     public function __construct(string $data)
     {
-        parent::__construct(self::STATUS_ERROR, $data, null);
+        parent::__construct(self::STATUS_ERROR, $data);
     }
 }
