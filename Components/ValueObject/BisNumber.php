@@ -1,6 +1,6 @@
 <?php
 
-namespace EMS\FormBundle\Components\Model;
+namespace EMS\FormBundle\Components\ValueObject;
 
 class BisNumber extends RrNumber
 {
