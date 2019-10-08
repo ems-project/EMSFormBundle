@@ -1,6 +1,6 @@
 <?php
 
-namespace EMS\FormBundle\Components\Model;
+namespace EMS\FormBundle\Components\ValueObject;
 
 class RrNumber
 {
@@ -41,7 +41,7 @@ class RrNumber
      */
     public function __construct(string $number)
     {
-        $rrn = $this->filterNumbers($number);
+        $rrn = (new NumberValue($number))->getDigits();
         preg_match_all(self::RRN, $rrn, $matches, PREG_SET_ORDER, 0);
 
         $data = $matches[0];
@@ -66,16 +66,6 @@ class RrNumber
         }
 
         return $valid;
-    }
-
-    private function filterNumbers(string $nissOrBis): string
-    {
-        preg_match_all('!\d+!', $nissOrBis, $matches);
-        $numbers = '';
-        foreach ($matches[0] as $number) {
-            $numbers .= $number;
-        }
-        return $numbers;
     }
 
     private function possiblyTwentyFirstCentury(): bool

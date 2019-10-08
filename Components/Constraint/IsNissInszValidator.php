@@ -2,13 +2,13 @@
 
 namespace EMS\FormBundle\Components\Constraint;
 
-use EMS\FormBundle\Components\Model\BisNumber;
-use EMS\FormBundle\Components\Model\RrNumber;
+use EMS\FormBundle\Components\ValueObject\BisNumber;
+use EMS\FormBundle\Components\ValueObject\RrNumber;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class IsNissInszValidator extends ConstraintValidator
+class IsNissInszValidator extends AbstractConstraintValidator
 {
     /**
      * Checks if the passed value is valid.
@@ -29,8 +29,7 @@ class IsNissInszValidator extends ConstraintValidator
         }
 
         if (!is_string($value)) {
-            //TODO: use UnexpectedValueException when migrating to version 4.2
-            throw new UnexpectedTypeException($value, 'string');
+            throw new UnexpectedValueException($value, 'string');
         }
 
         if (!$this->isNissInsz($value)) {
@@ -47,15 +46,5 @@ class IsNissInszValidator extends ConstraintValidator
     private function isNissInsz(string $rrnOrBis): bool
     {
         return $this->canCreateClass(RrNumber::class, $rrnOrBis) || $this->canCreateClass(BisNumber::class, $rrnOrBis);
-    }
-
-    private function canCreateClass(string $class, string $value): bool
-    {
-        try {
-            new $class($value);
-            return true;
-        } catch (\Exception $exception) {
-            return false;
-        }
     }
 }
