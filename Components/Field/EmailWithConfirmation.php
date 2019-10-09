@@ -25,11 +25,15 @@ class EmailWithConfirmation extends AbstractField
 
         $options = parent::getOptions();
         $options['type'] = EmailType::class;
-        $options['first_options'] = ['label' => $label];
+        $options['first_options'] = [
+            'label' => $label,
+            'attr' => $options['attr'],
+        ];
         $options['second_options'] = [
             'label' => 'Confirm %field%',
             'label_translation_parameters' => ['%field%' => $confirmLabel],
             'translation_domain' => 'validators',
+            'attr' => $options['attr'],
             ];
         $options['invalid_message'] = 'The "{{field1}}" and "Confirm {{field2}}" fields must match.';
         $options['invalid_message_parameters'] = [

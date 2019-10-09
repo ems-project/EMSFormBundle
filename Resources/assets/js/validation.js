@@ -1,6 +1,7 @@
 import {setNissInszValidation} from "./validation/niss";
 import {addMaxLengthCounter} from "./validation/maxLengthCounter";
 import {setBelgiumPhoneValidation} from "./validation/belgiumPhone";
+import {preventCopyPaste} from "./validation/copyPaste";
 
 export function addValidation(form)
 {
@@ -15,8 +16,16 @@ export function addValidation(form)
     })
 }
 
+export function disableCopyPaste(form)
+{
+    Array.from(form.getElementsByClassName("email_with_confirmation")).forEach(function(item) {
+        preventCopyPaste(item);
+    })
+}
+
 window.formValidation = function (form) {
     addValidation(form);
+    disableCopyPaste(form);
 };
 
 
