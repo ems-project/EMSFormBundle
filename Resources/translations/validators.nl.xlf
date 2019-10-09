@@ -10,6 +10,14 @@
                 <source>The phone number "{{string}}" has an invalid format.</source>
                 <target>Het telefoonnummer "{{string}}" is ongeldig.</target>
             </trans-unit>
+            <trans-unit id="confirm_email">
+                <source>The "{{field1}}" and "Confirm {{field2}}" fields must match.</source>
+                <target>De velden "{{field1}}" en "Bevestig {{field2}}" moeten dezelfde waarde hebben.</target>
+            </trans-unit>
+            <trans-unit id="confirm_label">
+                 <source>Confirm %field%</source>
+                 <target>Bevestig %field%</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

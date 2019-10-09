@@ -10,6 +10,14 @@
                 <source>The phone number "{{string}}" has an invalid format.</source>
                 <target>Le numéro téléphone "{{string}}" est invalide.</target>
             </trans-unit>
+            <trans-unit id="confirm_email">
+                <source>The "{{field1}}" and "Confirm {{field2}}" fields must match.</source>
+                <target>Les champs "{{field1}}" et "Confirmer {{field2}}" doivent avoir la même valeur.</target>
+            </trans-unit>
+            <trans-unit id="confirm_label">
+                <source>Confirm %field%</source>
+                <target>Confirmer %field%</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
