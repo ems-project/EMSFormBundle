@@ -6,6 +6,10 @@
                 <source>The social security number "{{string}}" has an invalid format.</source>
                 <target>Le numéro de registre national "{{string}}" est invalide.</target>
             </trans-unit>
+            <trans-unit id="belgium_phone">
+                <source>The phone number "{{string}}" has an invalid format.</source>
+                <target>Le numéro téléphone "{{string}}" est invalide.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
