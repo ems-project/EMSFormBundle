@@ -10,19 +10,22 @@ class Translator
                 en: {
                     translation: {
                         "niss_insz": "The social security number \"{{string}}\" has an invalid format.",
-                        "max_length_count": "Remaining characters: {{count}}"
+                        "max_length_count": "Remaining characters: {{count}}",
+                        "belgium_phone": "The phone number \"{{string}}\" has an invalid format."
                     }
                 },
                 "fr": {
                     translation: {
                         "niss_insz": "Le numéro de registre national \"{{string}}\" est invalide.",
-                        "max_length_count": "Caractères restants: {{count}}"
+                        "max_length_count": "Caractères restants: {{count}}",
+                        "belgium_phone": "Le numéro téléphone \"{{string}}\" est invalide."
                     }
                 },
                 "nl": {
                     translation: {
                         "niss_insz": "Het rijksregisternummer \"{{string}}\" is ongeldig.",
-                        "max_length_count": "Resterende tekens: {{count}}"
+                        "max_length_count": "Resterende tekens: {{count}}",
+                        "belgium_phone": "Het telefoonnummer \"{{string}}\" is ongeldig."
                     }
                 }
             }
