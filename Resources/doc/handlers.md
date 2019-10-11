@@ -1,28 +1,20 @@
-Handle Submitted data
-=====================
-
+# Handle Submitted data
 When you are using forms, you probably also want to handle the submitted data.
 The [SubmissionBundle](https://github.com/ems-project/EMSSubmissionBundle) provides default handlers by implementing the `EMS\FormBundle\Handler\AbstractHandler`.
 
-Using your own handlers
------------------------
-
-Doing more specific actions with the submitted data can be achieved using Symfony tags by adding more implementations of the AbstractHandler class.
+## Using your own handlers
+If the SubmissionBundle is not acting like you need to you can build your own handlers.
 Inspire yourself on the implementations found in the [SubmissionBundle](https://github.com/ems-project/EMSSubmissionBundle), email for example:
 
 ```php
 <?php
-//EmailHandler.php
-
-namespace EMS\SubmissionBundle\Handler;
-               
+//EmailHandler.php    
+namespace EMS\SubmissionBundle\Handler;    
 //...
-
 class EmailHandler extends AbstractHandler
 {
     //... setup removed for simplicity
-
-    public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, ResponseCollector $responses): AbstractResponse
+    public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, AbstractResponse $previousResponse = null): AbstractResponse
     {
         try {
             //render the email template
@@ -32,7 +24,7 @@ class EmailHandler extends AbstractHandler
 
         // other checks / manipulations
 
-        return new EmailResponse();
+        return new EmailResponse(AbstractResponse::STATUS_SUCCESS);
     }
 }
 ```
@@ -40,15 +32,14 @@ class EmailHandler extends AbstractHandler
 ```php
 <?php
 //EmailResponse()
-
 namespace EMS\SubmissionBundle\Submit;
 
 class EmailResponse extends AbstractResponse
 {
-    public function getResponse(): string
-    {
-        return 'Submission send by mail.';
-    }
+    public function __construct(string $status)
+        {
+            parent::__construct($status, 'Submission send by mail.');
+        }
 }
 ```
 
@@ -60,33 +51,31 @@ Let the form-bundle find your handler by tagging it:
 </service>
 ```
 
-Chained Handlers
-----------------
-
-Handlers are called one-by-one, each handler's response is collected and useable for the next Handler using the ResponseCollector.
-In the Handlers 'handle' function this object is passed. To get the result of the previous handler simply call 'lastResone'.
+## Chained Handlers
+Handlers are called one-by-one, each handler's response is collected and available for the next Handler.
+In the Handlers `handle` function the previous response object is passed.
 
 ```php
 <?php
 //EmailHandler.php
-
 namespace EMS\SubmissionBundle\Handler;
-               
 //...
-
-public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, ResponseCollector $responses): AbstractResponse
+public function handle(SubmissionConfig $submission, FormInterface $form, FormConfig $config, AbstractResponse $previousResponse = null): AbstractResponse
     {
         try {
-            if ($responses->hasLastResponse()) {
-                //do something with $responses->getLastResponse();
-            }
-            //render the email template
+            //the previous response is passed to the twig rendering engine and can be exploited there:
+            $renderedSubmission = $this->renderer->render($submission, $form, $config, $previousResponse);
+            $email = new EmailConfig($renderedSubmission);
+            $message = (new \Swift_Message($email->getSubject()))
+                ->setFrom($email->getFrom())
+                ->setTo($email->getEndpoint())
+                ->setBody($email->getBody());
         } catch (\Exception $exception) {
             return new FailedResponse(sprintf('Submission failed, contact your admin. %s', $exception->getMessage()));
         }
 
         // other checks / manipulations
 
-        return new EmailResponse();
+        return new EmailResponse(AbstractResponse::STATUS_SUCCESS);
     }
 ```
