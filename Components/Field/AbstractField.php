@@ -30,6 +30,7 @@ abstract class AbstractField implements FieldInterface
             'data' => $this->config->getDefaultValue(),
             'help' => $this->config->getHelp(),
             'label' => $this->config->getLabel(),
+            'label_attr' => $this->getLabelAttributes(),
             'required' => $this->isRequired(),
             'translation_domain' => false,
         ];
@@ -61,6 +62,11 @@ abstract class AbstractField implements FieldInterface
         $attributes['class'] = \implode(' ', $attributes['class']);
 
         return $attributes;
+    }
+
+    protected function getLabelAttributes(string $postfix = ''): array
+    {
+        return ['id' => sprintf('form_%s%s_label', $this->config->getName(), $postfix)];
     }
 
     private function getValidationConstraints(): array
