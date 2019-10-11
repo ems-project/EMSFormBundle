@@ -1,5 +1,5 @@
-# Config
-
+# Configuration
+## config file (config/packages/ems_form.yaml)
 ```yaml
 ems_form:
     hashcash_difficulty: '%env(int:EMSF_HASHCASH_DIFFICULTY)%'
@@ -13,7 +13,6 @@ ems_form:
 ```
 
 ## HashCash
-
 By default hashcash is enable because of the default value (16384) for the configuration setting **ems_form.hashcash_difficulty**.
 This value can be overwritten by setting the environment variable **EMSF_HASHCASH_DIFFICULTY**.
 

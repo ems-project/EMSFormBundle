@@ -1,41 +1,60 @@
-# Example
+# Example implementation
 Requirements:
 - 1 elasticms backend [https://emsforms.example]
 - 1 elasticms skeleton [https://emsforms-skeleton.example]
+- 1 website where you integrate the form [https://your-website.example]
+## Elements to integrate on your website
+Your html page on https://your-website.example needs the following **3 elements** to integrate an EMSForm.
 
-## Frontend
-Your html page needs the following **3 elements** for getting a EMSForm.
+1. An `iframe` to communicate to [https://emsforms-skeleton.example] 
+1. An empty `div` to render the form that is fetched from the iframe
+1. Our javascript file `form.js` that handles all communication and rendering for you!
 
-### form.js
-Includes the javascript for sending and receiving postMessage from or to the ems form skeleton.
+### The iframe
+The iframe is a blanc page with javascript only. (You should hide it using css on your website).
+This iframe is used for sending messages using the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) protocol to [https://emsforms-skeleton.example] from and to your website. 
+
+The html code has the following structure:
 ```html
-<script type="application/javascript" src="https://emsforms-skeleton.test/bundles/emsform/js/form.{hash}.js"></script>
+<iframe id="ems-form-iframe" src="https://emsforms-skeleton.example/form/{myCommunicationId}/{lang}"></iframe>
 ```
+Make sure to use the id `"ems-form-iframe"` as this is used by our javascript file to automate communication.
 
-The hash can be found in the manifest.json: https://emsforms-skeleton.test/bundles/emsform/manifest.js
-Always use this manifest file, because on new releases you can get broken links.
-For ems skeletons there is the ems_manifest filter:
+Replace `{myCommunicationId}` by the ouuid of your form, which is defined in the backend [https://emsforms.example]. 
+The iframe is protected as defined by the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) protocol, meaning that your website's domain name should be registerd in the form configuration of the backend [https://emsforms.example].
+When sending messages to the iframe, you will only get a response if your domain is allowed to communicate!
 
-```twig
-<script type="application/javascript" src="{{ 'https://emsforms-skeleton.test/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
-```
+Replace `{lang}` by the language identifier of your form. `nl`, `fr`, `en`, `de`, ...
 
-### ems-form-iframe
-This iframe is used for sending postMessage to the ems form skeleton. 
-The **myCommunicationId** is the ouuid from the emsforms backend. 
-You will only get a response if your domain is allowed!
-
-```html
-<iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/form/myCommunicationId"></iframe>
-```
-
-### ems-form
-The form or messages will be placed in this container.
+### The empty div
+The form or messages will be placed in this container. You can style this element however you want, add classes, ...
 ```html
 <div id="ems-form"></div>
 ```
+Make sure to use the id `"ems-form"` as this is used by our javascript file to automate the form rendering.
 
-### full example
+### The javascript file
+Include the javascript file "form.js" for sending and receiving [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) between your website [https://your-website.example] and the form skeleton [https://emsforms-skeleton.example].
+```html
+<script type="application/javascript" src="https://emsforms-skeleton.example/bundles/emsform/js/form.{hash}.js"></script>
+```
+Replace the `{hash}` by the current version of the javascript file. 
+This hash can be found in the manifest.json file at https://emsforms-skeleton.example/bundles/emsform/manifest.js
+You should get the hash dynamically from this manifest file! If not, you will get broken links whenever a new release happens on [https://emsforms-skeleton.example].
+
+
+Are you using an EMS-skeletons implementation? There is the ems_manifest filter just for that:
+
+```twig
+<script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+```
+
+#### Form validation on the frontend
+Whenever supported the bundle implements html5 attributes to validate the form fields on the frontend.
+
+However, some fields are custom, and require custom validation. The form.js file uses the generated form field class attributes to initialize these javascript validations automatically.
+
+## Full example in twig
 
 ```twig
 <!DOCTYPE html>
@@ -53,30 +72,33 @@ The form or messages will be placed in this container.
         </p>
         <div id="ems-form"></div>
     </div>
-    <iframe id="ems-form-iframe" src="http://emsforms-skeleton.test/iframe/{ouuid}/{locale}"></iframe>
-    <script src="{{ 'https://emsforms-skeleton.test/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+    <iframe id="ems-form-iframe" src="https://emsforms-skeleton.example/iframe/{ouuid}/{locale}"></iframe>
+    <script src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
 </body>
 </html>
 ```
 
-## Custom
-
-If you change the ids you need to initialize the form yourself 
-and pass the correct values for the **form** and **iframe** option.
-If you want to add multiple forms you need to have 2 iframes.
+## Custom implementation
+If you want to initialize the form and validations yourself, you can simply change the id's of your `iframe` and `empty div`.
+The following twig script shows you how to achieve this; 
 
 ```twig
-    <script type="application/javascript" src="{{ 'https://emsforms-skeleton.test/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+    <script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
     <script type="application/javascript">
-        document.getElementById('ems-form-iframe1').onload = function() {
-            new emsForm({ 'idForm': 'form1', 'idIframe': 'iframe1'}).init(); 
+        document.getElementById('ems-form-iframe-custom').onload = function() {
+            new emsForm({ 'idForm': 'form-custom', 'idIframe': 'ems-form-iframe-custom'}).init(); 
         };
-        document.getElementById('ems-form-iframe2').onload = function() {
-            new emsForm({ 'idForm': 'form2', 'idIframe': 'iframe2'}).init(); 
+        document.getElementById('ems-form-iframe-custom-second').onload = function() {
+            new emsForm({ 'idForm': 'form-custom-second', 'idIframe': 'ems-form-iframe-custom-second'}).init(); 
         };
     </script>
  ```
 
+This code assumes that two of our iframes are loaded: `ems-form-iframe-custom` and `ems-form-iframe-custom-second` each containing another form id.
+For each iframe, an `emsForm` object is created for which we configure the `idForm` and `idIframe` options to the id's used in our page.
+
+* idForm corresponds to the empty div that can be used for the messages of the corresponding iframe.
+* idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
 
 
 
