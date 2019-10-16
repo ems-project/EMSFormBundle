@@ -30,14 +30,59 @@ A single checkbox field, that can be turned on and off again.
 ### Choice Checkboxes <a name="choicecheckboxes"/>
 A list of values that can be chosen from using a checkbox layout. The end user is allowed to choose multiple values.
 
+See [Choice Select](#choiceselectpassing) for information on passing values and labels to this field.
+
 ### Choice Radios <a name="choiceradios"/>
 A list of values that can be chosen from using a radio button layout. The end user can only select one value.
+
+See [Choice Select](#choiceselectpassing) for information on passing values and labels to this field.
 
 ### Choice Select <a name="choiceselect"/>
 A list of values that can be chosen from using a select box. The end user can only select one value.
 
+#### Passing values and labels to this field <a name="choiceselectpassing"/>
+Choices are passed via the "choices" content type. The content type contains a list of values and labels. These should be formatted as a json array.
+A simple choice value list would look like this:
+```json
+[
+  "dossier",
+  "demand",
+  "document",
+  "information",
+  "complaint",
+  "other"
+]
+```
+
+A multi level value list would look as follows (demonstrating 3 levels!):
+```json 
+[
+  { "dossier": [
+    "dossier-a",
+    { "dossier-b": ["dossier-b-1", "dossier-b-2"]},
+    { "dossier-c": ["dossier-c-1", "dossier-c-2"]}
+  ]},
+  { "demand":  [
+    "demand-a",
+    { "demand-b": ["demand-b-1"]}
+  ]},
+  "document",
+  "information",
+  { "complaint":  [
+    { "complaint-a": ["complaint-a-1", "complaint-a-2"]},
+    { "complaint-b": ["complaint-b-1", "complaint-b-2"]},
+    { "complaint-c": ["complaint-c-1", "complaint-c-2"]}
+  ]},
+  "other"
+]
+```
+
+If you would pass a multi level choice by mystake to this field, only the first level will be used.
+
 ### Choice Select Multiple <a name="choiceselectmultiple"/>
 A list of values that can be chosen from using a select box. The end user is allowed to choose multiple values.
+
+See [Choice Select](#choiceselectpassing) for information on passing values and labels to this field.
 
 ### Email <a name="email"/>
 Ensure that the end user's input is a valid email address.

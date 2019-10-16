@@ -24,8 +24,23 @@ class FieldChoicesConfig
 
     public function list(): array
     {
-        $combine = array_combine($this->labels, $this->values);
+        $combine = array_combine($this->getLevel($this->labels), $this->getLevel($this->values));
 
         return is_array($combine) ? $combine : [];
+    }
+
+    private function getLevel(array $elements): array
+    {
+        return \array_filter(
+            \array_map(
+                function($element) {
+                    if (\is_array($element)) {
+                        return \array_key_first($element);
+                    }
+                    return $element;
+                },
+                $elements
+            )
+        );
     }
 }
