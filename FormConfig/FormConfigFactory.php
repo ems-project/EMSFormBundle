@@ -107,7 +107,7 @@ class FormConfigFactory
                 return $this->createFieldConfig($element, $locale, $config);
             case $this->emsConfig['type-form-markup']:
                 return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_' . $locale]);
-            case $this->emsConfig['type-form-form']:
+            case $this->emsConfig['type-form-subform']:
                 return $this->createSubFormConfig($element, $locale);
         }
     }
@@ -186,7 +186,7 @@ class FormConfigFactory
         $types = [
             $this->emsConfig['type-form-field'],
             $this->emsConfig['type-form-markup'],
-            $this->emsConfig['type-form-form']
+            $this->emsConfig['type-form-subform']
         ];
 
         $search = $this->client->search($types, [

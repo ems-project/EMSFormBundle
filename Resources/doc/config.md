@@ -10,6 +10,7 @@ ems_form:
         submission-field: submissions
         type-form-field: form_structure_field
         type-form-markup: form_structure_markup
+        type-form-subform: form_structure
 ```
 
 ## Hashcash Difficulty
@@ -71,6 +72,7 @@ The name of the field in the `form_instance` content type that references the su
 instance:
     type-form-field: form_structure_field
     type-form-markup: form_structure_markup
+    type-form-subform: form_structure
 ```
 
-We need to be able to differentiate real form fields from simple text markup. We do that based on the content type used when rendering the field/markup. Using the above config you can change the names of the content types you use for each.
+We need to be able to differentiate real form fields from simple text markup and from complex subforms. We do that based on the content type used when rendering the field/markup/subform. Using the above config you can change the names of the content types you use for each.
