@@ -4,6 +4,7 @@ namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\Validation\ValidationInterface;
 use EMS\FormBundle\FormConfig\FieldConfig;
+use EMS\FormBundle\FormConfig\SubFormConfig;
 use EMS\FormBundle\FormConfig\ValidationConfig;
 
 abstract class AbstractField implements FieldInterface
@@ -66,7 +67,16 @@ abstract class AbstractField implements FieldInterface
 
     protected function getLabelAttributes(string $postfix = ''): array
     {
-        return ['id' => sprintf('form_%s%s_label', $this->config->getName(), $postfix)];
+        $parentForm = $this->config->getParentForm();
+
+        return [
+            'id' => sprintf(
+                'form_%s%s%s_label',
+                $parentForm instanceof SubFormConfig ? sprintf('%s_', $parentForm->getName()) : '',
+                $this->config->getName(),
+                $postfix
+            )
+        ];
     }
 
     private function getValidationConstraints(): array

@@ -24,8 +24,10 @@ class FieldConfig implements ElementInterface
     private $validations = [];
     /** @var ?FieldChoicesConfig */
     private $choices;
+    /** @var AbstractFormConfig */
+    private $parentForm;
 
-    public function __construct(string $id, string $name, string $type, string $className)
+    public function __construct(string $id, string $name, string $type, string $className, AbstractFormConfig $parentForm)
     {
         if (!class_exists($className)) {
             throw new \Exception(sprintf('Error field class "%s" does not exists!', $className));
@@ -36,6 +38,7 @@ class FieldConfig implements ElementInterface
         $this->type = $type;
         $this->className = $className;
         $this->class[] = $name;
+        $this->parentForm = $parentForm;
     }
 
     public function addClass(string $class): void
@@ -109,5 +112,10 @@ class FieldConfig implements ElementInterface
     public function setLabel($label): void
     {
         $this->label = $label;
+    }
+
+    public function getParentForm(): AbstractFormConfig
+    {
+        return $this->parentForm;
     }
 }

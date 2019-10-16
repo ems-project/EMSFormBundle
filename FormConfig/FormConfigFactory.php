@@ -100,11 +100,11 @@ class FormConfigFactory
         $this->createElements($formConfig, $form->getSource()['elements'], $locale);
     }
 
-    private function createElement(Document $element, string $locale): ElementInterface
+    private function createElement(Document $element, string $locale, AbstractFormConfig $config): ElementInterface
     {
         switch ($element->getContentType()) {
             case $this->emsConfig['type-form-field']:
-                return $this->createFieldConfig($element, $locale);
+                return $this->createFieldConfig($element, $locale, $config);
             case $this->emsConfig['type-form-markup']:
                 return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_' . $locale]);
             case $this->emsConfig['type-form-form']:
@@ -118,7 +118,7 @@ class FormConfigFactory
 
         foreach ($elements as $element) {
             try {
-                $element = $this->createElement($element, $locale);
+                $element = $this->createElement($element, $locale, $config);
                 $config->addElement($element);
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), [$e]);
@@ -126,11 +126,11 @@ class FormConfigFactory
         }
     }
 
-    private function createFieldConfig(Document $document, string $locale): FieldConfig
+    private function createFieldConfig(Document $document, string $locale, AbstractFormConfig $config): FieldConfig
     {
         $source = $document->getSource();
         $fieldType = $this->getDocument($source['type'], ['name', 'class', 'classname', 'validations'])->getSource();
-        $fieldConfig = new FieldConfig($document->getOuuid(), $source['name'], $fieldType['name'], $fieldType['classname']);
+        $fieldConfig = new FieldConfig($document->getOuuid(), $source['name'], $fieldType['name'], $fieldType['classname'], $config);
 
         $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
