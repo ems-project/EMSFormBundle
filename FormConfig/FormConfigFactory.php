@@ -7,6 +7,7 @@ use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\Document;
 use EMS\CommonBundle\Common\EMSLink;
 use EMS\FormBundle\Components\Field\Markup;
+use EMS\FormBundle\Components\Field\SubForm;
 use Psr\Log\LoggerInterface;
 
 class FormConfigFactory
@@ -57,8 +58,6 @@ class FormConfigFactory
         }
     }
 
-
-
     private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
     {
         $choices = $this->getDocument($emsLink, ['values', 'labels_' . $locale]);
@@ -97,18 +96,8 @@ class FormConfigFactory
     private function addForm(FormConfig $formConfig, string $emsLinkForm, string $locale): void
     {
         $form = $this->getDocument($emsLinkForm, ['name', 'elements']);
-
         $formConfig->setName($form->getSource()['name']);
-        $elements = $this->getElements($form->getSource()['elements']);
-
-        foreach ($elements as $element) {
-            try {
-                $element = $this->createElement($element, $locale);
-                $formConfig->addElement($element);
-            } catch (\Exception $e) {
-                $this->logger->error($e->getMessage(), [$e]);
-            }
-        }
+        $this->createElements($formConfig, $form->getSource()['elements'], $locale);
     }
 
     private function createElement(Document $element, string $locale): ElementInterface
@@ -118,6 +107,22 @@ class FormConfigFactory
                 return $this->createFieldConfig($element, $locale);
             case $this->emsConfig['type-form-markup']:
                 return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_' . $locale]);
+            case $this->emsConfig['type-form-form']:
+                return $this->createSubFormConfig($element, $locale);
+        }
+    }
+
+    private function createElements(AbstractFormConfig $config, array $elementEmsLinks, string $locale): void
+    {
+        $elements = $this->getElements($elementEmsLinks);
+
+        foreach ($elements as $element) {
+            try {
+                $element = $this->createElement($element, $locale);
+                $config->addElement($element);
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
         }
     }
 
@@ -148,6 +153,15 @@ class FormConfigFactory
         return $fieldConfig;
     }
 
+    private function createSubFormConfig(Document $document, string $locale): SubFormConfig
+    {
+        $source = $document->getSource();
+        $subFormConfig = new SubFormConfig($document->getOuuid(), $source['name'], $source['label_' . $locale]);
+        $this->createElements($subFormConfig, $source['elements'], $locale);
+
+        return $subFormConfig;
+    }
+
     private function getDocument(string $emsLink, array $fields = []): Document
     {
         $document = $this->client->getByEmsKey($emsLink, $fields);
@@ -169,7 +183,11 @@ class FormConfigFactory
         $emsLinks = array_map(function (string $emsLink) {
             return EMSLink::fromText($emsLink);
         }, $emsLinks);
-        $types = [$this->emsConfig['type-form-field'], $this->emsConfig['type-form-markup']];
+        $types = [
+            $this->emsConfig['type-form-field'],
+            $this->emsConfig['type-form-markup'],
+            $this->emsConfig['type-form-form']
+        ];
 
         $search = $this->client->search($types, [
             'size' => \count($emsLinks),
