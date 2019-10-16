@@ -2,20 +2,14 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-class FormConfig
+class FormConfig extends AbstractFormConfig
 {
-    /** @var string */
-    private $id;
-    /** @var string */
-    private $name;
     /** @var string */
     private $locale;
     /** @var string */
     private $translationDomain;
     /** @var array */
     private $domains = [];
-    /** @var ElementInterface[] */
-    private $elements = [];
     /** @var array */
     private $themes = [];
     /** @var array */
@@ -23,7 +17,7 @@ class FormConfig
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
-        $this->id = $id;
+        parent::__construct($id);
         $this->locale = $locale;
         $this->translationDomain = $translationDomain;
 
@@ -33,11 +27,6 @@ class FormConfig
     public function addDomain(string $domain): void
     {
         $this->domains[] = $domain;
-    }
-
-    public function addElement(ElementInterface $element): void
-    {
-        $this->elements[$element->getName()] = $element;
     }
 
     public function addTheme(string $theme): void
@@ -50,14 +39,6 @@ class FormConfig
         return $this->domains;
     }
 
-    /**
-     * @return ElementInterface[]
-     */
-    public function getElements(): array
-    {
-        return $this->elements;
-    }
-
     public function getSubmissions(): array
     {
         return $this->submissions;
@@ -68,16 +49,6 @@ class FormConfig
         return $this->locale;
     }
 
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
     public function getThemes(): array
     {
         return $this->themes;
@@ -86,11 +57,6 @@ class FormConfig
     public function getTranslationDomain(): string
     {
         return $this->translationDomain;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     public function setSubmissions(array $submissions): void

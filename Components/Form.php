@@ -3,14 +3,14 @@
 namespace EMS\FormBundle\Components;
 
 use EMS\FormBundle\Components\Field\FieldInterface;
+use EMS\FormBundle\FormConfig\AbstractFormConfig;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
 use EMS\FormBundle\FormConfig\MarkupConfig;
+use EMS\FormBundle\FormConfig\SubFormConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -34,7 +34,7 @@ class Form extends AbstractType
             if ($element instanceof FieldConfig) {
                 $field = $this->createField($element);
                 $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
-            } elseif ($element instanceof MarkupConfig) {
+            } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
             }
         }
@@ -72,7 +72,7 @@ class Form extends AbstractType
         ;
     }
 
-    private function getConfig(array $options): FormConfig
+    private function getConfig(array $options): AbstractFormConfig
     {
         if (isset($options['config'])) {
             return $options['config'];
