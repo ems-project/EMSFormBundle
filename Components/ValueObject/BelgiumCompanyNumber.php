@@ -7,12 +7,12 @@ class BelgiumCompanyNumber
     /** @var NumberValue */
     private $number;
 
-    public function __construct(string $phone)
+    public function __construct(string $companyNumber)
     {
-        $this->number = new NumberValue($phone);
+        $this->number = new NumberValue($companyNumber);
 
         if (!$this->validate()) {
-            throw new \Exception(sprintf('invalid company registration number data: %s', $phone));
+            throw new \Exception(sprintf('invalid company registration number data: %s', $companyNumber));
         }
     }
 
@@ -21,6 +21,6 @@ class BelgiumCompanyNumber
         $numberOfDigits = strlen($this->number->getDigits());
         $firstDigit = substr($this->number->getDigits(), 0, 1);
 
-        return (($numberOfDigits === 10) && ($firstDigit === '0'));
+        return (($numberOfDigits === 10) && (($firstDigit === '0') || ($firstDigit === '1')));
     }
 }

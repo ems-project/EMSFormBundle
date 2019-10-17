@@ -40,7 +40,7 @@ class IsCompanyNumberValidator extends AbstractConstraintValidator
     }
     
     /**
-     * This number
+     * This number need only 10 numbers and must start with 0 or 1
      */
     private function isCompanyNumber(string $number): bool
     {
