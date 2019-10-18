@@ -51,14 +51,23 @@ class FieldConfig implements ElementInterface
         $this->validations[$validation->getName()] = $validation;
     }
 
-    public function getChoices(): array
+    public function getChoiceList(): array
     {
         return $this->choices ? $this->choices->list() : [];
     }
 
+    public function getChoices(): ?FieldChoicesConfig
+    {
+        return $this->choices;
+    }
+
     public function getClass(): string
     {
-        return implode(' ', $this->class);
+        $classes = $this->class;
+        if ($this->getChoices() !== null && $this->getChoices()->isMultiLevel()) {
+            $classes[] = 'dynamic-choice-select';
+        }
+        return implode(' ', $classes);
     }
 
     public function getClassName(): string
