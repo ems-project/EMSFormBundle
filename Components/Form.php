@@ -117,6 +117,7 @@ class Form extends AbstractType
             }
         );
 
+        //TODO in fact we should add an EventListener on each level in our code!
         $builder->get($element->getName())->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($element) {
