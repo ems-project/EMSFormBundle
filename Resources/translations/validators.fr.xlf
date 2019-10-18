@@ -18,6 +18,10 @@
                 <source>Confirm %field%</source>
                 <target>Confirmer %field%</target>
             </trans-unit>
+            <trans-unit id="time_label">
+                <source>%label_time% (hh:mm)</source>
+                <target>%label_time% (hh:mm)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
