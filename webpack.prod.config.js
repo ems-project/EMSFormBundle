@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         'form': './Resources/assets/js/form.js',
         'backend': './Resources/assets/js/backend.js',
+        'dynamicFields': './Resources/assets/js/dynamicFields.js',
         'validation': './Resources/assets/js/validation.js'
     },
     plugins: [

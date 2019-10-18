@@ -1,4 +1,5 @@
-import {addValidation} from "../validation";
+import {addValidation, disableCopyPaste} from "../validation";
+import {addDynamicFields} from "../dynamicFields";
 import {generate} from 'hashcash-token';
 
 export const DEFAULT_CONFIG = {
@@ -45,6 +46,8 @@ export class emsForm {
         form.addEventListener('submit', evt => this.onSubmitForm(evt));
 
         addValidation(form);
+        disableCopyPaste(form);
+        addDynamicFields(form);
     }
     static jsonParse(string) {
         try {
