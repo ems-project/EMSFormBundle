@@ -13,6 +13,7 @@
 * [File](#file)
 * [Number](#number)
 * [Phone](#phone)
+* [Time](#time)
 * [Text](#text)
 * [Textarea](#textarea)
 
@@ -54,6 +55,9 @@ This field only allows integers as input.
 
 ### Phone <a name="phone"/>
 A field that's used for phone input, as per html standard no validations happen by default on this field.
+
+### Text <a name="time"/>
+A field to define a time with a text input and only format (HH:mm).
 
 ### Text <a name="text"/>
 A simple field for text input (one line).
