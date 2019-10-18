@@ -13,7 +13,7 @@ class Translator
                         "max_length_count": "Remaining characters: {{count}}",
                         "belgium_phone": "The phone number \"{{string}}\" has an invalid format.",
                         "repeated": "The field \"{{string}}\" should have the same value as the previous field.",
-                        "belgium_company_number": "The company registration number \"{{string}}\" has an invalid format.js"
+                        "belgium_company_number": "The company registration number \"{{string}}\" has an invalid format."
                     }
                 },
                 "fr": {
