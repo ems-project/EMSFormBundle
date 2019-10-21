@@ -11,11 +11,15 @@
 * [Required](#required)
 
 ### Custom validations
+* [CompanyNumber](#companynumber)
 * [MaxLengthCounter](#maxlengthcounter)
 * [NissInsz](#nissinsz)
 * [Phone](#phone)
 
 ## Validations
+
+### CompanyNumber <a name="companynumber"/>
+Validate that the input string is a valid company registration number in Belgium.
 
 ### Email <a name="email"/>
 Validate email input as per HTML5 standard definition.
