@@ -8,6 +8,8 @@
 * [ChoiceRadios](#choiceradios)
 * [ChoiceSelect](#choiceselect)
 * [ChoiceSelectMultiple](#choiceselectmultiple)
+* [Date](#date)
+* [DateWithPicker](#datewithpicker)
 * [Email](#email)
 * [EmailWithConfirmation](#emailwithconfirmation)
 * [File](#file)
@@ -38,6 +40,14 @@ A list of values that can be chosen from using a select box. The end user can on
 
 ### Choice Select Multiple <a name="choiceselectmultiple"/>
 A list of values that can be chosen from using a select box. The end user is allowed to choose multiple values.
+
+### Date <a name="date"/>
+A single text to enter a date with a defined format : dd/mm/yyyy and save as string.
+
+### DateWithPicker <a name="datewithpicker"/>
+A single text to enter a date with a defined format : dd/mm/yyyy and save as string.
+A custom class : 'date-with-picker' is available and can be used by your frontend to activate and style the datepicker plugin of your choice.
+The css and javascript for this datepicker are the responsability of the site that integrates the form, as there are too much options for the different frameworks out there.
 
 ### Email <a name="email"/>
 Ensure that the end user's input is a valid email address.

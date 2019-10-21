@@ -18,6 +18,10 @@
                 <source>Confirm %field%</source>
                 <target>Confirmer %field%</target>
             </trans-unit>
+            <trans-unit id="date_label">
+                <source>%label_date% (dd/mm/yyyy)</source>
+                <target>%label_date% (jj/mm/aaaa)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
