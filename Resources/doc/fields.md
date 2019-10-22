@@ -84,3 +84,7 @@ A text field designed to combine with the NissInsz validation. The frontend will
 
 ### Submit <a name="submit"/>
 Make sure to add this field at the end of your form to allow the submission of your data to the server!
+
+## Why are we defining custom fields for our validations that can operate on the Text field type ?
+You might notice that we develop fields like "niss-insz" that only diverge from the Text field in the id they provide. ('niss-insz' in this case).
+We use this to have a link between our form field class in the HTML code and the class used by our Javascript to automatically instantiate javascript validation.
