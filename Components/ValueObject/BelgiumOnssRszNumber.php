@@ -8,12 +8,12 @@ class BelgiumOnssRszNumber
     private $number;
 
 
-    public function __construct(string $phone)
+    public function __construct(string $nsso)
     {
-        $this->number = new NumberValue($phone);
+        $this->number = new NumberValue($nsso);
 
         if (!$this->validate()) {
-            throw new \Exception(sprintf('invalid national social security office data: %s', $phone));
+            throw new \Exception(sprintf('invalid NSSO data: %s', $nsso));
         }
     }
 

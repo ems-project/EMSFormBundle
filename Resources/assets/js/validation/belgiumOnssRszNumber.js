@@ -16,9 +16,9 @@ export function setBelgiumOnssRszValidation(element) {
             return false;
         }
 
-        let number = numbers.map(String).join('');
+        let nsso = numbers.map(String).join('');
         
-        if (number.length >= 9 && number.length <= 10) {
+        if (nsso.length >= 9 && nsso.length <= 10) {
             return true;
         }
         
