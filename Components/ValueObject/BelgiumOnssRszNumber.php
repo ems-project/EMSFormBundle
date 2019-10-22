@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace EMS\FormBundle\Components\ValueObject;
 
@@ -23,5 +23,4 @@ class BelgiumOnssRszNumber
         
         return (($numberOfDigits >= 9) and ($numberOfDigits <= 10));
     }
- 
 }
