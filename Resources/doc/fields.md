@@ -15,6 +15,7 @@
 * [Phone](#phone)
 * [Text](#text)
 * [Textarea](#textarea)
+* [Time](#time)
 
 ### Custom fields
 * [Markup](#markup)
@@ -60,6 +61,9 @@ A simple field for text input (one line).
 
 ### Textarea <a name="textarea"/>
 A simple field for large text input (multiple lines).
+
+### Time <a name="time"/>
+A field to define a time with a text input with format HH:mm.
 
 ### Markup <a name="markup"/>
 This field is special, as it is not a real form field. The `Markup` field allows you to introduce text between fields in your form.
