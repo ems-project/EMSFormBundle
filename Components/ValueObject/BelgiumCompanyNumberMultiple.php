@@ -18,18 +18,19 @@ class BelgiumCompanyNumberMultiple
 
     public function validate(): bool
     {
-        $valid = false;
-        if (strlen($this->number->getDigits()) % 10 == 0) {
-            $numbers = str_split($this->number->getDigits(), 10);
-            foreach ($numbers as $number) {
-                try {
-                    new BelgiumCompanyNumber($number);
-                    $valid = true;
-                } catch (\Exception $exception) {
-                    return false;
-                }
+        if (strlen($this->number->getDigits()) % 10) {
+            return false;
+        }
+        
+        $numbers = str_split($this->number->getDigits(), 10); 
+        foreach ($numbers as $number) {
+            try {
+                new BelgiumCompanyNumber($number);
+            } catch (\Exception $exception) {
+                return false;
             }
         }
-        return $valid;
+        
+        return true;
     }
 }

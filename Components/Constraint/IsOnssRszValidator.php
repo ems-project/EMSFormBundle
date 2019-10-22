@@ -2,12 +2,12 @@
 
 namespace EMS\FormBundle\Components\Constraint;
 
-use EMS\FormBundle\Components\ValueObject\BelgiumCompanyNumberMultiple;
+use EMS\FormBundle\Components\ValueObject\BelgiumOnssRszNumber;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class IsCompanyNumberMultipleValidator extends AbstractConstraintValidator
+class IsOnssRszValidator extends AbstractConstraintValidator
 {
     /**
      * Checks if the passed value is valid.
@@ -17,32 +17,32 @@ class IsCompanyNumberMultipleValidator extends AbstractConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof IsCompanyNumberMultiple) {
-            throw new UnexpectedTypeException($constraint, IsCompanyNumberMultiple::class);
+        if (!$constraint instanceof IsOnssRsz) {
+            throw new UnexpectedTypeException($constraint, IsOnssRsz::class);
         }
-        
+
         // custom constraints should ignore null and empty values to allow
         // other constraints (NotBlank, NotNull, etc.) take care of that
         if (null === $value || '' === $value) {
             return;
         }
-        
+
         if (!is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
-        
-        if (!$this->isCompanyNumberMultiple($value)) {
+
+        if (!$this->isOnssRsz($value)) {
             $this->context->buildViolation($constraint->message)
-            ->setParameter('{{string}}', $value)
-            ->addViolation();
+                ->setParameter('{{string}}', $value)
+                ->addViolation();
         }
     }
-    
+
     /**
-     * This list of numbers should be constructed as a combination of multiple CompanyNumbers
+     * Nsso number must be 9 or 10 digits.
      */
-    private function isCompanyNumberMultiple(string $number): bool
+    private function isOnssRsz(string $nsso): bool
     {
-        return $this->canCreateClass(BelgiumCompanyNumberMultiple::class, $number);
+        return $this->canCreateClass(BelgiumOnssRszNumber::class, $nsso);
     }
 }
