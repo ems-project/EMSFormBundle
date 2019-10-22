@@ -22,7 +22,7 @@ class BelgiumCompanyNumberMultiple
             return false;
         }
         
-        $numbers = str_split($this->number->getDigits(), 10); 
+        $numbers = str_split($this->number->getDigits(), 10);
         foreach ($numbers as $number) {
             try {
                 new BelgiumCompanyNumber($number);
