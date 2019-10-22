@@ -13,9 +13,9 @@
 * [File](#file)
 * [Number](#number)
 * [Phone](#phone)
-* [Time](#time)
 * [Text](#text)
 * [Textarea](#textarea)
+* [Time](#time)
 
 ### Custom fields
 * [Markup](#markup)
@@ -56,14 +56,14 @@ This field only allows integers as input.
 ### Phone <a name="phone"/>
 A field that's used for phone input, as per html standard no validations happen by default on this field.
 
-### Text <a name="time"/>
-A field to define a time with a text input and only format (HH:mm).
-
 ### Text <a name="text"/>
 A simple field for text input (one line).
 
 ### Textarea <a name="textarea"/>
 A simple field for large text input (multiple lines).
+
+### Time <a name="time"/>
+A field to define a time with a text input with format HH:mm.
 
 ### Markup <a name="markup"/>
 This field is special, as it is not a real form field. The `Markup` field allows you to introduce text between fields in your form.
