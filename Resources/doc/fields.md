@@ -22,6 +22,7 @@
 ### Custom fields
 * [Markup](#markup)
 * [NissInsz](#nissinsz)
+* [OnssRsz](#onssrsz)
 * [Submit](#submit)
 
 
@@ -81,6 +82,9 @@ The end user cannot change the value of this field, and the static data of this 
 
 ### NissInsz <a name="nissinsz"/>
 A text field designed to combine with the NissInsz validation. The frontend will automatically activate validation when both this field and it's validation are combined.
+
+### OnssRsz <a name="onssrsz"/>
+A text field designed to combine with the NSSO validation. The frontend will automatically activate validation when both this field and it's validation are combined.
 
 ### Submit <a name="submit"/>
 Make sure to add this field at the end of your form to allow the submission of your data to the server!
