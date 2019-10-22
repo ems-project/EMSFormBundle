@@ -8,8 +8,8 @@ export function setBelgiumCompanyNumberValidation(element) {
             this.setCustomValidity(i18n.trans('belgium_company_number', {string: this.value}));
         }
     });
-
-    function validateBelgiumCompanyNumber(value) {
+}
+export function validateBelgiumCompanyNumber(value) {
         const regex = /[01]\d\d\d\d\d\d\d\d\d/gm;
         let numbers = value.match(/\d+/g);
         
@@ -24,4 +24,4 @@ export function setBelgiumCompanyNumberValidation(element) {
         
         return regex.test(companyNumber);
     }
-}
+

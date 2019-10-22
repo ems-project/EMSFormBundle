@@ -4,6 +4,7 @@ import {setBelgiumPhoneValidation} from "./validation/belgiumPhone";
 import {setRepeatedValidation} from "./validation/repeated";
 import {preventCopyPaste} from "./validation/copyPaste";
 import {setBelgiumCompanyNumberValidation} from "./validation/belgiumCompanyNumber";
+import {setBelgiumCompanyNumberMultipleValidation} from "./validation/belgiumCompanyNumberMultiple";
 
 export function addValidation(form)
 {
@@ -19,8 +20,11 @@ export function addValidation(form)
     Array.from(form.getElementsByClassName("repeated")).forEach(function(item) {
         setRepeatedValidation(item);
     });
-    Array.from(form.getElementsByClassName("company_number")).forEach(function(item) {
+    Array.from(form.getElementsByClassName("company-number")).forEach(function(item) {
         setBelgiumCompanyNumberValidation(item);
+    });
+    Array.from(form.getElementsByClassName("company-number-multiple")).forEach(function(item) {
+        setBelgiumCompanyNumberMultipleValidation(item);
     });
 }
 
