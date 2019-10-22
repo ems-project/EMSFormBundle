@@ -22,6 +22,10 @@
                 <source>%label_date% (dd/mm/yyyy)</source>
                 <target>%label_date% (dd/mm/jjjj)</target>
             </trans-unit>
+            <trans-unit id="time_label">
+                <source>%label_time% (hh:mm)</source>
+                <target>%label_time% (uu:mm)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
