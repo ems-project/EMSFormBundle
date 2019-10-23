@@ -20,6 +20,8 @@
 * [Time](#time)
 
 ### Custom fields
+* [CompanyNumber](#companynumber)
+* [CompanyNumberMultiple](#companynumbermultiple)
 * [Markup](#markup)
 * [NissInsz](#nissinsz)
 * [OnssRsz](#onssrsz)
@@ -75,6 +77,13 @@ A simple field for large text input (multiple lines).
 
 ### Time <a name="time"/>
 A field to define a time with a text input with format HH:mm.
+
+
+### CompanyNumber <a name="companynumber"/>
+A text field designed ton combine with CompanyNumber validation. The frontend will automatically activate validation when both this field and it's validation are combined.
+
+### CompanyNumberMultiple <a name="companynumbermultiple"/>
+A textarea field designed ton combine with CompanyNumberMultiple validation. The frontend will automatically activate validation when both this field and it's validation are combined.
 
 ### Markup <a name="markup"/>
 This field is special, as it is not a real form field. The `Markup` field allows you to introduce text between fields in your form.

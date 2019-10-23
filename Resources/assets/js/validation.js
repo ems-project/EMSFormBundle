@@ -3,7 +3,9 @@ import {addMaxLengthCounter} from "./validation/maxLengthCounter";
 import {setBelgiumPhoneValidation} from "./validation/belgiumPhone";
 import {setRepeatedValidation} from "./validation/repeated";
 import {preventCopyPaste} from "./validation/copyPaste";
-import {setBelgiumOnssRszValidation} from "./validation/belgiumOnssRszNumber"
+import {setBelgiumCompanyNumberValidation} from "./validation/belgiumCompanyNumber";
+import {setBelgiumCompanyNumberMultipleValidation} from "./validation/belgiumCompanyNumberMultiple";
+import {setBelgiumOnssRszValidation} from "./validation/belgiumOnssRszNumber";
 
 export function addValidation(form)
 {
@@ -18,10 +20,16 @@ export function addValidation(form)
     });
     Array.from(form.getElementsByClassName("repeated")).forEach(function(item) {
         setRepeatedValidation(item);
-    })
+    });
+    Array.from(form.getElementsByClassName("company-number")).forEach(function(item) {
+        setBelgiumCompanyNumberValidation(item);
+    });
+    Array.from(form.getElementsByClassName("company-number-multiple")).forEach(function(item) {
+        setBelgiumCompanyNumberMultipleValidation(item);
+    });
     Array.from(form.getElementsByClassName("onss-rsz")).forEach(function(item) {
         setBelgiumOnssRszValidation(item);
-    })
+    });
 }
 
 export function disableCopyPaste(form)
