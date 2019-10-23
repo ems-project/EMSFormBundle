@@ -35,6 +35,7 @@ class DebugController
         return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
             'config' => $form->getConfig()->getOption('config'),
             'locales' => $this->locales,
+            'url' => $request->getSchemeAndHttpHost() . $request->getBasePath(),
         ]));
     }
 
@@ -58,6 +59,7 @@ class DebugController
             'form' => $form->createView(),
             'locales' => $this->locales,
             'response' => $responses,
+            'url' => $request->getSchemeAndHttpHost() . $request->getBasePath(),
         ]));
     }
 }
