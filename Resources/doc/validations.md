@@ -11,11 +11,22 @@
 * [Required](#required)
 
 ### Custom validations
+* [CompanyNumber](#companynumber)
+* [CompanyNumberMultiple](#companynumbermultiple)
 * [MaxLengthCounter](#maxlengthcounter)
 * [NissInsz](#nissinsz)
+* [OnssRsz](#onssrsz)
 * [Phone](#phone)
 
 ## Validations
+
+### CompanyNumber <a name="companynumber"/>
+Validate that the input string is a valid company registration number in Belgium.
+This validation is 'forgiving', meaning that all non valid input characters are filtered away before validation. This allows the end user to input his number in the format he likes.
+
+### CompanyNumberMultiple <a name="companynumbermultiple"/>
+Validate that the input string contains only valid company registration numbers in Belgium. 
+This validation is 'forgiving', meaning that all non valid input characters are filtered away before validation. This allows the end user to input his number in the format he likes.
 
 ### Email <a name="email"/>
 Validate email input as per HTML5 standard definition.
@@ -41,6 +52,10 @@ Use this variant of the Max Lenght validation if you want to automatically show 
 
 ### NISS INSZ <a name="nissinsz"/>
 Validate that the given number is a valid Belgium NISS (fr) / INSZ (nl) number. Implementation details are documented in the source code.
+This validation is 'forgiving', meaning that all non valid input characters are filtered away before validation. This allows the end user to input his number in the format he likes.
+
+### ONSS RSZ <a name="onssrsz"/>
+Validate that the given number is a valid Belgium ONSS (fr) / RSZ (nl) number. Implementation details are documented in the source code.
 This validation is 'forgiving', meaning that all non valid input characters are filtered away before validation. This allows the end user to input his number in the format he likes.
 
 ### Phone <a name="phone"/>

@@ -12,7 +12,10 @@ class Translator
                         "niss_insz": "The social security number \"{{string}}\" has an invalid format.",
                         "max_length_count": "Remaining characters: {{count}}",
                         "belgium_phone": "The phone number \"{{string}}\" has an invalid format.",
-                        "repeated": "The field \"{{string}}\" should have the same value as the previous field."
+                        "repeated": "The field \"{{string}}\" should have the same value as the previous field.",
+                        "belgium_company_number": "The company registration number \"{{string}}\" has an invalid format.",
+                        "belgium_company_number_multiple": "At least one company registration number \"{{string}}\" has an invalid format.",	
+                        "belgium_onss_rsz" : "NSSO number \"{{string}}\" has an invalid format."
                     }
                 },
                 "fr": {
@@ -20,7 +23,10 @@ class Translator
                         "niss_insz": "Le numéro de registre national \"{{string}}\" est invalide.",
                         "max_length_count": "Caractères restants: {{count}}",
                         "belgium_phone": "Le numéro téléphone \"{{string}}\" est invalide.",
-                        "repeated": "Le champ \"{{string}}\" doit avoir la même valeur que le champ précédent."
+                        "repeated": "Le champ \"{{string}}\" doit avoir la même valeur que le champ précédent.",
+                        "belgium_company_number": "Le numéro d'entreprise \"{{string}}\" est invalide.",
+                        "belgium_company_number_multiple": "Au moins un numéro d'entreprise \"{{string}}\" est invalide.",	
+                        "belgium_onss_rsz" : "Le numéro ONSS \"{{string}}\" est invalide."
                     }
                 },
                 "nl": {
@@ -28,7 +34,10 @@ class Translator
                         "niss_insz": "Het rijksregisternummer \"{{string}}\" is ongeldig.",
                         "max_length_count": "Resterende tekens: {{count}}",
                         "belgium_phone": "Het telefoonnummer \"{{string}}\" is ongeldig.",
-                        "repeated": "Het veld \"{{string}}\" moet dezelfde waarde hebben als het vorige veld."
+                        "repeated": "Het veld \"{{string}}\" moet dezelfde waarde hebben als het vorige veld.",
+                        "belgium_company_number": "Het ondernemingsnummer \"{{string}}\" is ongeldig.",
+                        "belgium_company_number_multiple": "Minstens één ondernemingsnummer \"{{string}}\" is ongeldig.",
+                        "belgium_onss_rsz" : "RSZ number \"{{string}}\" is ongeldig."
                     }
                 }
             }
