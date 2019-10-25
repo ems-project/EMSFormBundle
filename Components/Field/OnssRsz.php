@@ -2,17 +2,17 @@
 
 namespace EMS\FormBundle\Components\Field;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use EMS\FormBundle\Components\ValueObject\BelgiumOnssRszNumber;
 
-class OnssRsz extends AbstractField
+class OnssRsz extends AbstractForgivingNumberField
 {
-    public function getFieldClass(): string
-    {
-        return TextType::class;
-    }
-
     public function getId(): string
     {
         return 'onss-rsz';
+    }
+    
+    public function getValueObjects() : array
+    {
+        return [BelgiumOnssRszNumber::class];
     }
 }

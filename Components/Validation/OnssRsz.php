@@ -4,6 +4,7 @@ namespace EMS\FormBundle\Components\Validation;
 
 use EMS\FormBundle\Components\Constraint\IsOnssRsz;
 use Symfony\Component\Validator\Constraint;
+use EMS\FormBundle\Components\ValueObject\BelgiumOnssRszNumber;
 
 class OnssRsz extends AbstractValidation
 {

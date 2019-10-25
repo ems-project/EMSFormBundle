@@ -23,4 +23,9 @@ class BelgiumOnssRszNumber
         
         return (($numberOfDigits >= 9) and ($numberOfDigits <= 10));
     }
+    
+    public function getValidatedInput(): string
+    {
+        return $this->number->getDigits();
+    }
 }
