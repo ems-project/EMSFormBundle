@@ -51,6 +51,16 @@ class FieldConfig implements ElementInterface
         $this->validations[$validation->getName()] = $validation;
     }
 
+    public function hasChoices(): bool
+    {
+        return ($this->choices instanceof FieldChoicesConfig) && (count($this->choices->list()) > 0);
+    }
+
+    public function getChoicePlaceholder(): ?string
+    {
+        return $this->choices ? $this->choices->getPlaceHolder() : null;
+    }
+
     public function getChoiceList(): array
     {
         return $this->choices ? $this->choices->list() : [];

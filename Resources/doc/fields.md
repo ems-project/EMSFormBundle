@@ -36,17 +36,17 @@ A single checkbox field, that can be turned on and off again.
 ### Choice Checkboxes <a name="choicecheckboxes"/>
 A list of values that can be chosen from using a checkbox layout. The end user is allowed to choose multiple values.
 
-See [Choice Select](#choiceselectpassing) for information on passing values and labels to this field.
+See [Choice Select](#choiceselectpassing) for information on passing values, labels and a placeholder to this field.
 
 ### Choice Radios <a name="choiceradios"/>
 A list of values that can be chosen from using a radio button layout. The end user can only select one value.
 
-See [Choice Select](#choiceselectpassing) for information on passing values and labels to this field.
+See [Choice Select](#choiceselectpassing) for information on passing values, labels and a placeholder to this field.
 
 ### Choice Select <a name="choiceselect"/>
 A list of values that can be chosen from using a select box. The end user can only select one value.
 
-#### Passing values and labels to this field <a name="choiceselectpassing"/>
+#### Passing values, labels, and a placeholder to this field <a name="choiceselectpassing"/>
 Choices are passed via the "choices" content type. The content type contains a list of values and labels. These should be formatted as a json array.
 A simple choice value list would look like this:
 ```json
@@ -83,12 +83,25 @@ A multi level value list would look as follows (demonstrating 3 levels!):
 ]
 ```
 
-If you would pass a multi level choice by mystake to this field, only the first level will be used.
+If you would pass a multi level choice when this is not supported, only the first level will be used. Only "Choice Select" supports multi level choices.
+
+Passing a placeholder label "Choose an option" for your choice list is as simple as adding it to your label list as the first argument:
+```json
+[
+  "Choose an option",
+  "Your file",
+  "Your demand",
+  "Your document",
+  "Your information",
+  "A plaint",
+  "Other"
+]
+```
 
 ### Choice Select Multiple <a name="choiceselectmultiple"/>
 A list of values that can be chosen from using a select box. The end user is allowed to choose multiple values.
 
-See [Choice Select](#choiceselectpassing) for information on passing values and labels to this field.
+See [Choice Select](#choiceselectpassing) for information on passing values, labels and a placeholder to this field.
 
 ### Date <a name="date"/>
 A single text to enter a date with a defined format : dd/mm/yyyy and save as string.

@@ -14,9 +14,15 @@ class FieldChoicesConfig
     private $maxLevel;
     /** @var array */
     private $choices = [];
+    /** @var ?string */
+    private $placeholder;
 
     public function __construct(string $id, array $values, array $labels)
     {
+        if (\count($labels) > \count($values)) {
+            $this->placeholder = \array_shift($labels);
+        }
+
         if (\count($values) !== \count($labels)) {
             throw new \Exception(sprintf('Invalid choice list: %d values != %d labels!', \count($values), \count($labels)));
         }
@@ -24,6 +30,11 @@ class FieldChoicesConfig
         $this->id = $id;
         $this->values = $values;
         $this->labels = $labels;
+    }
+
+    public function getPlaceholder(): ?string
+    {
+        return $this->placeholder;
     }
 
     public function list(): array
@@ -43,6 +54,24 @@ class FieldChoicesConfig
         return $this->getMaxLevel() > 0;
     }
 
+    public function hasNextLevel(): bool
+    {
+        $nextLevel = \array_reduce(
+            $this->choices,
+            function($values, $choice) {
+                return $values[$choice] ?? [];
+            },
+            $this->values
+        );
+
+        return count($nextLevel) < count($nextLevel, COUNT_RECURSIVE);
+    }
+
+    public function hasChoosen(): bool
+    {
+        return count($this->choices) > 0;
+    }
+
     public function getMaxLevel(): int
     {
         if ($this->maxLevel !== null) {
@@ -53,14 +82,15 @@ class FieldChoicesConfig
         return $this->maxLevel;
     }
 
-    private function calculateMaxLevel(array $choices)
+    private function calculateMaxLevel(array $choices): int
     {
         $level = 0;
         foreach ($choices as $choice) {
             if (\is_array($choice)) {
                 $level = max(
                     $level,
-                    1 + $this->calculateMaxLevel($choice[\array_key_first($choice)]));
+                    1 + $this->calculateMaxLevel($choice[\array_key_first($choice)])
+                );
             }
         }
         return $level;
@@ -70,7 +100,7 @@ class FieldChoicesConfig
     {
         return \array_filter(
             \array_map(
-                function($element) {
+                function ($element) {
                     if (\is_array($element)) {
                         return \array_key_first($element);
                     }
