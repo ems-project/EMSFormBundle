@@ -14,6 +14,7 @@
 * [EmailWithConfirmation](#emailwithconfirmation)
 * [File](#file)
 * [Number](#number)
+* [NumberForgivingInput](#numberforgivinginput)
 * [Phone](#phone)
 * [Text](#text)
 * [Textarea](#textarea)
@@ -65,6 +66,9 @@ Allow an end user to upload a file.
 
 ### Number <a name="number"/>
 This field only allows integers as input.
+
+### Number Forgiving Input <a name="numberforgivinginput"/>
+This field is a text input and use a data transfomer to keep only digits and transform data input to correct input.
 
 ### Phone <a name="phone"/>
 A field that's used for phone input, as per html standard no validations happen by default on this field.
