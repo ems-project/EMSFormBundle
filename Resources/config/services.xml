@@ -21,6 +21,10 @@
             <argument type="service" id="emsf.form_config.factory"/>
             <tag name="form.type"/>
         </service>
+        <service id="emsf.nested.choice" class="EMS\FormBundle\Components\Form\NestedChoiceType">
+            <argument type="service" id="emsf.form_config.factory"/>
+            <tag name="form.type"/>
+        </service>
 
         <service id="emsf.submit.client" class="EMS\FormBundle\Submit\Client">
             <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>

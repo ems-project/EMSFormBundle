@@ -2,10 +2,9 @@
 
 namespace EMS\FormBundle\Components;
 
-use EMS\FormBundle\Components\Field\ChoiceSelect;
+use EMS\FormBundle\Components\Field\ChoiceSelectNested;
 use EMS\FormBundle\Components\Field\FieldInterface;
 use EMS\FormBundle\FormConfig\AbstractFormConfig;
-use EMS\FormBundle\FormConfig\ElementInterface;
 use EMS\FormBundle\FormConfig\FieldChoicesConfig;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
@@ -15,8 +14,6 @@ use EMS\FormBundle\FormConfig\SubFormConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
@@ -38,13 +35,11 @@ class Form extends AbstractType
 
         foreach ($config->getElements() as $element) {
             if ($element instanceof FieldConfig) {
-                $field = $this->createField($element);
-                $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
+                $this->addField($builder, $element);
             } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
             }
 
-            $this->addDynamicFields($builder, $element);
         }
     }
 
@@ -89,74 +84,51 @@ class Form extends AbstractType
         throw new \Exception('Could not build form, config missing!');
     }
 
-    private function createField(FieldConfig $config): FieldInterface
+    protected function createField(FieldConfig $config): FieldInterface
     {
         $class = $config->getClassName();
 
         return new $class($config);
     }
 
-    private function addDynamicFields(FormBuilderInterface $builder, ElementInterface $element): void
+    private function addField(FormBuilderInterface $builder, FieldConfig $element): void
     {
-        if (!$element instanceof FieldConfig) {
-            return;
-        }
+        $field = $this->createField($element);
+        $configOption = ['field-config' => $element];
+        $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
 
-        if ($element->getClassName() === ChoiceSelect::class && count($element->getChoiceList()) !== 0) {
-            $this->addDynamicChoiceSelect($builder, $element);
-            return;
-        }
+        $builder->add($element->getName(), $field->getFieldClass(), $options);
     }
 
-    private function addDynamicChoiceSelect(FormBuilderInterface $builder, ElementInterface $element)
+    private function addChoiceSelectSubLevel(FormBuilderInterface $builder, FormInterface $form, FieldConfig $config, FieldChoicesConfig $choices, ?string $data, int $level = 1): void
     {
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($element) {
-                $this->addChoiceSelectSubLevels($event->getForm(), $element);
-            }
-        );
+        if (is_string($data)) {
+            $choices->addChoice($data);
+        }
 
-        //TODO in fact we should add an EventListener on each level in our code!
-        $builder->get($element->getName())->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($element) {
-                $data = $event->getForm()->getData();
-                $this->addChoiceSelectSubLevels($event->getForm(), $element, \is_array($data) ? $data : [$data]);
-            }
-        );
-    }
-
-    private function addChoiceSelectSubLevels(FormInterface $form, FieldConfig $config, array $choices = [])
-    {
-        $choicesConfig = $config->getChoices();
-        if (!$choicesConfig->isMultiLevel()) {
+        if (!$choices->hasNextLevel()) {
             return;
         }
 
-        dump($choicesConfig->getMaxLevel());
-
-        if (count($choices) === 0) {
-            for ($i = 1; $i <= $choicesConfig->getMaxLevel(); $i++) {
-                $form->add(sprintf('%s-level-%d', $config->getName(), $i), HiddenType::class);
-            }
+        if ($choices->getMaxLevel() < $level) {
             return;
         }
 
-        $levelsToRender = count($choices);
-        dump($levelsToRender);
-        for ($i = 1; $i <= $levelsToRender; $i++) {
-            $config->getChoices()->addChoice($choices[$i - 1]);
+        $fieldName = sprintf('%s-level-%d', $config->getName(), $level);
+
+        if ($choices->hasChoosen()) {
             $field = $this->createField($config);
             $form->add(
-                sprintf('%s-level-%gitd', $config->getName(), $i),
+                $fieldName,
                 $field->getFieldClass(),
                 $field->getOptions()
             );
+            //$this->addChoiceSelectEventListener($builder, $config, $choices, $fieldName);
+            return;
         }
 
-
+        $form->add($fieldName, HiddenType::class);
+        //$this->addChoiceSelectSubLevel($builder, $form, $config, $choices, null, $level + 1);
+        //$this->addChoiceSelectEventListener($builder, $config, $choices, $fieldName);
     }
-
-
 }

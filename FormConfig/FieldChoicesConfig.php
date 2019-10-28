@@ -46,6 +46,7 @@ class FieldChoicesConfig
 
     public function addChoice(string $choice): void
     {
+        dump("added choice:", $choice);
         $this->choices[] = $choice;
     }
 

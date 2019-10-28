@@ -85,6 +85,11 @@ class FieldConfig implements ElementInterface
         return $this->className;
     }
 
+    public function setClassName(string $classname): void
+    {
+        $this->className = $classname;
+    }
+
     public function getDefaultValue(): ?string
     {
         return $this->defaultValue;
