@@ -17,25 +17,29 @@ class ForgivingNumberDataTransformer implements DataTransformerInterface
     }
     
     public function transform($value)
-    { 
+    {
         return $value;
     }
 
     public function reverseTransform($value)
     {
-        if (count($this->valuesObject) == 0 ) {
-            $number = new NumberValue($value);
-            return $number->getDigits();
-        }
-        foreach ($this->valuesObject as $class) {
-            $number = new $class($value);
-            if ($number->validate()) {
-                return $number->getValidatedInput();
+        if ($value != null) {
+            if (count($this->valuesObject) == 0) {
+                $number = new NumberValue($value);
+                return $number->getDigits();
             }
+            foreach ($this->valuesObject as $class) {
+                try {
+                    $validation = new $class($value);
+                    return $validation->getValidatedInput();
+                } catch (\Exception $exception) {
+                    continue;
+                }
+            }
+            throw new TransformationFailedException(sprintf(
+                'Is not a valid number "%s"',
+                $value
+            ));
         }
-        throw new TransformationFailedException(sprintf(
-            'Is not a valid number "%s"',
-            $value
-        ));
     }
 }

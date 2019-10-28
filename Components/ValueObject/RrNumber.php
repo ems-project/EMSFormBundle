@@ -72,4 +72,9 @@ class RrNumber
     {
         return date("y") <= $this->year;
     }
+    
+    public function getValidatedInput(): string
+    {
+        return (string) $this->base . $this->controlNumber;
+    }
 }

@@ -2,9 +2,10 @@
 
 namespace EMS\FormBundle\Components\Field;
 
+use EMS\FormBundle\Components\ValueObject\BelgiumPhoneNumber;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 
-class Phone extends AbstractField
+class Phone extends AbstractForgivingNumberField
 {
     public function getFieldClass(): string
     {
@@ -14,5 +15,10 @@ class Phone extends AbstractField
     public function getId(): string
     {
         return 'phone';
+    }
+    
+    public function getValueObjects(): array
+    {
+        return [BelgiumPhoneNumber::class];
     }
 }

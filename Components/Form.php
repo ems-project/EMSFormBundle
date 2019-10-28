@@ -37,7 +37,7 @@ class Form extends AbstractType
                 $field = $this->createField($element);
                 $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
                 if ($field instanceof AbstractForgivingNumberField) {
-                   $builder->get($element->getName())
+                    $builder->get($element->getName())
                         ->addModelTransformer($field->getDataTransformer());
                 }
             } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {

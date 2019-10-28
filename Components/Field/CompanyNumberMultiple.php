@@ -17,7 +17,7 @@ class CompanyNumberMultiple extends AbstractForgivingNumberField
         return 'company-number-multiple';
     }
     
-    public function getValueObjects() : array
+    public function getValueObjects(): array
     {
         return [BelgiumCompanyNumberMultiple::class];
     }

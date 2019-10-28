@@ -2,6 +2,8 @@
 
 namespace EMS\FormBundle\Components\ValueObject;
 
+use phpDocumentor\Reflection\Types\This;
+
 class BelgiumPhoneNumber
 {
     /** @var NumberValue */
@@ -50,5 +52,14 @@ class BelgiumPhoneNumber
         }
 
         return self::LOCAL;
+    }
+    
+    public function getValidatedInput(): string
+    {
+        if (strpos($this->number->getInput(), '+') === 0) {
+            return '+' .  $this->number->getDigits();
+        }
+
+        return $this->number->getDigits();
     }
 }

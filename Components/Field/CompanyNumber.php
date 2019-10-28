@@ -2,9 +2,10 @@
 
 namespace EMS\FormBundle\Components\Field;
 
+use EMS\FormBundle\Components\ValueObject\BelgiumCompanyNumber;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class CompanyNumber extends AbstractField
+class CompanyNumber extends AbstractForgivingNumberField
 {
     public function getFieldClass(): string
     {
@@ -14,5 +15,10 @@ class CompanyNumber extends AbstractField
     public function getId(): string
     {
         return 'company-number';
+    }
+    
+    public function getValueObjects(): array
+    {
+        return [BelgiumCompanyNumber::class];
     }
 }
