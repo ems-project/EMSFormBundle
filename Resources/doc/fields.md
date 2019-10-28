@@ -68,7 +68,7 @@ Allow an end user to upload a file.
 This field only allows integers as input.
 
 ### Number Forgiving Input <a name="numberforgivinginput"/>
-This field is a text input and use a data transfomer to keep only digits and transform data input to correct input.
+Instead of using a "Numbers" field, you can use this field to have a forgiving input format. Your users can make errors or separate the number how they want. The data being validated and send are the numbers in this text field.
 
 ### Phone <a name="phone"/>
 A field that's used for phone input, as per html standard no validations happen by default on this field.

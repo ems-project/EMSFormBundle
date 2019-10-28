@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use EMS\FormBundle\Components\Field\AbstractForgivingNumberField;
-use Symfony\Component\Form\CallbackTransformer;
+use EMS\FormBundle\FormConfig\ElementInterface;
 
 class Form extends AbstractType
 {
@@ -36,10 +36,7 @@ class Form extends AbstractType
             if ($element instanceof FieldConfig) {
                 $field = $this->createField($element);
                 $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
-                if ($field instanceof AbstractForgivingNumberField) {
-                    $builder->get($element->getName())
-                        ->addModelTransformer($field->getDataTransformer());
-                }
+                $this->addModelTransformers($builder, $element, $field);
             } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
             }
@@ -92,5 +89,13 @@ class Form extends AbstractType
         $class = $config->getClassName();
 
         return new $class($config);
+    }
+    
+    private function addModelTransformers(FormBuilderInterface $builder, ElementInterface $element, FieldInterface $field): void
+    {
+        if ($field instanceof AbstractForgivingNumberField) {
+            $builder->get($element->getName())
+            ->addModelTransformer($field->getDataTransformer());
+        }
     }
 }

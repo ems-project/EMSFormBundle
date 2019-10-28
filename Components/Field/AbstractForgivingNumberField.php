@@ -3,6 +3,7 @@
 namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\DataTransformers\ForgivingNumberDataTransformer;
+use EMS\FormBundle\Components\ValueObject\NumberValue;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -13,13 +14,13 @@ abstract class AbstractForgivingNumberField extends AbstractField
         return TextType::class;
     }
     
-    public function getValueObjects(): array
+    public function getTransformerClasses(): array
     {
-        return [];
+        return [NumberValue::class];
     }
     
     public function getDataTransformer(): DataTransformerInterface
     {
-        return new ForgivingNumberDataTransformer($this->getValueObjects());
+        return new ForgivingNumberDataTransformer($this->getTransformerClasses());
     }
 }

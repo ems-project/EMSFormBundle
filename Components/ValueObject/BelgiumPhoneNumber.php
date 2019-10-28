@@ -54,7 +54,7 @@ class BelgiumPhoneNumber
         return self::LOCAL;
     }
     
-    public function getValidatedInput(): string
+    public function transform(): string
     {
         if (strpos($this->number->getInput(), '+') === 0) {
             return '+' .  $this->number->getDigits();

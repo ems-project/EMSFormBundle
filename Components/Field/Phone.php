@@ -17,7 +17,7 @@ class Phone extends AbstractForgivingNumberField
         return 'phone';
     }
     
-    public function getValueObjects(): array
+    public function getTransformerClasses(): array
     {
         return [BelgiumPhoneNumber::class];
     }

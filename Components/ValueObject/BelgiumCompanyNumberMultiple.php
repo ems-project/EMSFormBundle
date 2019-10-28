@@ -34,13 +34,9 @@ class BelgiumCompanyNumberMultiple
         return true;
     }
     
-    public function getValidatedInput(): string
+    public function transform(): string
     {
         $numbers = str_split($this->number->getDigits(), 10);
-        $data = '';
-        foreach ($numbers as $key => $number) {
-            $data .= ($key == 0) ? $number : ' ' . $number;
-        }
-        return $data;
+        return \join(' ', $numbers);
     }
 }

@@ -2,18 +2,17 @@
 
 namespace EMS\FormBundle\Components\DataTransformers;
 
-use EMS\FormBundle\Components\ValueObject\NumberValue;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ForgivingNumberDataTransformer implements DataTransformerInterface
 {
     /** @var array */
-    private $valuesObject;
+    private $transformerClasses;
     
-    public function __construct(array $valuesObject)
+    public function __construct(array $transformerClasses)
     {
-        $this->valuesObject = $valuesObject;
+        $this->transformerClasses = $transformerClasses;
     }
     
     public function transform($value)
@@ -23,23 +22,21 @@ class ForgivingNumberDataTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if ($value != null) {
-            if (count($this->valuesObject) == 0) {
-                $number = new NumberValue($value);
-                return $number->getDigits();
-            }
-            foreach ($this->valuesObject as $class) {
-                try {
-                    $validation = new $class($value);
-                    return $validation->getValidatedInput();
-                } catch (\Exception $exception) {
-                    continue;
-                }
-            }
-            throw new TransformationFailedException(sprintf(
-                'Is not a valid number "%s"',
-                $value
-            ));
+        if ($value === null) {
+            return;
         }
+
+        foreach ($this->transformerClasses as $class) {
+            try {
+                $validation = new $class($value);
+                return $validation->transform();
+            } catch (\Exception $exception) {
+                continue;
+            }
+        }
+        throw new TransformationFailedException(sprintf(
+            'Is not a valid number "%s"',
+            $value
+        ));
     }
 }
