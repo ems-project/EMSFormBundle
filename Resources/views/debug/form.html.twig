@@ -43,7 +43,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 let form = document.getElementById("{{ form.vars.id }}");
                 formValidation(form);
-                dynamicFields(form);
+                dynamicFields(form, "{{ form.vars.form_dynamic_field_url }}");
             });
         </script>
     {% endif %}

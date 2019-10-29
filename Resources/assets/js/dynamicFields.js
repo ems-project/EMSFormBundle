@@ -1,12 +1,12 @@
 import {addDynamicChoiceSelect} from "./dynamicFields/dynamicChoiceSelect";
 
-export function addDynamicFields(form)
+export function addDynamicFields(form, ajaxUrl)
 {
     Array.from(form.getElementsByClassName("dynamic-choice-select")).forEach(function(item) {
-        addDynamicChoiceSelect(item);
+        addDynamicChoiceSelect(item, ajaxUrl);
     });
 }
 
-window.dynamicFields = function (form) {
-    addDynamicFields(form);
+window.dynamicFields = function (form, ajaxUrl) {
+    addDynamicFields(form, ajaxUrl);
 };

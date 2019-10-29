@@ -12,4 +12,8 @@
             <default key="_controller">emsf.controller.debug::form</default>
             <default key="_locale">%locale%</default>
         </route>
+        <route id="_emsf_debug_dynamic_field_ajax" path="/debug/ajax/{ouuid}/{_locale}" methods="GET|POST">
+            <default key="_controller">emsf.controller.debug::dynamicFieldAjax</default>
+            <default key="_locale">%locale%</default>
+        </route>
 </routes>

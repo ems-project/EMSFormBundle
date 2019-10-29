@@ -45,6 +45,7 @@ class Form extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['form_config'] = $options['config'];
+        $view->vars['form_dynamic_field_url'] = $options['dynamic-field-url'];
 
         parent::buildView($view, $form, $options);
     }
@@ -54,7 +55,7 @@ class Form extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver
-            ->setRequired(['ouuid', 'locale'])
+            ->setRequired(['ouuid', 'locale', 'dynamic-field-url'])
             ->setDefault('config', null)
             ->setNormalizer('config', function (Options $options, $value) {
                 return $value ? $value : $this->configFactory->create($options['ouuid'], $options['locale']);
