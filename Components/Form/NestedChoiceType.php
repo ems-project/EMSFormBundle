@@ -23,6 +23,10 @@ class NestedChoiceType extends Form
         $field = $this->createField($config);
 
         $builder->add('level_0', $field->getFieldClass(), $field->getOptions());
+
+        if ($choices === null) {
+            return;
+        }
         $builder->addEventSubscriber(new NestedChoiceEventSubscriber($field, $choices));
     }
 

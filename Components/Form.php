@@ -37,7 +37,6 @@ class Form extends AbstractType
             } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
             }
-
         }
     }
 
