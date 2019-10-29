@@ -2,9 +2,11 @@
 
 namespace EMS\FormBundle\Components;
 
+use EMS\FormBundle\Components\Field\AbstractForgivingNumberField;
 use EMS\FormBundle\Components\Field\ChoiceSelectNested;
 use EMS\FormBundle\Components\Field\FieldInterface;
 use EMS\FormBundle\FormConfig\AbstractFormConfig;
+use EMS\FormBundle\FormConfig\ElementInterface;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
@@ -95,5 +97,14 @@ class Form extends AbstractType
         $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
 
         $builder->add($element->getName(), $field->getFieldClass(), $options);
+        $this->addModelTransformers($builder, $element, $field);
+    }
+    
+    private function addModelTransformers(FormBuilderInterface $builder, ElementInterface $element, FieldInterface $field): void
+    {
+        if ($field instanceof AbstractForgivingNumberField) {
+            $builder->get($element->getName())
+            ->addModelTransformer($field->getDataTransformer());
+        }
     }
 }

@@ -33,4 +33,10 @@ class BelgiumCompanyNumberMultiple
         
         return true;
     }
+    
+    public function transform(): string
+    {
+        $numbers = str_split($this->number->getDigits(), 10);
+        return \join(' ', $numbers);
+    }
 }
