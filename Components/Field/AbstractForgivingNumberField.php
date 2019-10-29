@@ -16,7 +16,7 @@ abstract class AbstractForgivingNumberField extends AbstractField
     
     public function getTransformerClasses(): array
     {
-        return [NumberValue::class];
+        return [];
     }
     
     public function getDataTransformer(): DataTransformerInterface
