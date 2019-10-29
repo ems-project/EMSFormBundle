@@ -35,33 +35,18 @@ class FieldChoicesConfig
         return $this->placeholder;
     }
 
+    public function listLabel(): string
+    {
+        $choices = $this->choices;
+        $choice = \array_pop($choices);
+
+        $list = $this->combineValuesAndLabels($this->values, $this->labels, $choices);
+        return \array_flip($list)[$choice];
+    }
+
     public function list(): array
     {
-        $values = $this->values;
-        $labels = $this->labels;
-
-        foreach ($this->choices as $choice) {
-            $idx = \array_search($choice, $this->getTopLevel($values));
-            if ($idx === false) {
-                continue;
-            }
-            $values = $values[$idx];
-            $labels = $labels[$idx];
-
-            if (!is_array($values) || !is_array($labels)) {
-                return [];
-            }
-
-            $values = \reset($values);
-            $labels = \reset($labels);
-
-            if ($values === false || $labels === false) {
-                return [];
-            }
-        }
-
-        $list = \array_combine($this->getTopLevel($labels), $this->getTopLevel($values));
-        return \is_array($list) ? $list : [];
+        return $this->combineValuesAndLabels($this->values, $this->labels, $this->choices);
     }
 
     public function addChoice(string $choice): void
@@ -72,6 +57,11 @@ class FieldChoicesConfig
     public function isMultiLevel(): bool
     {
         return $this->calculateMaxLevel($this->values) > 0;
+    }
+
+    public function getMaxLevel(): int
+    {
+        return $this->calculateMaxLevel($this->values);
     }
 
     private function calculateMaxLevel(array $choices): int
@@ -101,5 +91,31 @@ class FieldChoicesConfig
                 $elements
             )
         );
+    }
+
+    private function combineValuesAndLabels(array $values, array $labels, array $choices): array
+    {
+        foreach ($choices as $choice) {
+            $idx = \array_search($choice, $this->getTopLevel($values));
+            if ($idx === false) {
+                continue;
+            }
+            $values = $values[$idx];
+            $labels = $labels[$idx];
+
+            if (!is_array($values) || !is_array($labels)) {
+                return [];
+            }
+
+            $values = \reset($values);
+            $labels = \reset($labels);
+
+            if ($values === false || $labels === false) {
+                return [];
+            }
+        }
+
+        $list = \array_combine($this->getTopLevel($labels), $this->getTopLevel($values));
+        return \is_array($list) ? $list : [];
     }
 }
