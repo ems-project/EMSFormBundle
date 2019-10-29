@@ -10,8 +10,3 @@ export function addDynamicFields(form)
 window.dynamicFields = function (form) {
     addDynamicFields(form);
 };
-
-
-
-
-
