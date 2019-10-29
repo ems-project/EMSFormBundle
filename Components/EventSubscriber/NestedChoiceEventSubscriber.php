@@ -3,7 +3,6 @@
 namespace EMS\FormBundle\Components\EventSubscriber;
 
 use EMS\FormBundle\Components\Field\FieldInterface;
-use EMS\FormBundle\Components\Form\NestedChoiceType;
 use EMS\FormBundle\FormConfig\FieldChoicesConfig;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -77,7 +76,12 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
     private function addField(string $fieldName, string $choice, FormInterface $form): void
     {
         $options = $this->field->getOptions();
-        $this->choices->addChoice($choice);
+
+        try {
+            $this->choices->addChoice($choice);
+        } catch (\Exception $exception) {
+            return;
+        }
 
         if (count($this->choices->list()) === 0) {
             return;

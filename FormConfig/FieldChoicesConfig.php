@@ -41,7 +41,7 @@ class FieldChoicesConfig
         $choice = \array_pop($choices);
 
         $list = $this->combineValuesAndLabels($this->values, $this->labels, $choices);
-        return \array_flip($list)[$choice];
+        return \array_flip($list)[$choice] ?? '';
     }
 
     public function list(): array
@@ -51,6 +51,10 @@ class FieldChoicesConfig
 
     public function addChoice(string $choice): void
     {
+        if (!isset(\array_flip($this->list())[$choice])) {
+            throw new \Exception('invalid choice: happens when previous level choices are changed without ajax calls');
+        }
+
         $this->choices[] = $choice;
     }
 
