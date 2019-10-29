@@ -72,4 +72,9 @@ class RrNumber
     {
         return date("y") <= $this->year;
     }
+    
+    public function transform(): string
+    {
+        return sprintf('%d%d', $this->base, $this->controlNumber);
+    }
 }

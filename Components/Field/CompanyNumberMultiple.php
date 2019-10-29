@@ -3,8 +3,9 @@
 namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use EMS\FormBundle\Components\ValueObject\BelgiumCompanyNumberMultiple;
 
-class CompanyNumberMultiple extends AbstractField
+class CompanyNumberMultiple extends AbstractForgivingNumberField
 {
     public function getFieldClass(): string
     {
@@ -14,5 +15,10 @@ class CompanyNumberMultiple extends AbstractField
     public function getId(): string
     {
         return 'company-number-multiple';
+    }
+    
+    public function getTransformerClasses(): array
+    {
+        return [BelgiumCompanyNumberMultiple::class];
     }
 }

@@ -17,29 +17,30 @@ export function setBelgiumPhoneValidation(element) {
         if (numbers === null) {
             return false;
         }
-
         let phone = numbers.map(String).join('');
         let mz;
         let valid = false;
-        while ((mz = regexLeadingZeros.exec(value)) !== null) {
+        while ((mz = regexLeadingZeros.exec(phone)) !== null) {
             // This is necessary to avoid infinite loops with zero-width matches
             if (mz.index === regexLeadingZeros.lastIndex) {
                 regexLeadingZeros.lastIndex++;
             }
-
             valid = valid || (phone.length === 13) || (phone.length === 12);
         }
-
-        let mp;
-        while ((mp = regexLeadingPlus.exec(value)) !== null) {
-            // This is necessary to avoid infinite loops with zero-width matches
-            if (mp.index === regexLeadingPlus.lastIndex) {
-                regexLeadingPlus.lastIndex++;
+        if (value.startsWith("+")) {
+            // in this case we add a character
+            phone = ("+").concat(phone);
+            let mp;
+            while ((mp = regexLeadingPlus.exec(phone)) !== null) {
+                // This is necessary to avoid infinite loops with zero-width matches
+                if (mp.index === regexLeadingPlus.lastIndex) {
+                    regexLeadingPlus.lastIndex++;
+                }
+                // Phone with a + ( => a character has been added)
+                valid = valid || (phone.length === 12) || (phone.length === 11);
             }
-
-            valid = valid ||  (phone.length === 11) || (phone.length === 10);
+            return valid;
         }
-
         return valid || (phone.length === 10) || (phone.length === 9);
     }
 }
