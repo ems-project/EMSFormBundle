@@ -5,14 +5,12 @@ namespace EMS\FormBundle\Components;
 use EMS\FormBundle\Components\Field\ChoiceSelectNested;
 use EMS\FormBundle\Components\Field\FieldInterface;
 use EMS\FormBundle\FormConfig\AbstractFormConfig;
-use EMS\FormBundle\FormConfig\FieldChoicesConfig;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
 use EMS\FormBundle\FormConfig\MarkupConfig;
 use EMS\FormBundle\FormConfig\SubFormConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -98,37 +96,5 @@ class Form extends AbstractType
         $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
 
         $builder->add($element->getName(), $field->getFieldClass(), $options);
-    }
-
-    private function addChoiceSelectSubLevel(FormBuilderInterface $builder, FormInterface $form, FieldConfig $config, FieldChoicesConfig $choices, ?string $data, int $level = 1): void
-    {
-        if (is_string($data)) {
-            $choices->addChoice($data);
-        }
-
-        if (!$choices->hasNextLevel()) {
-            return;
-        }
-
-        if ($choices->getMaxLevel() < $level) {
-            return;
-        }
-
-        $fieldName = sprintf('%s-level-%d', $config->getName(), $level);
-
-        if ($choices->hasChoosen()) {
-            $field = $this->createField($config);
-            $form->add(
-                $fieldName,
-                $field->getFieldClass(),
-                $field->getOptions()
-            );
-            //$this->addChoiceSelectEventListener($builder, $config, $choices, $fieldName);
-            return;
-        }
-
-        $form->add($fieldName, HiddenType::class);
-        //$this->addChoiceSelectSubLevel($builder, $form, $config, $choices, null, $level + 1);
-        //$this->addChoiceSelectEventListener($builder, $config, $choices, $fieldName);
     }
 }

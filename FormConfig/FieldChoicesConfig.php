@@ -10,8 +10,6 @@ class FieldChoicesConfig
     private $values;
     /** @var array */
     private $labels;
-    /** @var int */
-    private $maxLevel;
     /** @var array */
     private $choices = [];
     /** @var ?string */
@@ -39,48 +37,41 @@ class FieldChoicesConfig
 
     public function list(): array
     {
-        $combine = array_combine($this->getCurrentLevel($this->labels), $this->getCurrentLevel($this->values));
+        $values = $this->values;
+        $labels = $this->labels;
 
-        return is_array($combine) ? $combine : [];
+        foreach ($this->choices as $choice) {
+            $idx = \array_search($choice, $this->getTopLevel($values));
+            if ($idx === false) {
+                continue;
+            }
+            $values = $values[$idx];
+            $labels = $labels[$idx];
+
+            if (!is_array($values) || !is_array($labels)) {
+                return [];
+            }
+
+            $values = \reset($values);
+            $labels = \reset($labels);
+
+            if ($values === false || $labels === false) {
+                return [];
+            }
+        }
+
+        $list = \array_combine($this->getTopLevel($labels), $this->getTopLevel($values));
+        return \is_array($list) ? $list : [];
     }
 
     public function addChoice(string $choice): void
     {
-        dump("added choice:", $choice);
         $this->choices[] = $choice;
     }
 
     public function isMultiLevel(): bool
     {
-        return $this->getMaxLevel() > 0;
-    }
-
-    public function hasNextLevel(): bool
-    {
-        $nextLevel = \array_reduce(
-            $this->choices,
-            function($values, $choice) {
-                return $values[$choice] ?? [];
-            },
-            $this->values
-        );
-
-        return count($nextLevel) < count($nextLevel, COUNT_RECURSIVE);
-    }
-
-    public function hasChoosen(): bool
-    {
-        return count($this->choices) > 0;
-    }
-
-    public function getMaxLevel(): int
-    {
-        if ($this->maxLevel !== null) {
-            return $this->maxLevel;
-        }
-
-        $this->maxLevel = max(0, $this->calculateMaxLevel($this->values));
-        return $this->maxLevel;
+        return $this->calculateMaxLevel($this->values) > 0;
     }
 
     private function calculateMaxLevel(array $choices): int
@@ -88,7 +79,7 @@ class FieldChoicesConfig
         $level = 0;
         foreach ($choices as $choice) {
             if (\is_array($choice)) {
-                $level = max(
+                $level = \max(
                     $level,
                     1 + $this->calculateMaxLevel($choice[\array_key_first($choice)])
                 );
@@ -97,7 +88,7 @@ class FieldChoicesConfig
         return $level;
     }
 
-    private function getCurrentLevel(array $elements): array
+    private function getTopLevel(array $elements): array
     {
         return \array_filter(
             \array_map(
