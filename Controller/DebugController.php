@@ -5,13 +5,13 @@ namespace EMS\FormBundle\Controller;
 use EMS\FormBundle\Components\Form;
 use EMS\FormBundle\Submit\Client;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
-class DebugController
+class DebugController extends AbstractFormController
 {
     /** @var FormFactory */
     private $formFactory;
@@ -41,7 +41,6 @@ class DebugController
             'config' => $form->getConfig()->getOption('config'),
             'locales' => $this->locales,
             'url' => $request->getSchemeAndHttpHost() . $request->getBasePath(),
-            'dynamic-field-url' => $this->router->generate('_emsf_debug_dynamic_field_ajax', $ouuid, $request->getLocale()),
         ]));
     }
 
@@ -71,15 +70,7 @@ class DebugController
 
     public function dynamicFieldAjax(Request $request, string $ouuid): Response
     {
-        return new JsonResponse();
-    }
-
-    private function getFormOptions(string $ouuid, string $locale)
-    {
-        return [
-            'ouuid' => $ouuid,
-            'locale' => $locale,
-            'dynamic-field-url' => $this->router->generate('_emsf_debug_dynamic_field_ajax', ['ouuid' => $ouuid, '_locale' => $locale]),
-        ];
+        $forward = $this->router->generate('_emsf_dynamic_field_ajax', ['ouuid' => $ouuid, '_locale' => $request->getLocale()]);
+        return new RedirectResponse($forward, 307);
     }
 }

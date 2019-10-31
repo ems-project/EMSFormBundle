@@ -45,7 +45,6 @@ class Form extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['form_config'] = $options['config'];
-        $view->vars['form_dynamic_field_url'] = $options['dynamic-field-url'];
 
         parent::buildView($view, $form, $options);
     }
@@ -55,7 +54,7 @@ class Form extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver
-            ->setRequired(['ouuid', 'locale', 'dynamic-field-url'])
+            ->setRequired(['ouuid', 'locale'])
             ->setDefault('config', null)
             ->setNormalizer('config', function (Options $options, $value) {
                 return $value ? $value : $this->configFactory->create($options['ouuid'], $options['locale']);
@@ -94,7 +93,7 @@ class Form extends AbstractType
     private function addField(FormBuilderInterface $builder, FieldConfig $element): void
     {
         $field = $this->createField($element);
-        $configOption = ['field-config' => $element];
+        $configOption = ['field_config' => $element];
         $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
 
         $builder->add($element->getName(), $field->getFieldClass(), $options);

@@ -6,6 +6,7 @@ module.exports = {
     mode: 'development',
     entry: {
         'form': './Resources/assets/js/form.js',
+        'formDebug': './Resources/assets/js/formDebug.js',
         'backend': './Resources/assets/js/backend.js',
         'dynamicFields': './Resources/assets/js/dynamicFields.js',
         'validation': './Resources/assets/js/validation.js'

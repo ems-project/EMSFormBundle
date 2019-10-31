@@ -8,11 +8,13 @@
             <default key="_controller">emsf.controller.debug::iframe</default>
             <default key="_locale">%locale%</default>
         </route>
+
         <route id="_emsf_debug_form" path="/debug/form/{ouuid}/{_locale}" methods="GET|POST">
             <default key="_controller">emsf.controller.debug::form</default>
             <default key="_locale">%locale%</default>
         </route>
-        <route id="_emsf_debug_dynamic_field_ajax" path="/debug/ajax/{ouuid}/{_locale}" methods="GET|POST">
+
+        <route id="_emsf_debug_dynamic_field_ajax" path="/debug/ajax/{ouuid}/{_locale}" methods="POST">
             <default key="_controller">emsf.controller.debug::dynamicFieldAjax</default>
             <default key="_locale">%locale%</default>
         </route>

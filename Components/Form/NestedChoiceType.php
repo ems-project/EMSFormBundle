@@ -32,21 +32,21 @@ class NestedChoiceType extends Form
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['field-config'] = $options['field-config'];
+        $view->vars['field_config'] = $options['field_config'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired('field-config')
-            ->setAllowedTypes('field-config', FieldConfig::class)
+            ->setRequired(['field_config'])
+            ->setAllowedTypes('field_config', FieldConfig::class)
         ;
     }
 
     private function getFieldConfig(array $options): FieldConfig
     {
-        if (isset($options['field-config'])) {
-            return $options['field-config'];
+        if (isset($options['field_config'])) {
+            return $options['field_config'];
         }
 
         throw new \Exception('Could not build form, nested choice field config missing!');

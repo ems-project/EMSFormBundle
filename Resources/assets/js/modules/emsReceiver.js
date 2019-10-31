@@ -36,7 +36,6 @@ class emsReceiver {
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("load", evt => emsReceiver.onResponse(evt, xhr, message));
 
-
         switch (data.instruction) {
             case "form": {
                 xhr.open("GET", this.basePath+"/form/"+this.id+'/'+this.lang);
@@ -45,20 +44,17 @@ class emsReceiver {
                 break;
             }
             case "submit": {
-                let urlEncoded = [];
-                for (let key in data.form) {
-                    urlEncoded.push(encodeURI(key.concat('=').concat(data.form[key])));
-                }
-
                 xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-
-                if ('token' in data) {
-                    let token = data.token;
-                    xhr.setRequestHeader('x-hashcash', [token.hash, token.nonce, token.data].join('|'));
-                }
-
-                xhr.send(urlEncoded.join('&'));
+                emsReceiver.addHashCashHeader(data, xhr);
+                xhr.send(emsReceiver.urlEncodeData(data.form));
+                break;
+            }
+            case "dynamic": {
+                xhr.open("POST", this.basePath+"/ajax/"+this.id+"/"+this.lang);
+                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
+                emsReceiver.addHashCashHeader(data, xhr);
+                xhr.send(emsReceiver.urlEncodeData(data.data));
                 break;
             }
             default:
@@ -68,6 +64,19 @@ class emsReceiver {
     static onResponse(evt, xhr, message) {
         if (xhr.status === 200) {
             message.source.postMessage(xhr.responseText, message.origin);
+        }
+    }
+    static urlEncodeData(data) {
+        let urlEncoded = [];
+        for (let key in data) {
+            urlEncoded.push(encodeURI(key.concat('=').concat(data[key])));
+        }
+        return urlEncoded.join('&');
+    }
+    static addHashCashHeader(data, xhr) {
+        if ('token' in data) {
+            let token = data.token;
+            xhr.setRequestHeader('x-hashcash', [token.hash, token.nonce, token.data].join('|'));
         }
     }
 }

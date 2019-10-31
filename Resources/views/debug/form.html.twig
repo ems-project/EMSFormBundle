@@ -36,16 +36,17 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% if validate == 1 %}
-        <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('validation.js') }} "></script>
-        <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('dynamicFields.js') }} "></script>
-        <script type="application/javascript">
-            document.addEventListener('DOMContentLoaded', function () {
-                let form = document.getElementById("{{ form.vars.id }}");
-                formValidation(form);
-                dynamicFields(form, "{{ form.vars.form_dynamic_field_url }}");
-            });
-        </script>
-    {% endif %}
+    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('formDebug.js') }} "></script>
+    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('validation.js') }} "></script>
+    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('dynamicFields.js') }} "></script>
+    <script type="application/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            let form = document.getElementById("{{ form.vars.id }}");
+            {% if validate == 1 %}
+            formValidation(form);
+            {% endif %}
+            dynamicFields(form, window.emsFormDebug);
+        });
+    </script>
     {{ parent() }}
 {% endblock %}
