@@ -18,11 +18,13 @@ class SymfonyFormFieldsByNameArray
             return "";
         }
 
-        return \json_encode(\array_diff(\array_keys($this->flattenWithKeys($this->fields)), $exclude));
+        $json = \json_encode(\array_diff(\array_keys($this->flattenWithKeys($this->fields)), $exclude));
+        return $json === false ? "" : $json;
     }
 
-    private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = []) {
-        foreach($array as $k => $v) {
+    private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = [])
+    {
+        foreach ($array as $k => $v) {
             if (is_array($v)) {
                 $result = $this->flattenWithKeys($v, $childPrefix, $root . $k . $childPrefix, $result);
             } else {

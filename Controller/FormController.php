@@ -71,7 +71,7 @@ class FormController extends AbstractFormController
 
         return new JsonResponse([
             'instruction' => 'dynamic',
-            'response' => $this->twig->render( '@EMSForm/nested_choice_form.html.twig', [
+            'response' => $this->twig->render('@EMSForm/nested_choice_form.html.twig', [
                 'form' => $form->createView(),
             ]),
             'dynamicFields' => $dynamicFields->getFieldIdsJson($excludeFields),
