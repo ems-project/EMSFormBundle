@@ -5,11 +5,13 @@ namespace EMS\FormBundle\Controller;
 use EMS\FormBundle\Components\Form;
 use EMS\FormBundle\Submit\Client;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
-class DebugController
+class DebugController extends AbstractFormController
 {
     /** @var FormFactory */
     private $formFactory;
@@ -19,18 +21,21 @@ class DebugController
     private $twig;
     /** @var array */
     private $locales = [];
+    /** @var RouterInterface */
+    private $router;
 
-    public function __construct(FormFactory $formFactory, Client $client, Environment $twig, array $locales)
+    public function __construct(FormFactory $formFactory, Client $client, Environment $twig, RouterInterface $router, array $locales)
     {
         $this->formFactory = $formFactory;
         $this->client = $client;
         $this->twig = $twig;
         $this->locales = $locales;
+        $this->router = $router;
     }
 
     public function iframe(Request $request, string $ouuid): Response
     {
-        $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
+        $form = $this->formFactory->create(Form::class, [], $this->getFormOptions($ouuid, $request->getLocale()));
 
         return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
             'config' => $form->getConfig()->getOption('config'),
@@ -41,7 +46,7 @@ class DebugController
 
     public function form(Request $request, string $ouuid): Response
     {
-        $formOptions = ['ouuid' => $ouuid, 'locale' => $request->getLocale()];
+        $formOptions = $this->getFormOptions($ouuid, $request->getLocale());
 
         if (!$request->query->get('validate', true)) {
             $formOptions['attr'] = ['novalidate' => 'novalidate'];
@@ -61,5 +66,11 @@ class DebugController
             'response' => $responses,
             'url' => $request->getSchemeAndHttpHost() . $request->getBasePath(),
         ]));
+    }
+
+    public function dynamicFieldAjax(Request $request, string $ouuid): Response
+    {
+        $forward = $this->router->generate('_emsf_dynamic_field_ajax', ['ouuid' => $ouuid, '_locale' => $request->getLocale()]);
+        return new RedirectResponse($forward, 307);
     }
 }

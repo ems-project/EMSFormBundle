@@ -1,4 +1,5 @@
-import {addValidation} from "../validation";
+import {addValidation, disableCopyPaste} from "../validation";
+import {addDynamicFields, replaceFormFields} from "../dynamicFields";
 import {generate} from 'hashcash-token';
 
 export const DEFAULT_CONFIG = {
@@ -45,6 +46,8 @@ export class emsForm {
         form.addEventListener('submit', evt => this.onSubmitForm(evt));
 
         addValidation(form);
+        disableCopyPaste(form);
+        addDynamicFields(form, this);
     }
     static jsonParse(string) {
         try {
@@ -73,6 +76,10 @@ export class emsForm {
             case 'submitted':
                 this.elementForm.innerHTML = data.response;
                 break;
+            case 'dynamic':
+                replaceFormFields(data.response, Object.values(emsForm.jsonParse(data.dynamicFields)));
+                addDynamicFields(this.elementForm.querySelector('form'), this);
+                break;
             default:
                return;
         }
@@ -90,15 +97,15 @@ export class emsForm {
         formData.forEach(function(value, key){
             data[key] = value;
         });
-
-        this.postMessage({'instruction': 'submit', 'form': data, 'token': this.createToken(data['form[_token]'])})
+        this.postMessage({'instruction': 'submit', 'form': data, 'token': this.createToken(data['form[_token]'])});
     }
-    postMessage(msg)
-    {
+    onDynamicFieldChange(data) {
+        this.postMessage({'instruction': 'dynamic', 'data': data});
+    }
+    postMessage(msg) {
         this.elementIframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
     }
-    createToken(crsfToken)
-    {
+    createToken(crsfToken) {
         if (0 === this.difficulty) {
             return false;
         }

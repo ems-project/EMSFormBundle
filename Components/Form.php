@@ -2,8 +2,11 @@
 
 namespace EMS\FormBundle\Components;
 
+use EMS\FormBundle\Components\Field\AbstractForgivingNumberField;
+use EMS\FormBundle\Components\Field\ChoiceSelectNested;
 use EMS\FormBundle\Components\Field\FieldInterface;
 use EMS\FormBundle\FormConfig\AbstractFormConfig;
+use EMS\FormBundle\FormConfig\ElementInterface;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
@@ -15,8 +18,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use EMS\FormBundle\Components\Field\AbstractForgivingNumberField;
-use EMS\FormBundle\FormConfig\ElementInterface;
 
 class Form extends AbstractType
 {
@@ -34,9 +35,7 @@ class Form extends AbstractType
 
         foreach ($config->getElements() as $element) {
             if ($element instanceof FieldConfig) {
-                $field = $this->createField($element);
-                $builder->add($element->getName(), $field->getFieldClass(), $field->getOptions());
-                $this->addModelTransformers($builder, $element, $field);
+                $this->addField($builder, $element);
             } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
             }
@@ -84,11 +83,21 @@ class Form extends AbstractType
         throw new \Exception('Could not build form, config missing!');
     }
 
-    private function createField(FieldConfig $config): FieldInterface
+    protected function createField(FieldConfig $config): FieldInterface
     {
         $class = $config->getClassName();
 
         return new $class($config);
+    }
+
+    private function addField(FormBuilderInterface $builder, FieldConfig $element): void
+    {
+        $field = $this->createField($element);
+        $configOption = ['field_config' => $element];
+        $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
+
+        $builder->add($element->getName(), $field->getFieldClass(), $options);
+        $this->addModelTransformers($builder, $element, $field);
     }
     
     private function addModelTransformers(FormBuilderInterface $builder, ElementInterface $element, FieldInterface $field): void

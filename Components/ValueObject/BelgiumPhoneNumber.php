@@ -2,8 +2,6 @@
 
 namespace EMS\FormBundle\Components\ValueObject;
 
-use phpDocumentor\Reflection\Types\This;
-
 class BelgiumPhoneNumber
 {
     /** @var NumberValue */

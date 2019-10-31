@@ -3,6 +3,7 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
+use EMS\FormBundle\Components\ValueObject\SymfonyFormFieldsByNameArray;
 use EMS\FormBundle\Security\Guard;
 use EMS\FormBundle\Submit\Client;
 use Symfony\Component\Form\FormFactory;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Twig\Environment;
 
-class FormController
+class FormController extends AbstractFormController
 {
     /** @var FormFactory */
     private $formFactory;
@@ -57,6 +58,23 @@ class FormController
             'instruction' => 'form',
             'response' => $this->twig->render('@EMSForm/form.html.twig', ['form' => $form->createView()]),
             'difficulty' => $this->guard->getDifficulty(),
+        ]);
+    }
+
+    public function dynamicFieldAjax(Request $request, string $ouuid): Response
+    {
+        $form = $this->formFactory->create(Form::class, [], $this->getFormOptions($ouuid, $request->getLocale(), false));
+        $form->handleRequest($request);
+
+        $dynamicFields = new SymfonyFormFieldsByNameArray($request->request->all());
+        $excludeFields = ['form__token'];
+
+        return new JsonResponse([
+            'instruction' => 'dynamic',
+            'response' => $this->twig->render('@EMSForm/nested_choice_form.html.twig', [
+                'form' => $form->createView(),
+            ]),
+            'dynamicFields' => $dynamicFields->getFieldIdsJson($excludeFields),
         ]);
     }
 }

@@ -13,4 +13,9 @@
             <default key="_controller">emsf.controller.form::form</default>
             <default key="_locale">%locale%</default>
         </route>
+
+        <route id="_emsf_dynamic_field_ajax" path="/ajax/{ouuid}/{_locale}" methods="POST">
+            <default key="_controller">emsf.controller.form::dynamicFieldAjax</default>
+            <default key="_locale">%locale%</default>
+        </route>
 </routes>

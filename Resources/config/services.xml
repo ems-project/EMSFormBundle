@@ -21,6 +21,10 @@
             <argument type="service" id="emsf.form_config.factory"/>
             <tag name="form.type"/>
         </service>
+        <service id="emsf.nested.choice" class="EMS\FormBundle\Components\Form\NestedChoiceType">
+            <argument type="service" id="emsf.form_config.factory"/>
+            <tag name="form.type"/>
+        </service>
 
         <service id="emsf.submit.client" class="EMS\FormBundle\Submit\Client">
             <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
@@ -36,6 +40,7 @@
             <argument type="service" id="form.factory"/>
             <argument type="service" id="emsf.submit.client"/>
             <argument type="service" id="twig" />
+            <argument type="service" id="router" />
             <argument type="string">%emsch.locales%</argument>
         </service>
         <service id="emsf.controller.form" class="EMS\FormBundle\Controller\FormController"  public="true">
