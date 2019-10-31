@@ -4,10 +4,10 @@ Requirements:
 - 1 elasticms skeleton [https://emsforms-skeleton.example]
 - 1 website where you integrate the form [https://your-website.example]
 ## Elements to integrate on your website
-Your html page on https://your-website.example needs the following **3 elements** to integrate an EMSForm.
+Your html page on https://your-website.example needs the following **4 elements** to integrate an EMSForm.
 
 1. An `iframe` to communicate to [https://emsforms-skeleton.example] 
-1. An empty `div` to render the form that is fetched from the iframe
+1. Two empty `div`s, one to render the form, and one to render the submission response that are fetched from the iframe
 1. Our javascript file `form.js` that handles all communication and rendering for you!
 
 ### The iframe
@@ -26,12 +26,18 @@ When sending messages to the iframe, you will only get a response if your domain
 
 Replace `{lang}` by the language identifier of your form. `nl`, `fr`, `en`, `de`, ...
 
-### The empty div
-The form or messages will be placed in this container. You can style this element however you want, add classes, ...
+### The empty divs
+In the first div container the form will be placed. You can style this element however you want, add classes, ...
 ```html
 <div id="ems-form"></div>
 ```
 Make sure to use the id `"ems-form"` as this is used by our javascript file to automate the form rendering.
+
+In the second div container the message after valid submission will be placed. This div should be hidden as it will contain a json response that can be used to decide what you do on your site after submitting a form.
+```html
+<div id="ems-message"></div>
+```
+Make sure to use the id `"ems-message"` as this is used by our javascript file to automate the form rendering.
 
 ### The javascript file
 Include the javascript file "form.js" for sending and receiving [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) between your website [https://your-website.example] and the form skeleton [https://emsforms-skeleton.example].
@@ -86,22 +92,41 @@ The following twig script shows you how to achieve this;
     <script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
     <script type="application/javascript">
         document.getElementById('ems-form-iframe-custom').onload = function() {
-            new emsForm({ 'idForm': 'form-custom', 'idIframe': 'ems-form-iframe-custom'}).init(); 
+            new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom'}).init(); 
         };
         document.getElementById('ems-form-iframe-custom-second').onload = function() {
-            new emsForm({ 'idForm': 'form-custom-second', 'idIframe': 'ems-form-iframe-custom-second'}).init(); 
+            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second'}).init(); 
         };
     </script>
  ```
 
 This code assumes that two of our iframes are loaded: `ems-form-iframe-custom` and `ems-form-iframe-custom-second` each containing another form id.
-For each iframe, an `emsForm` object is created for which we configure the `idForm` and `idIframe` options to the id's used in our page.
+For each iframe, an `emsForm` object is created for which we configure the `idForm`, `idMessage` and `idIframe` options to the id's used in our page.
 
-* idForm corresponds to the empty div that can be used for the messages of the corresponding iframe.
+* idForm corresponds to the empty div that can be used to render the form fetched through the corresponding iframe.
+* idMessage corresponds to the empty div that can be used for the messages returned after valid submit through the corresponding iframe.
 * idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
 
+## The response after a valid submit
+The system allows to handle your submit by multiple chained handlers. Each handler will return a json response with two keys:
 
+* `status`: indicating if the handler succeeded () or not (`error`).
+* `data`: the data returned by the submit handler.
 
+Example response of a failed handler:
+```json 
+{
+    "status":"error",
+    "data":"Submission failed, contact your admin. Notice: Undefined index: from"
+}
+```
+
+These responses will be made available after submit in the `ems-message` div as a json array:
+```html
+<div id="ems-message">
+    ["{\"status\":\"error\",\"data\":\"Submission failed, contact your admin. Notice: Undefined index: from\"}"]
+</div>
+```
 
 
 

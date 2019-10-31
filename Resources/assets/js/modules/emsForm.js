@@ -4,15 +4,17 @@ import {generate} from 'hashcash-token';
 
 export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
-    idForm: 'ems-form'
+    idForm: 'ems-form',
+    idMessage: 'ems-message'
 };
 
 export function defaultCheck()
 {
     let elementIframe = document.getElementById(DEFAULT_CONFIG.idIframe);
     let elementForm = document.getElementById(DEFAULT_CONFIG.idForm);
+    let elementMessage = document.getElementById(DEFAULT_CONFIG.idMessage);
 
-    return null !== elementIframe && null !== elementForm;
+    return null !== elementIframe && null !== elementForm && null !== elementMessage;
 }
 
 export class emsForm {
@@ -20,6 +22,7 @@ export class emsForm {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
         this.elementIframe = document.getElementById(config.idIframe);
         this.elementForm = document.getElementById(config.idForm);
+        this.elementMessage = document.getElementById(config.idMessage);
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
@@ -29,7 +32,7 @@ export class emsForm {
         }
     }
     isValid() {
-        return this.elementIframe !== null && this.elementForm !== null;
+        return this.elementIframe !== null && this.elementForm !== null && this.elementMessage !== null;
     }
     init() {
         if (this.isValid()) {
@@ -74,7 +77,7 @@ export class emsForm {
                 this.difficulty = parseInt(data.difficulty);
                 break;
             case 'submitted':
-                this.elementForm.innerHTML = data.response;
+                this.elementMessage.innerHTML = data.response;
                 break;
             case 'dynamic':
                 replaceFormFields(data.response, Object.values(emsForm.jsonParse(data.dynamicFields)));
