@@ -14,6 +14,8 @@ class MarkupType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['config'] = $options['config'];
+
+        parent::buildView($view, $form, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)
