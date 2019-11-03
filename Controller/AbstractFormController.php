@@ -4,17 +4,13 @@ namespace EMS\FormBundle\Controller;
 
 abstract class AbstractFormController
 {
-    protected function getFormOptions(string $ouuid, string $locale, bool $validation = true)
+    protected function getFormOptions(string $ouuid, string $locale): array
     {
-        $formOptions = [
-            'ouuid' => $ouuid,
-            'locale' => $locale,
-        ];
+        return ['ouuid' => $ouuid, 'locale' => $locale];
+    }
 
-        if ($validation === false) {
-            $formOptions['validation_groups'] = false;
-        }
-
-        return $formOptions;
+    protected function getDisabledValidationsFormOptions(string $ouuid, string $locale): array
+    {
+        return \array_merge($this->getFormOptions($ouuid, $locale), ['validation_groups' => false]);
     }
 }
