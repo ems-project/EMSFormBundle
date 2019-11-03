@@ -24,12 +24,13 @@ class SymfonyFormFieldsByNameArray
 
     private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = [])
     {
-        foreach ($array as $k => $v) {
-            if (is_array($v)) {
-                $result = $this->flattenWithKeys($v, $childPrefix, $root . $k . $childPrefix, $result);
-            } else {
-                $result[ $root . $k ] = $v;
+        foreach ($array as $key => $value) {
+            if (\is_array($value)) {
+                $result = $this->flattenWithKeys($value, $childPrefix, $root . $key . $childPrefix, $result);
+                continue;
             }
+            
+            $result[ $root . $key ] = $value;
         }
         return $result;
     }
