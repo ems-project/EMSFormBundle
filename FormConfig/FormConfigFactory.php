@@ -6,8 +6,6 @@ use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\Document;
 use EMS\CommonBundle\Common\EMSLink;
-use EMS\FormBundle\Components\Field\Markup;
-use EMS\FormBundle\Components\Field\SubForm;
 use Psr\Log\LoggerInterface;
 
 class FormConfigFactory
