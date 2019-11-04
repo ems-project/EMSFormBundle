@@ -51,6 +51,7 @@
 		"phpcs": "phpcs --standard=phpcs.xml.dist --extensions=php,lib,inc",
 		"phpcbf": "phpcbf --standard=phpcs.xml.dist --extensions=php,lib,inc",
 		"phpstan": "phpstan analyse .",
-		"phpmd": "./vendor/bin/phpmd . html ./phpmd.xml.dist --suffixes php --exclude vendor --ignore-violations-on-exit --reportfile phpmd.html"
+		"phpmd": "./vendor/bin/phpmd . html ./phpmd.xml.dist --suffixes php --exclude vendor --ignore-violations-on-exit --reportfile phpmd.html",
+		"phpmd-win": "vendor\\bin\\phpmd %cd% html phpmd.xml.dist --suffixes php --exclude %cd%\\vendor --ignore-violations-on-exit --reportfile phpmd.html"
 	}
 }
