@@ -77,6 +77,7 @@ However, some fields are custom, and require custom validation. The form.js file
             id pellentesque tortor mollis.
         </p>
         <div id="ems-form"></div>
+        <div id="ems-message"></div>
     </div>
     <iframe id="ems-form-iframe" src="https://emsforms-skeleton.example/iframe/{ouuid}/{locale}"></iframe>
     <script src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
