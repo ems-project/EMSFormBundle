@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class Min extends AbstractValidation
 {
-    public function getId(): string
+    public function getHtml5AttributeName(): string
     {
         return 'min';
     }

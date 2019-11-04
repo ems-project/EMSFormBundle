@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\Email as EmailValidation;
 
 class Email extends AbstractValidation
 {
-    public function getId(): string
+    public function getHtml5AttributeName(): string
     {
         return 'email';
     }

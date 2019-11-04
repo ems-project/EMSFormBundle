@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 
 interface ValidationInterface
 {
-    public function getId(): string;
+    public function getHtml5AttributeName(): string;
 
     public function getConstraint(): Constraint;
 

@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class MaxLength extends AbstractValidation
 {
-    public function getId(): string
+    public function getHtml5AttributeName(): string
     {
         return 'maxlength';
     }

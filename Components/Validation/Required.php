@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Required extends AbstractValidation
 {
-    public function getId(): string
+    public function getHtml5AttributeName(): string
     {
         return 'required';
     }
