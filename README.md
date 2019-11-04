@@ -17,10 +17,13 @@ PHPStan is run at level 7, you can check for errors locally using:
 composer phpstan
 `````
 
-PHP Mess Detector can generate a report phpmd.html, rule violations are ignored by Travis for now.
+PHP Mess Detector can generate a report in ./phpmd.html, rule violations are ignored by Travis for now.
 ````bash
 composer phpmd
+composer phpmd-win
 ````
+
+Use phpmd-win when working on Windows!
 
 ## Build frontend resources
 `````bash

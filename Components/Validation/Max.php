@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
 class Max extends AbstractValidation
 {
-    public function getId(): string
+    public function getHtml5AttributeName(): string
     {
         return 'max';
     }

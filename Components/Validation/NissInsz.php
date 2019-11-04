@@ -7,11 +7,6 @@ use Symfony\Component\Validator\Constraint;
 
 class NissInsz extends AbstractValidation
 {
-    public function getId(): string
-    {
-        return 'niss-insz';
-    }
-
     public function getConstraint(): Constraint
     {
         return new IsNissInsz($this->value);

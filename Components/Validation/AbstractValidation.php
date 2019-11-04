@@ -15,6 +15,11 @@ abstract class AbstractValidation implements ValidationInterface
 
     public function getHtml5Attribute(): array
     {
-        return [$this->getId() => $this->value];
+        return [$this->getHtml5AttributeName() => $this->value];
+    }
+
+    public function getHtml5AttributeName(): string
+    {
+        return '';
     }
 }

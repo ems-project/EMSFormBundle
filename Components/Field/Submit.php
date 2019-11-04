@@ -15,7 +15,7 @@ class Submit extends AbstractField
     {
         return SubmitType::class;
     }
-    
+
     public function getOptions(): array
     {
         return [

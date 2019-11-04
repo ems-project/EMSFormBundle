@@ -40,7 +40,7 @@ abstract class AbstractField implements FieldInterface
     private function isRequired(): bool
     {
         foreach ($this->validations as $validation) {
-            if ($validation->getId() === 'required') {
+            if ($validation->getHtml5AttributeName() === 'required') {
                 return true;
             }
         }

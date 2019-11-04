@@ -7,11 +7,6 @@ use Symfony\Component\Validator\Constraint;
 
 class CompanyNumber extends AbstractValidation
 {
-    public function getId(): string
-    {
-        return 'company-number';
-    }
-
     public function getConstraint(): Constraint
     {
         return new IsCompanyNumber($this->value);
