@@ -7,7 +7,7 @@ use EMS\FormBundle\Components\ValueObject\RrNumber;
 
 class NissInsz extends AbstractForgivingNumberField
 {
-    public function getId(): string
+    public function getHtmlClass(): string
     {
         return 'niss-insz';
     }

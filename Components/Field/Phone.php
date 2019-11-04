@@ -7,14 +7,14 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 
 class Phone extends AbstractForgivingNumberField
 {
+    public function getHtmlClass(): string
+    {
+        return 'phone';
+    }
+
     public function getFieldClass(): string
     {
         return TelType::class;
-    }
-
-    public function getId(): string
-    {
-        return 'phone';
     }
     
     public function getTransformerClasses(): array

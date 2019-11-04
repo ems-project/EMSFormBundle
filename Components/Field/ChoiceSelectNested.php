@@ -6,13 +6,13 @@ use EMS\FormBundle\Components\Form\NestedChoiceType;
 
 class ChoiceSelectNested extends AbstractField
 {
+    public function getHtmlClass(): string
+    {
+        return 'choice-select-nested';
+    }
+
     public function getFieldClass(): string
     {
         return NestedChoiceType::class;
-    }
-
-    public function getId(): string
-    {
-        return 'choice_select_nested';
     }
 }

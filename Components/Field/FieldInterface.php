@@ -4,7 +4,7 @@ namespace EMS\FormBundle\Components\Field;
 
 interface FieldInterface
 {
-    public function getId(): string;
+    public function getHtmlClass(): string;
 
     public function getFieldClass(): string;
 

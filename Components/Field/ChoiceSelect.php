@@ -6,14 +6,14 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ChoiceSelect extends AbstractField
 {
+    public function getHtmlClass(): string
+    {
+        return 'choice-select';
+    }
+
     public function getFieldClass(): string
     {
         return ChoiceType::class;
-    }
-
-    public function getId(): string
-    {
-        return 'choice_select';
     }
 
     public function getOptions(): array

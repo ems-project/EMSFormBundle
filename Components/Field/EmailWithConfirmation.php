@@ -7,10 +7,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class EmailWithConfirmation extends AbstractField
 {
-
-    public function getId(): string
+    public function getHtmlClass(): string
     {
-        return 'email_with_confirmation';
+        return 'email-with-confirmation';
     }
 
     public function getFieldClass(): string

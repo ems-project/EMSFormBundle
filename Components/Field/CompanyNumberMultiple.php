@@ -7,16 +7,16 @@ use EMS\FormBundle\Components\ValueObject\BelgiumCompanyNumberMultiple;
 
 class CompanyNumberMultiple extends AbstractForgivingNumberField
 {
+    public function getHtmlClass(): string
+    {
+        return 'company-number-multiple';
+    }
+
     public function getFieldClass(): string
     {
         return TextareaType::class;
     }
 
-    public function getId(): string
-    {
-        return 'company-number-multiple';
-    }
-    
     public function getTransformerClasses(): array
     {
         return [BelgiumCompanyNumberMultiple::class];

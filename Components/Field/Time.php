@@ -6,14 +6,14 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class Time extends AbstractField
 {
+    public function getHtmlClass(): string
+    {
+        return 'time';
+    }
+
     public function getFieldClass(): string
     {
         return TimeType::class;
-    }
-
-    public function getId(): string
-    {
-        return 'time';
     }
     
     public function getOptions(): array

@@ -6,16 +6,16 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class Date extends AbstractField
 {
+    public function getHtmlClass(): string
+    {
+        return 'date';
+    }
+
     public function getFieldClass(): string
     {
         return DateType::class;
     }
 
-    public function getId(): string
-    {
-        return 'date';
-    }
-    
     public function getOptions(): array
     {
         $label = $this->config->getLabel() ?? '';
