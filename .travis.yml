@@ -36,4 +36,4 @@ script:
   # Run PHPStan
   - if [[ "$SNIFF" == "1" ]]; then vendor/bin/phpstan analyse .; fi
   # Run PHPMD
-  - if [[ "$SNIFF" == "1" ]]; then vendor/bin/phpmd . html ./phpmd.xml.dist --suffixes php --exclude vendor --ignore-violations-on-exit --reportfile phpmd.html; fi
+  - if [[ "$SNIFF" == "1" ]]; then vendor/bin/phpmd . xml ./phpmd.xml.dist --suffixes php --exclude vendor --ignore-violations-on-exit; fi
