@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CompanyNumber extends AbstractForgivingNumberField
 {
-    public function getId(): string
+    public function getHtmlClass(): string
     {
         return 'company-number';
     }

@@ -6,7 +6,7 @@ use EMS\FormBundle\Components\ValueObject\NumberValue;
 
 class NumberForgivingInput extends AbstractForgivingNumberField
 {
-    public function getId(): string
+    public function getHtmlClass(): string
     {
         return 'number-forgiving-input';
     }

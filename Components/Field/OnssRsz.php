@@ -6,7 +6,7 @@ use EMS\FormBundle\Components\ValueObject\BelgiumOnssRszNumber;
 
 class OnssRsz extends AbstractForgivingNumberField
 {
-    public function getId(): string
+    public function getHtmlClass(): string
     {
         return 'onss-rsz';
     }

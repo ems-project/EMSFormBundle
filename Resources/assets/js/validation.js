@@ -34,7 +34,7 @@ export function addValidation(form)
 
 export function disableCopyPaste(form)
 {
-    Array.from(form.getElementsByClassName("email_with_confirmation")).forEach(function(item) {
+    Array.from(form.getElementsByClassName("email-with-confirmation")).forEach(function(item) {
         preventCopyPaste(item);
     })
 }

@@ -6,16 +6,16 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class Submit extends AbstractField
 {
-    public function getFieldClass(): string
-    {
-        return SubmitType::class;
-    }
-
-    public function getId(): string
+    public function getHtmlClass(): string
     {
         return 'submit';
     }
 
+    public function getFieldClass(): string
+    {
+        return SubmitType::class;
+    }
+    
     public function getOptions(): array
     {
         return [
