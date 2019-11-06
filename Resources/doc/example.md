@@ -45,7 +45,7 @@ Include the javascript file "form.js" for sending and receiving [postMessage](ht
 <script type="application/javascript" src="https://emsforms-skeleton.example/bundles/emsform/js/form.{hash}.js"></script>
 ```
 Replace the `{hash}` by the current version of the javascript file. 
-This hash can be found in the manifest.json file at https://emsforms-skeleton.example/bundles/emsform/manifest.js
+This hash can be found in the manifest.json file at https://emsforms-skeleton.example/bundles/emsform/manifest.json
 You should get the hash dynamically from this manifest file! If not, you will get broken links whenever a new release happens on [https://emsforms-skeleton.example].
 
 
