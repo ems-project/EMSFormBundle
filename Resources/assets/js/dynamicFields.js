@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import {addDynamicChoiceSelect} from "./dynamicFields/dynamicChoiceSelect";
 
 export function addDynamicFields(form, emsForm)
