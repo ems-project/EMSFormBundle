@@ -96,7 +96,7 @@ The following twig script shows you how to achieve this;
             new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom'}).init(); 
         };
         document.getElementById('ems-form-iframe-custom-second').onload = function() {
-            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second'}).init(); 
+            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', onLoad: function(){ console.log('foobar') }}).init(); 
         };
     </script>
  ```
@@ -107,6 +107,7 @@ For each iframe, an `emsForm` object is created for which we configure the `idFo
 * idForm corresponds to the empty div that can be used to render the form fetched through the corresponding iframe.
 * idMessage corresponds to the empty div that can be used for the messages returned after valid submit through the corresponding iframe.
 * idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
+* onLoad can refers to a callback function called once the form has just been initialize
 
 ## The response after a valid submit
 The system allows to handle your submit by multiple chained handlers. Each handler will return a json response with two keys:

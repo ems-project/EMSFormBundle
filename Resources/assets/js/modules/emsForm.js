@@ -6,7 +6,8 @@ import 'url-polyfill';
 export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
     idForm: 'ems-form',
-    idMessage: 'ems-message'
+    idMessage: 'ems-message',
+    onLoad: null
 };
 
 export function defaultCheck()
@@ -24,6 +25,7 @@ export class emsForm {
         this.elementIframe = document.getElementById(config.idIframe);
         this.elementForm = document.getElementById(config.idForm);
         this.elementMessage = document.getElementById(config.idMessage);
+        this.onLoad = config.onLoad;
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
@@ -52,6 +54,9 @@ export class emsForm {
         addValidation(form);
         disableCopyPaste(form);
         addDynamicFields(form, this);
+        if (typeof this.onLoad === 'function') {
+            this.onLoad();
+        }
     }
     static jsonParse(string) {
         try {
