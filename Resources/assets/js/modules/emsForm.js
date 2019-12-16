@@ -1,6 +1,7 @@
 import {addValidation, disableCopyPaste} from "../validation";
 import {addDynamicFields, replaceFormFields} from "../dynamicFields";
 import {generate} from 'hashcash-token';
+import 'url-polyfill';
 
 export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
