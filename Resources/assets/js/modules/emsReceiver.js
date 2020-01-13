@@ -1,4 +1,4 @@
-import helpers from '../helpers/emsForm';
+import {Encoding, Form, Security} from '../helpers';
 
 const DEFAULT_CONFIG = {
     "id": false,
@@ -26,38 +26,60 @@ export class emsReceiver
             return;
         }
 
-        let data = helpers.jsonParse(message.data);
+        let data = ((typeof message.data === 'string' || message.data instanceof String)) ? Encoding.jsonParse(message.data) : message.data;
 
         if (!data) {
             return;
         }
 
         let xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", evt => helpers.onResponse(evt, xhr, message));
+        xhr.addEventListener("load", evt => this.onResponse(evt, xhr, message));
 
         switch (data.instruction) {
             case "form": {
-                xhr.open("GET", this.basePath+"/form/"+this.id+'/'+this.lang);
+                xhr.open("GET", this.basePath + '/form/' + this.id + '/' + this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/json");
                 xhr.send();
                 break;
             }
+
+            case "submit-without-file": {
+                xhr.open("POST", this.basePath + '/form/' + this.id + '/' + this.lang);
+                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
+                Security.addHashCashHeader(data, xhr);
+                xhr.send(Encoding.urlEncodeData(data.form));
+                break;
+            }
+
             case "submit": {
-                xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
-                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                helpers.addHashCashHeader(data, xhr);
-                xhr.send(helpers.urlEncodeData(data.form));
+                let url = this.basePath + '/form/' + this.id + '/' + this.lang;
+                let dataForm = Form.getFormDataFromObject(data.form);
+
+                xhr.open("POST", url, true);
+                Security.addHashCashHeader(data, xhr);
+                xhr.send(dataForm);
                 break;
             }
+
             case "dynamic": {
-                xhr.open("POST", this.basePath+"/ajax/"+this.id+"/"+this.lang);
+                xhr.open("POST", this.basePath + '/ajax/' + this.id + '/' + this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                helpers.addHashCashHeader(data, xhr);
-                xhr.send(helpers.urlEncodeData(data.data));
+                Security.addHashCashHeader(data, xhr);
+                xhr.send(Encoding.urlEncodeData(data.data));
                 break;
             }
+
             default:
                 return;
         }
     }
+
+    onResponse(evt, xhr, message)
+    {
+        console.log('onResponse', xhr.responseText, message.origin)
+        if (xhr.status === 200) {
+            message.source.postMessage(xhr.responseText, message.origin);
+        }
+    }
+
 }

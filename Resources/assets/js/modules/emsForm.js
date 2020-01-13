@@ -1,6 +1,6 @@
 import {addValidation, disableCopyPaste} from "../validation";
 import {addDynamicFields, replaceFormFields} from "../dynamicFields";
-import helpers from '../helpers/emsForm';
+import {Encoding, Form, Security} from '../helpers';
 import 'url-polyfill';
 
 export const DEFAULT_CONFIG = {
@@ -36,10 +36,16 @@ export class emsForm
         }
     }
 
+    isValid()
+    {
+        return this.elementIframe !== null && this.elementForm !== null && this.elementMessage !== null;
+    }
+
     init()
     {
-        if (defaultCheck()) {
-            this.postMessage({'instruction': 'form'});
+        if (this.isValid()) {
+            let msg = {'instruction': 'form'};
+            this.postMessage(JSON.stringify(msg));
         }
     }
 
@@ -67,7 +73,7 @@ export class emsForm
             return;
         }
 
-        let data = helpers.jsonParse(e.data);
+        let data = Encoding.jsonParse(e.data);
 
         if (!data) {
             return;
@@ -83,7 +89,7 @@ export class emsForm
                 this.elementMessage.innerHTML = data.response;
                 break;
             case 'dynamic':
-                replaceFormFields(data.response, Object.values(helpers.jsonParse(data.dynamicFields)));
+                replaceFormFields(data.response, Object.values(Encoding.jsonParse(data.dynamicFields)));
                 addDynamicFields(this.elementForm.querySelector('form'), this);
                 break;
             default:
@@ -95,14 +101,14 @@ export class emsForm
     {
         e.preventDefault();
 
-        helpers.disablingSubmitButton(e.target);
+        Form.disablingSubmitButton(e.target);
 
-        let data = helpers.getArrayFromFormData(e.target);
+        let data = Form.getObjectFromFormData(e.target);
 
         let msg = {
             'instruction': 'submit',
             'form': data,
-            'token': helpers.createToken(data['form[_token]'], this.difficulty)
+            'token': Security.createToken(data['form[_token]'], this.difficulty)
         };
 
         this.postMessage(msg);
@@ -115,11 +121,11 @@ export class emsForm
             'data': data
         };
 
-        this.postMessage(msg);
+        this.postMessage(JSON.stringify(msg));
     }
 
     postMessage(msg)
     {
-        this.elementIframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
+        this.elementIframe.contentWindow.postMessage(msg, this.origin);
     }
 }
