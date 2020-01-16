@@ -26,7 +26,7 @@ export class emsReceiver
             return;
         }
 
-        let data = ((typeof message.data === 'string' || message.data instanceof String)) ? encoding.jsonParse(message.data) : message.data;
+        let data = emsReceiver.jsonParse(message.data);
 
         if (!data) {
             return;
@@ -81,5 +81,4 @@ export class emsReceiver
             message.source.postMessage(xhr.responseText, message.origin);
         }
     }
-
 }

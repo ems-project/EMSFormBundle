@@ -10,7 +10,8 @@ export const DEFAULT_CONFIG = {
     onLoad: null
 };
 
-export function defaultCheck() {
+export function defaultCheck()
+{
     let elementIframe = document.getElementById(DEFAULT_CONFIG.idIframe);
     let elementForm = document.getElementById(DEFAULT_CONFIG.idForm);
     let elementMessage = document.getElementById(DEFAULT_CONFIG.idMessage);
