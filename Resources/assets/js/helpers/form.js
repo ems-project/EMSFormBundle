@@ -17,12 +17,14 @@ export default class
     {
         let formData = new FormData();
         Object.entries(obj).forEach(([key,value])=>{
-            if(!value.name) {
-                formData.set(key, value);
-            } else {
-                formData.set(key, value, value.name);
+            if(value.name !== undefined) {
+                let filename = value.name;
+                formData.set(key, value, filename);
+                return;
             }
-        })
+
+            formData.set(key, value);
+        });
 
         return formData;
     }

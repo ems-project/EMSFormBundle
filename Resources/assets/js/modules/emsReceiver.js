@@ -1,4 +1,4 @@
-import {Encoding, Form, Security} from '../helpers';
+import {encoding, form, security} from '../helpers';
 
 const DEFAULT_CONFIG = {
     "id": false,
@@ -26,7 +26,7 @@ export class emsReceiver
             return;
         }
 
-        let data = ((typeof message.data === 'string' || message.data instanceof String)) ? Encoding.jsonParse(message.data) : message.data;
+        let data = ((typeof message.data === 'string' || message.data instanceof String)) ? encoding.jsonParse(message.data) : message.data;
 
         if (!data) {
             return;
@@ -46,17 +46,17 @@ export class emsReceiver
             case "submit-without-file": {
                 xhr.open("POST", this.basePath + '/form/' + this.id + '/' + this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                Security.addHashCashHeader(data, xhr);
-                xhr.send(Encoding.urlEncodeData(data.form));
+                security.addHashCashHeader(data, xhr);
+                xhr.send(encoding.urlEncodeData(data.form));
                 break;
             }
 
             case "submit": {
                 let url = this.basePath + '/form/' + this.id + '/' + this.lang;
-                let dataForm = Form.getFormDataFromObject(data.form);
+                let dataForm = form.getFormDataFromObject(data.form);
 
                 xhr.open("POST", url, true);
-                Security.addHashCashHeader(data, xhr);
+                security.addHashCashHeader(data, xhr);
                 xhr.send(dataForm);
                 break;
             }
@@ -64,8 +64,8 @@ export class emsReceiver
             case "dynamic": {
                 xhr.open("POST", this.basePath + '/ajax/' + this.id + '/' + this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                Security.addHashCashHeader(data, xhr);
-                xhr.send(Encoding.urlEncodeData(data.data));
+                security.addHashCashHeader(data, xhr);
+                xhr.send(encoding.urlEncodeData(data.data));
                 break;
             }
 

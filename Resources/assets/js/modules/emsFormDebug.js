@@ -1,5 +1,5 @@
 import {addDynamicFields, replaceFormFields} from "../dynamicFields";
-import {Encoding, Security} from '../helpers';
+import {encoding, security} from '../helpers';
 
 export const DEFAULT_CONFIG = {
     idForm: 'wrapper-form'
@@ -21,8 +21,8 @@ export class emsFormDebug
 
         xhr.open("POST", this.ajaxUrl);
         xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-        Security.addHashCashHeader(data, xhr);
-        xhr.send(Encoding.urlEncodeData(data));
+        security.addHashCashHeader(data, xhr);
+        xhr.send(encoding.urlEncodeData(data));
     }
 
     static onResponse(evt, xhr, emsFormInstance)
@@ -31,14 +31,14 @@ export class emsFormDebug
             return;
         }
 
-        let data = Encoding.jsonParse(xhr.responseText);
+        let data = encoding.jsonParse(xhr.responseText);
 
         if (!data) {
             return;
         }
         
         if (data.instruction === 'dynamic') {
-            replaceFormFields(data.response, Object.values(Encoding.jsonParse(data.dynamicFields)));
+            replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
             addDynamicFields(emsFormInstance.elementForm.querySelector('form'), emsFormInstance);
         }
     }
