@@ -102,7 +102,7 @@ export class emsForm
 
         form.disablingSubmitButton(e.target);
 
-        let data = form.getArrayFromFormData(e.target);
+        let data = form.getObjectFromFormData(e.target);
 
         let msg = {
             'instruction': 'submit',
