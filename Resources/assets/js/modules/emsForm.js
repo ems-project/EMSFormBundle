@@ -1,6 +1,6 @@
 import {addValidation, disableCopyPaste} from "../validation";
 import {addDynamicFields, replaceFormFields} from "../dynamicFields";
-import {generate} from 'hashcash-token';
+import {encoding, form, security} from '../helpers';
 import 'url-polyfill';
 import 'formdata-polyfill'
 
@@ -11,8 +11,7 @@ export const DEFAULT_CONFIG = {
     onLoad: null
 };
 
-export function defaultCheck()
-{
+export function defaultCheck() {
     let elementIframe = document.getElementById(DEFAULT_CONFIG.idIframe);
     let elementForm = document.getElementById(DEFAULT_CONFIG.idForm);
     let elementMessage = document.getElementById(DEFAULT_CONFIG.idMessage);
@@ -20,8 +19,10 @@ export function defaultCheck()
     return null !== elementIframe && null !== elementForm && null !== elementMessage;
 }
 
-export class emsForm {
-    constructor(options) {
+export class emsForm
+{
+    constructor(options)
+    {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
         this.elementIframe = document.getElementById(config.idIframe);
         this.elementForm = document.getElementById(config.idForm);
@@ -35,15 +36,21 @@ export class emsForm {
             window.addEventListener( 'message', evt => this.onMessage(evt) );
         }
     }
-    isValid() {
+
+    isValid()
+    {
         return this.elementIframe !== null && this.elementForm !== null && this.elementMessage !== null;
     }
-    init() {
+
+    init()
+    {
         if (this.isValid()) {
             this.postMessage({'instruction': 'form'});
         }
     }
-    insertForm(response) {
+
+    insertForm(response)
+    {
         let parser = new DOMParser;
         let dom = parser.parseFromString('<!doctype html><body>' + response, 'text/html');
 
@@ -59,19 +66,14 @@ export class emsForm {
             this.onLoad();
         }
     }
-    static jsonParse(string) {
-        try {
-            return JSON.parse(string);
-        } catch (e) {
-            return false;
-        }
-    }
-    onMessage(e) {
+
+    onMessage(e)
+    {
         if (e.origin !== this.origin) {
             return;
         }
 
-        let data = emsForm.jsonParse(e.data);
+        let data = encoding.jsonParse(e.data);
 
         if (!data) {
             return;
@@ -87,43 +89,43 @@ export class emsForm {
                 this.elementMessage.innerHTML = data.response;
                 break;
             case 'dynamic':
-                replaceFormFields(data.response, Object.values(emsForm.jsonParse(data.dynamicFields)));
+                replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
                 addDynamicFields(this.elementForm.querySelector('form'), this);
                 break;
             default:
                return;
         }
     }
-    onSubmitForm(e) {
+
+    onSubmitForm(e)
+    {
         e.preventDefault();
 
-        let submits = e.target.getElementsByClassName('submit');
-        Array.prototype.forEach.call(submits, function(submit) {
-            submit.disabled = true;
-        });
+        form.disablingSubmitButton(e.target);
 
-        let formData = new FormData(e.target);
-        let data = {};
-        formData.forEach(function(value, key){
-            data[key] = value;
-        });
-        this.postMessage({'instruction': 'submit', 'form': data, 'token': this.createToken(data['form[_token]'])});
+        let data = form.getObjectFromFormData(e.target);
+
+        let msg = {
+            'instruction': 'submit',
+            'form': data,
+            'token': security.createToken(data['form[_token]'], this.difficulty)
+        };
+
+        this.postMessage(msg);
     }
-    onDynamicFieldChange(data) {
-        this.postMessage({'instruction': 'dynamic', 'data': data});
+
+    onDynamicFieldChange(data)
+    {
+        let msg = {
+            'instruction': 'dynamic',
+            'data': data
+        };
+
+        this.postMessage(msg);
     }
-    postMessage(msg) {
+
+    postMessage(msg)
+    {
         this.elementIframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
     }
-    createToken(crsfToken) {
-        if (0 === this.difficulty) {
-            return false;
-        }
-
-        return generate({
-            difficulty: parseInt(this.difficulty),
-            data: crsfToken
-        });
-    }
 }
-
