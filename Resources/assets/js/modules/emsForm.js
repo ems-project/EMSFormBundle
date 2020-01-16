@@ -2,6 +2,7 @@ import {addValidation, disableCopyPaste} from "../validation";
 import {addDynamicFields, replaceFormFields} from "../dynamicFields";
 import {encoding, form, security} from '../helpers';
 import 'url-polyfill';
+import 'formdata-polyfill'
 
 export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
