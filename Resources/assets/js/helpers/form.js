@@ -17,8 +17,8 @@ export default class
     {
         let formData = new FormData();
         Object.entries(obj).forEach(([key,value])=>{
-            if(value.name !== undefined) {
-                let filename = value.name;
+            let filename = value.name;
+            if (filename !== undefined) {
                 formData.set(key, value, filename);
                 return;
             }
