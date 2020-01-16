@@ -1,4 +1,4 @@
-import helpers from '../helpers/emsForm';
+import {encoding, security} from '../helpers';
 
 const DEFAULT_CONFIG = {
     "id": false,
@@ -26,14 +26,14 @@ export class emsReceiver
             return;
         }
 
-        let data = helpers.jsonParse(message.data);
+        let data = encoding.jsonParse(message.data);
 
         if (!data) {
             return;
         }
 
         let xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", evt => helpers.onResponse(evt, xhr, message));
+        xhr.addEventListener("load", evt => this.onResponse(evt, xhr, message));
 
         switch (data.instruction) {
             case "form": {
@@ -45,19 +45,26 @@ export class emsReceiver
             case "submit": {
                 xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                helpers.addHashCashHeader(data, xhr);
-                xhr.send(helpers.urlEncodeData(data.form));
+                security.addHashCashHeader(data, xhr);
+                xhr.send(encoding.urlEncodeData(data.form));
                 break;
             }
             case "dynamic": {
                 xhr.open("POST", this.basePath+"/ajax/"+this.id+"/"+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                helpers.addHashCashHeader(data, xhr);
-                xhr.send(helpers.urlEncodeData(data.data));
+                security.addHashCashHeader(data, xhr);
+                xhr.send(encoding.urlEncodeData(data.data));
                 break;
             }
             default:
                 return;
+        }
+    }
+
+    onResponse(evt, xhr, message)
+    {
+        if (xhr.status === 200) {
+            message.source.postMessage(xhr.responseText, message.origin);
         }
     }
 }

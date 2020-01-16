@@ -1,6 +1,6 @@
 import {addValidation, disableCopyPaste} from "../validation";
 import {addDynamicFields, replaceFormFields} from "../dynamicFields";
-import helpers from '../helpers/emsForm';
+import {encoding, form, security} from '../helpers';
 import 'url-polyfill';
 
 export const DEFAULT_CONFIG = {
@@ -36,9 +36,14 @@ export class emsForm
         }
     }
 
+    isValid()
+    {
+        return this.elementIframe !== null && this.elementForm !== null && this.elementMessage !== null;
+    }
+
     init()
     {
-        if (defaultCheck()) {
+        if (this.isValid()) {
             this.postMessage({'instruction': 'form'});
         }
     }
@@ -67,7 +72,7 @@ export class emsForm
             return;
         }
 
-        let data = helpers.jsonParse(e.data);
+        let data = encoding.jsonParse(e.data);
 
         if (!data) {
             return;
@@ -83,7 +88,7 @@ export class emsForm
                 this.elementMessage.innerHTML = data.response;
                 break;
             case 'dynamic':
-                replaceFormFields(data.response, Object.values(helpers.jsonParse(data.dynamicFields)));
+                replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
                 addDynamicFields(this.elementForm.querySelector('form'), this);
                 break;
             default:
@@ -95,14 +100,14 @@ export class emsForm
     {
         e.preventDefault();
 
-        helpers.disablingSubmitButton(e.target);
+        form.disablingSubmitButton(e.target);
 
-        let data = helpers.getArrayFromFormData(e.target);
+        let data = form.getArrayFromFormData(e.target);
 
         let msg = {
             'instruction': 'submit',
             'form': data,
-            'token': helpers.createToken(data['form[_token]'], this.difficulty)
+            'token': security.createToken(data['form[_token]'], this.difficulty)
         };
 
         this.postMessage(msg);
