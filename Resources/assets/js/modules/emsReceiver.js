@@ -26,7 +26,7 @@ export class emsReceiver
             return;
         }
 
-        let data = emsReceiver.jsonParse(message.data);
+        let data = ((typeof message.data === 'string' || message.data instanceof String)) ? encoding.jsonParse(message.data) : message.data;
 
         if (!data) {
             return;
@@ -37,17 +37,11 @@ export class emsReceiver
 
         switch (data.instruction) {
             case "form": {
-                xhr.open("GET", this.basePath + '/form/' + this.id + '/' + this.lang);
+                let url = this.basePath + '/form/' + this.id + '/' + this.lang;
+
+                xhr.open("GET", url);
                 xhr.setRequestHeader("Content-Type",  "application/json");
                 xhr.send();
-                break;
-            }
-
-            case "submit-without-file": {
-                xhr.open("POST", this.basePath + '/form/' + this.id + '/' + this.lang);
-                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                security.addHashCashHeader(data, xhr);
-                xhr.send(encoding.urlEncodeData(data.form));
                 break;
             }
 
@@ -55,14 +49,16 @@ export class emsReceiver
                 let url = this.basePath + '/form/' + this.id + '/' + this.lang;
                 let dataForm = form.getFormDataFromObject(data.form);
 
-                xhr.open("POST", url, true);
+                xhr.open("POST", url);
                 security.addHashCashHeader(data, xhr);
                 xhr.send(dataForm);
                 break;
             }
 
             case "dynamic": {
-                xhr.open("POST", this.basePath + '/ajax/' + this.id + '/' + this.lang);
+                let url = this.basePath + '/ajax/' + this.id + '/' + this.lang;
+
+                xhr.open("POST", url);
                 xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
                 security.addHashCashHeader(data, xhr);
                 xhr.send(encoding.urlEncodeData(data.data));
@@ -76,7 +72,6 @@ export class emsReceiver
 
     onResponse(evt, xhr, message)
     {
-        console.log('onResponse', xhr.responseText, message.origin)
         if (xhr.status === 200) {
             message.source.postMessage(xhr.responseText, message.origin);
         }
