@@ -5,7 +5,6 @@
 ### HTML5 validations
 * [Email](#email)
 * [Max](#max)
-* [MaxFileSize](#maxfilesize)
 * [MaxLength](#maxlength)
 * [Min](#min)
 * [MinLength](#minlength)
@@ -14,6 +13,7 @@
 ### Custom validations
 * [CompanyNumber](#companynumber)
 * [CompanyNumberMultiple](#companynumbermultiple)
+* [MaxFileSize](#maxfilesize)
 * [MaxLengthCounter](#maxlengthcounter)
 * [NissInsz](#nissinsz)
 * [OnssRsz](#onssrsz)
