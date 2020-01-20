@@ -4,6 +4,7 @@
 
 ### HTML5 validations
 * [Email](#email)
+* [FileMimeTypes](#filemimetypes)
 * [Max](#max)
 * [MaxLength](#maxlength)
 * [Min](#min)
@@ -30,6 +31,9 @@ This validation is 'forgiving', meaning that all non valid input characters are 
 
 ### Email <a name="email"/>
 Validate email input as per HTML5 standard definition.
+
+### FileMimeTypes <a name="filemimetypes"/>
+Define the MIME type(s) accepted in the file field. You can add more than 1 type separated by comma (,).
 
 ### Max <a name="max"/>
 Define a maximum value that can be used as input of the associated field.
