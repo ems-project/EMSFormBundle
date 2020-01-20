@@ -17,6 +17,7 @@
 * [NissInsz](#nissinsz)
 * [OnssRsz](#onssrsz)
 * [Phone](#phone)
+* [RequiredWithout](#requiredwithout)
 
 ## Validations
 
@@ -60,3 +61,6 @@ This validation is 'forgiving', meaning that all non valid input characters are 
 
 ### Phone <a name="phone"/>
 Validate that the input is a valid phone number based on Belgium fixed and mobile lines.
+
+### Required without <a name="requiredwithout"/>
+The field under validation must be present and not empty only if the other field is NOT present.
