@@ -19,11 +19,11 @@ export default class
         Object.entries(obj).forEach(([key,value])=>{
             let filename = value.name;
             if (filename !== undefined) {
-                formData.set(key, value, filename);
+                formData.append(key, value, filename);
                 return;
             }
 
-            formData.set(key, value);
+            formData.append(key, value);
         });
 
         return formData;
