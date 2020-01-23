@@ -10,11 +10,14 @@ export default class
             data[key] = value;
         });
 
+        console.log('port1', data);
+
         return data;
     }
 
     static getFormDataFromObject(obj)
     {
+        console.log('port2', obj);
         let formData = new FormData();
         Object.entries(obj).forEach(([key,value])=>{
             let filename = value.name;
