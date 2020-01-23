@@ -32,7 +32,7 @@ class IsRequiredWithoutValidator extends AbstractConstraintValidator
         }
     }
 
-    private function isRequiredWithout(?string $value, ?string $otherField): bool
+    private function isRequiredWithout(?string $value, string $otherField): bool
     {
         try {
             $otherFieldValue = $this->context->getRoot()->get($otherField)->getData();
