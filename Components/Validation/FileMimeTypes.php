@@ -14,10 +14,6 @@ class FileMimeTypes extends AbstractValidation
 
     public function getConstraint(): Constraint
     {
-        if (strpos($this->value, ',') !== false) {
-            return new File(['mimeTypes' => explode(',', $this->value)]);
-        }
-
-        return new File(['mimeTypes' => $this->value]);
+        return new File(['mimeTypes' => explode(',', $this->value)]);
     }
 }
