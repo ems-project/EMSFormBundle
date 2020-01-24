@@ -1,4 +1,4 @@
-import {encodingHelper, formHelper, securityHelper} from '../helpers';
+import {encodingHelper, securityHelper} from '../helpers';
 
 const DEFAULT_CONFIG = {
     'id': false,
@@ -45,14 +45,14 @@ export class emsReceiver
             case 'submit': {
                 xhr.open('POST', `${this.basePath}/form/${this.id}/${this.lang}`);
                 xhr.setRequestHeader('Content-Type',  'application/x-www-form-urlencoded');
-                security.addHashCashHeader(data, xhr);
-                xhr.send(encoding.urlEncodeData(data.form));
+                securityHelper.addHashCashHeader(data, xhr);
+                xhr.send(encodingHelper.urlEncodeData(data.form));
                 break;
             }
             case 'dynamic': {
                 xhr.open('POST', `${this.basePath}/ajax/${this.id}/${this.lang}`);
                 xhr.setRequestHeader('Content-Type',  'application/x-www-form-urlencoded');
-                security.addHashCashHeader(data, xhr);
+                securityHelper.addHashCashHeader(data, xhr);
                 xhr.send(encodingHelper.urlEncodeData(data.data));
                 break;
             }
