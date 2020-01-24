@@ -10,6 +10,7 @@ export class emsReceiver
     constructor(options)
     {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
+
         this.domains = config.domains;
         this.id = config.id;
         this.lang = document.documentElement.lang;
@@ -22,7 +23,7 @@ export class emsReceiver
 
     onMessage(message)
     {
-        if ( !this.domains.includes(message.origin) ) {
+        if (!this.domains.includes(message.origin)) {
             return;
         }
 
