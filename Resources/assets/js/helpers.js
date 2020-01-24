@@ -1,7 +1,7 @@
-import encoding from './helpers/encoding';
-import form from './helpers/form';
-import security from './helpers/security';
+import encodingHelper from './helpers/encoding';
+import formHelper from './helpers/form';
+import securityHelper from './helpers/security';
 
 export {
-    encoding, form, security
+    encodingHelper, formHelper, securityHelper
 }

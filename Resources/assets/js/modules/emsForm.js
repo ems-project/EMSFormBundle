@@ -1,6 +1,6 @@
-import {addValidation, disableCopyPaste} from "../validation";
-import {addDynamicFields, replaceFormFields} from "../dynamicFields";
-import {encoding, form, security} from '../helpers';
+import {addValidation, disableCopyPaste} from '../validation';
+import {addDynamicFields, replaceFormFields} from '../dynamicFields';
+import {encodingHelper, formHelper, securityHelper} from '../helpers';
 import 'url-polyfill';
 import 'formdata-polyfill'
 
@@ -45,7 +45,8 @@ export class emsForm
     init()
     {
         if (this.isValid()) {
-            this.postMessage({'instruction': 'form'});
+            let message = {'instruction': 'form'};
+            this.postMessage(message);
         }
     }
 
@@ -73,7 +74,7 @@ export class emsForm
             return;
         }
 
-        let data = encoding.jsonParse(e.data);
+        let data = encodingHelper.jsonParse(e.data);
 
         if (!data) {
             return;
@@ -89,7 +90,7 @@ export class emsForm
                 this.elementMessage.innerHTML = data.response;
                 break;
             case 'dynamic':
-                replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
+                replaceFormFields(data.response, Object.values(encodingHelper.jsonParse(data.dynamicFields)));
                 addDynamicFields(this.elementForm.querySelector('form'), this);
                 break;
             default:
@@ -101,31 +102,31 @@ export class emsForm
     {
         e.preventDefault();
 
-        form.disablingSubmitButton(e.target);
+        formHelper.disablingSubmitButton(e.target);
 
-        let data = form.getObjectFromFormData(e.target);
+        let data = formHelper.getObjectFromFormData(e.target);
 
-        let msg = {
+        let message = {
             'instruction': 'submit',
             'form': data,
-            'token': security.createToken(data['form[_token]'], this.difficulty)
+            'token': securityHelper.createToken(data['form[_token]'], this.difficulty)
         };
 
-        this.postMessage(msg);
+        this.postMessage(message);
     }
 
     onDynamicFieldChange(data)
     {
-        let msg = {
+        let message = {
             'instruction': 'dynamic',
             'data': data
         };
 
-        this.postMessage(msg);
+        this.postMessage(message);
     }
 
-    postMessage(msg)
+    postMessage(message)
     {
-        this.elementIframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
+        this.elementIframe.contentWindow.postMessage(JSON.stringify(message), this.origin);
     }
 }

@@ -1,8 +1,8 @@
-import {encoding, security} from '../helpers';
+import {encodingHelper, formHelper, securityHelper} from '../helpers';
 
 const DEFAULT_CONFIG = {
-    "id": false,
-    "domains": [],
+    'id': false,
+    'domains': [],
 };
 
 export class emsReceiver
@@ -16,7 +16,7 @@ export class emsReceiver
         this.basePath = window.location.pathname.replace(/\/iframe\/.*/g, '');
 
         if (this.id !== false) {
-            window.addEventListener("message", evt => this.onMessage(evt));
+            window.addEventListener('message', evt => this.onMessage(evt));
         }
     }
 
@@ -26,34 +26,34 @@ export class emsReceiver
             return;
         }
 
-        let data = encoding.jsonParse(message.data);
+        let data = encodingHelper.jsonParse(message.data);
 
         if (!data) {
             return;
         }
 
         let xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", evt => this.onResponse(evt, xhr, message));
+        xhr.addEventListener('load', evt => this.onResponse(evt, xhr, message));
 
         switch (data.instruction) {
-            case "form": {
-                xhr.open("GET", this.basePath+"/form/"+this.id+'/'+this.lang);
-                xhr.setRequestHeader("Content-Type",  "application/json");
+            case 'form': {
+                xhr.open('GET', `${this.basePath}/form/${this.id}/${this.lang}`);
+                xhr.setRequestHeader('Content-Type',  'application/json');
                 xhr.send();
                 break;
             }
-            case "submit": {
-                xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
-                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
+            case 'submit': {
+                xhr.open('POST', `${this.basePath}/form/${this.id}/${this.lang}`);
+                xhr.setRequestHeader('Content-Type',  'application/x-www-form-urlencoded');
                 security.addHashCashHeader(data, xhr);
                 xhr.send(encoding.urlEncodeData(data.form));
                 break;
             }
-            case "dynamic": {
-                xhr.open("POST", this.basePath+"/ajax/"+this.id+"/"+this.lang);
-                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
+            case 'dynamic': {
+                xhr.open('POST', `${this.basePath}/ajax/${this.id}/${this.lang}`);
+                xhr.setRequestHeader('Content-Type',  'application/x-www-form-urlencoded');
                 security.addHashCashHeader(data, xhr);
-                xhr.send(encoding.urlEncodeData(data.data));
+                xhr.send(encodingHelper.urlEncodeData(data.data));
                 break;
             }
             default:
