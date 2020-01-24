@@ -24,6 +24,7 @@ export class emsForm
     constructor(options)
     {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
+
         this.elementIframe = document.getElementById(config.idIframe);
         this.elementForm = document.getElementById(config.idForm);
         this.elementMessage = document.getElementById(config.idMessage);
