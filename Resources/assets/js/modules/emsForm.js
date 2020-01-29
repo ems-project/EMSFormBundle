@@ -29,12 +29,14 @@ export class emsForm
         this.elementForm = document.getElementById(config.idForm);
         this.elementMessage = document.getElementById(config.idMessage);
         this.onLoad = config.onLoad;
+        this.channel = new MessageChannel();
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
             this.origin = url.origin;
 
-            window.addEventListener( 'message', evt => this.onMessage(evt) );
+            this.channel.port1.onmessage = this.onMessage.bind(this);
+            this.elementIframe.contentWindow.postMessage('port2ChannelInit', this.origin, [this.channel.port2]);
         }
     }
 
@@ -47,7 +49,7 @@ export class emsForm
     {
         if (this.isValid()) {
             let message = {'instruction': 'form'};
-            this.postMessage(message);
+            this.channel.port1.postMessage(message);
         }
     }
 
@@ -59,7 +61,7 @@ export class emsForm
         this.elementForm.innerHTML = dom.body.innerHTML;
 
         let form = this.elementForm.querySelector('form');
-        form.addEventListener('submit', evt => this.onSubmitForm(evt));
+        form.addEventListener('submit', e => this.onSubmitForm(e));
 
         addValidation(form);
         disableCopyPaste(form);
@@ -69,13 +71,9 @@ export class emsForm
         }
     }
 
-    onMessage(e)
+    onMessage(messageEvent)
     {
-        if (e.origin !== this.origin) {
-            return;
-        }
-
-        let data = encodingHelper.jsonParse(e.data);
+        let data = encodingHelper.jsonParse(messageEvent.data);
 
         if (!data) {
             return;
@@ -99,13 +97,13 @@ export class emsForm
         }
     }
 
-    onSubmitForm(e)
+    onSubmitForm(event)
     {
-        e.preventDefault();
+        event.preventDefault();
 
-        formHelper.disablingSubmitButton(e.target);
+        formHelper.disablingSubmitButton(event.target);
 
-        let data = formHelper.getObjectFromFormData(e.target);
+        let data = formHelper.getObjectFromFormData(event.target);
 
         let message = {
             'instruction': 'submit',
@@ -113,7 +111,7 @@ export class emsForm
             'token': securityHelper.createToken(data['form[_token]'], this.difficulty)
         };
 
-        this.postMessage(message);
+        this.channel.port1.postMessage(message);
     }
 
     onDynamicFieldChange(data)
@@ -123,11 +121,6 @@ export class emsForm
             'data': data
         };
 
-        this.postMessage(message);
-    }
-
-    postMessage(message)
-    {
-        this.elementIframe.contentWindow.postMessage(JSON.stringify(message), this.origin);
+        this.channel.port1.postMessage(message);
     }
 }
