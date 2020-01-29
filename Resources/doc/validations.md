@@ -13,6 +13,7 @@
 ### Custom validations
 * [CompanyNumber](#companynumber)
 * [CompanyNumberMultiple](#companynumbermultiple)
+* [MaxFileSize](#maxfilesize)
 * [MaxLengthCounter](#maxlengthcounter)
 * [NissInsz](#nissinsz)
 * [OnssRsz](#onssrsz)
@@ -33,6 +34,9 @@ Validate email input as per HTML5 standard definition.
 
 ### Max <a name="max"/>
 Define a maximum value that can be used as input of the associated field.
+
+### Max File Size <a name="maxfilesize"/>
+Define the maximum allowed size for uploaded files. Check the [Symfony docs](https://symfony.com/doc/current/reference/constraints/File.html#maxsize) for available formats. 
 
 ### Max Length <a name="maxlength"/>
 Define a maximum number of characters that can be used in the input of the associated field.
