@@ -13,6 +13,7 @@
 * [Email](#email)
 * [EmailWithConfirmation](#emailwithconfirmation)
 * [File](#file)
+* [MultipleFile](#multiplefile)
 * [Number](#number)
 * [NumberForgivingInput](#numberforgivinginput)
 * [Phone](#phone)
@@ -121,6 +122,9 @@ This field is designed to prevent pasting values in both the original and repeat
 
 ### File <a name="file"/>
 Allow an end user to upload a file.
+
+### MultipleFile <a name="multiplefile"/>
+Allow an end user to upload multiple files.
 
 ### Number <a name="number"/>
 This field only allows integers as input.
