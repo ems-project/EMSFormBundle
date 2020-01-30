@@ -1,4 +1,4 @@
-import {encoding, security} from '../helpers';
+import {encoding, form, security} from '../helpers';
 
 const DEFAULT_CONFIG = {
     "id": false,
@@ -26,7 +26,7 @@ export class emsReceiver
             return;
         }
 
-        let data = encoding.jsonParse(message.data);
+        let data = message.data;
 
         if (!data) {
             return;
@@ -44,9 +44,8 @@ export class emsReceiver
             }
             case "submit": {
                 xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
-                xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
-                security.addHashCashHeader(data, xhr);
-                xhr.send(encoding.urlEncodeData(data.form));
+               security.addHashCashHeader(data, xhr);
+                xhr.send(form.getFormDataFromObject(data.form));
                 break;
             }
             case "dynamic": {
