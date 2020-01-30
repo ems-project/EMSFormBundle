@@ -126,6 +126,6 @@ export class emsForm
 
     postMessage(msg)
     {
-        this.elementIframe.contentWindow.postMessage(JSON.stringify( msg ), this.origin);
+        this.elementIframe.contentWindow.postMessage(msg, this.origin);
     }
 }
