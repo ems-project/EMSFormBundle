@@ -22,24 +22,69 @@ class BelgiumPhoneNumber
 
     public function validate(): bool
     {
+        $numberType = $this->getNumberType();
+
+        if ($this->validateNumberOfDigit($numberType) && $this->validateCountryCode($numberType) && $this->validateLongDistanceCode($numberType)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function validateNumberOfDigit(string $numberType): bool
+    {
         $numberOfDigits = strlen($this->number->getDigits());
 
-        if ($this->getInternationalType() === self::INTERNATIONAL_ZEROS) {
+        if ($numberType === self::INTERNATIONAL_ZEROS) {
             return ($numberOfDigits === 13) || ($numberOfDigits === 12);
         }
 
-        if ($this->getInternationalType() === self::INTERNATIONAL_PLUS) {
+        if ($numberType === self::INTERNATIONAL_PLUS) {
             return ($numberOfDigits === 11) || ($numberOfDigits === 10);
         }
 
-        if ($this->getInternationalType() === self::LOCAL) {
+        if ($numberType === self::LOCAL) {
             return ($numberOfDigits === 10) || ($numberOfDigits === 9);
         }
 
         return false;
     }
 
-    private function getInternationalType(): string
+    private function validateCountryCode(string $numberType)
+    {
+        if ($numberType === self::INTERNATIONAL_ZEROS) {
+            return strpos($this->number->getInput(), '32') === 2;
+        }
+
+        if ($numberType === self::INTERNATIONAL_PLUS) {
+            return strpos($this->number->getInput(), '32') === 1;
+        }
+
+        if ($numberType === self::LOCAL) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function validateLongDistanceCode(string $numberType)
+    {
+        if ($numberType === self::INTERNATIONAL_ZEROS) {
+            return strpos($this->number->getInput(), '0', 2) !== 4;
+        }
+
+        if ($numberType === self::INTERNATIONAL_PLUS) {
+            return strpos($this->number->getInput(), '0') !== 3;
+        }
+
+        if ($numberType === self::LOCAL) {
+            return strpos($this->number->getInput(), '0') === 0;
+        }
+
+        return false;
+    }
+
+    private function getNumberType(): string
     {
         if (strpos($this->number->getInput(), '+') === 0) {
             return self::INTERNATIONAL_PLUS;
