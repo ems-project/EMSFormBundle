@@ -53,6 +53,6 @@
 		"phpstan": "phpstan analyse .",
 		"phpmd": "./vendor/bin/phpmd . html ./phpmd.xml.dist --suffixes php --exclude vendor --ignore-violations-on-exit --reportfile phpmd.html",
 		"phpmd-win": "vendor\\bin\\phpmd %cd% html phpmd.xml.dist --suffixes php --exclude %cd%\\vendor --ignore-violations-on-exit --reportfile phpmd.html",
-		"test": "phpunit"
+		"phpunit": "phpunit"
 	}
 }
