@@ -28,7 +28,7 @@ export class BelgiumPhoneNumberValidator
 
         const typeNumber = this.getTypeNumber();
 
-        if (this.validateNumberOfDigit(typeNumber)) {
+        if (this.validateNumberOfDigit(typeNumber) && this.validateCountryCode(typeNumber) && this.validateLongDistanceCode(typeNumber)) {
             return true;
         }
 
@@ -46,6 +46,34 @@ export class BelgiumPhoneNumberValidator
 
         if (typeNumber === 'local') {
             return (this.phone.length === 10) || (this.phone.length === 9);
+        }
+
+        return false;
+    }
+
+    validateCountryCode(typeNumber) {
+        if (typeNumber === 'zeros') {
+            return this.phone.startsWith('32', 2);
+        }
+
+        if (typeNumber === 'plus') {
+            return this.phone.startsWith('32', 1);
+        }
+
+        return typeNumber === 'local';
+    }
+
+    validateLongDistanceCode(typeNumber) {
+        if (typeNumber === 'zeros') {
+            return !this.phone.startsWith('0', 4);
+        }
+
+        if (typeNumber === 'plus') {
+            return !this.phone.startsWith('0', 3);
+        }
+
+        if (typeNumber === 'local') {
+            return this.phone.startsWith('0');
         }
 
         return false;
