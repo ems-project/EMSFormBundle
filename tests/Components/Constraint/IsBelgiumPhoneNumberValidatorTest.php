@@ -6,6 +6,7 @@ namespace EMS\FormBundle\Tests\Components\Constraint;
 
 use EMS\FormBundle\Components\Constraint\IsBelgiumPhoneNumber;
 use EMS\FormBundle\Components\Constraint\IsBelgiumPhoneNumberValidator;
+use EMS\FormBundle\Components\ValueObject\BelgiumPhoneNumber;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
@@ -49,8 +50,8 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @dataProvider getValidPhoneNumbers
-     */
+ * @dataProvider getValidPhoneNumbers
+ */
     public function testValidPhoneNumber(string $phoneNumber)
     {
         $this->validator->validate($phoneNumber, new IsBelgiumPhoneNumber());
@@ -66,6 +67,68 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
             ['+3229876543'],
             ['003229876543'],
             ['029876543'],
+
+            ['+32490732628'],
+            ['0490/73 26 28'],
+            ['+32.490.73.26.28'],
+            ['0032 490 73 26 28'],
+            ['+32482838127'],
+            ['0482 83 81 27'],
+            ['0482/83-81-27'],
+            ['+32 482 83 81 27'],
+            ['00 32 482 83 81 27'],
+
+            ['+3222268888'],
+            ['+32 2 226 88 88'],
+            ['00 32 2 226 88 88'],
+            ['081582098'],
+            ['081/58.20.98'],
+            ['081/582.098'],
+            ['081 58 20 98'],
+            ['081/582 098'],
+            ['+32 81 58.20.98'],
+            ['+32 81 58 20 98'],
+            ['0032 81 58 20 98'],
+        ];
+    }
+
+    /**
+     * @dataProvider getTransformPhoneNumbers
+     */
+    public function testTransformPhoneNumbers(string $input, string $output)
+    {
+        $objectValue = new BelgiumPhoneNumber($input);
+        $this->assertEquals($output, $objectValue->transform());
+    }
+
+    public function getTransformPhoneNumbers()
+    {
+        return [
+            ['+32490732628', '+32490732628'],
+            ['0490/73 26 28', '0490732628'],
+            ['+32.490.73.26.28', '+32490732628'],
+            ['0032 490 73 26 28', '0032490732628'],
+            ['+32482838127', '+32482838127'],
+            ['0482 83 81 27', '0482838127'],
+            ['0482/83-81-27', '0482838127'],
+            ['+32 482 83 81 27', '+32482838127'],
+            ['00 32 482 83 81 27', '0032482838127'],
+
+            ['+3222268888', '+3222268888'],
+            ['+32 2 226 88 88', '+3222268888'],
+            ['00 32 2 226 88 88', '003222268888'],
+            ['081582098', '081582098'],
+            ['081/58.20.98', '081582098'],
+            ['081/582.098', '081582098'],
+            ['081 58 20 98', '081582098'],
+            ['081/582 098', '081582098'],
+            ['+32 81 58.20.98', '+3281582098'],
+            ['+32 81 58 20 98', '+3281582098'],
+            ['0032 81 58 20 98', '003281582098'],
+
+            // ['+32 (0)490 73 26 28', '+32490732628'],
+            // ['+32 (0)81 58 20 98', '+3281582098'],
+            // ['+32 (0)81 58 20 98', '+3281582098'],
         ];
     }
 }
