@@ -53,11 +53,11 @@ class BelgiumPhoneNumber
     private function validateCountryCode(string $numberType)
     {
         if ($numberType === self::INTERNATIONAL_ZEROS) {
-            return strpos($this->number->getInput(), '32') === 2;
+            return strpos($this->transform(), '32') === 2;
         }
 
         if ($numberType === self::INTERNATIONAL_PLUS) {
-            return strpos($this->number->getInput(), '32') === 1;
+            return strpos($this->transform(), '32') === 1;
         }
 
         if ($numberType === self::LOCAL) {
@@ -70,15 +70,15 @@ class BelgiumPhoneNumber
     private function validateLongDistanceCode(string $numberType)
     {
         if ($numberType === self::INTERNATIONAL_ZEROS) {
-            return strpos($this->number->getInput(), '0', 2) !== 4;
+            return strpos($this->transform(), '0', 2) !== 4;
         }
 
         if ($numberType === self::INTERNATIONAL_PLUS) {
-            return strpos($this->number->getInput(), '0') !== 3;
+            return strpos($this->transform(), '0') !== 3;
         }
 
         if ($numberType === self::LOCAL) {
-            return strpos($this->number->getInput(), '0') === 0;
+            return strpos($this->transform(), '0') === 0;
         }
 
         return false;
@@ -86,11 +86,11 @@ class BelgiumPhoneNumber
 
     private function getNumberType(): string
     {
-        if (strpos($this->number->getInput(), '+') === 0) {
+        if (strpos($this->transform(), '+') === 0) {
             return self::INTERNATIONAL_PLUS;
         }
 
-        if (strpos($this->number->getInput(), '00') === 0) {
+        if (strpos($this->transform(), '00') === 0) {
             return self::INTERNATIONAL_ZEROS;
         }
 
