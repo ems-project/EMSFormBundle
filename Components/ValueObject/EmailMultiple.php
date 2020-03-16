@@ -14,7 +14,7 @@ final class EmailMultiple
 
     public function __construct(string $emails)
     {
-        $this->emails = \trim($emails);
+        $this->emails = $emails;
 
         if (!$this->validate()) {
             throw new \Exception(\sprintf('At least one email is not valid: %s', $this->emails));
