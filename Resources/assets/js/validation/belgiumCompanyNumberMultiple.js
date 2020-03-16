@@ -3,6 +3,11 @@ import {validateBelgiumCompanyNumber} from "./belgiumCompanyNumber.js";
 
 export function setBelgiumCompanyNumberMultipleValidation(element) {
     element.addEventListener('change', function() {
+        if(this.value === '') {
+            this.setCustomValidity('');
+            return;
+        }
+
         if(validateBelgiumCompanyNumberMultiple(this.value)) {
             this.setCustomValidity('');
         } else {
