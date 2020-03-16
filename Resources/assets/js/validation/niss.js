@@ -2,6 +2,11 @@ import {i18n} from "../modules/translations";
 
 export function setNissInszValidation(element) {
     element.addEventListener('change', function() {
+        if(this.value === '') {
+            this.setCustomValidity('');
+            return;
+        }
+
         if(validateNissInsz(this.value)) {
             this.setCustomValidity('');
         } else {
