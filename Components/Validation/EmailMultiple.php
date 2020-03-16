@@ -13,9 +13,4 @@ final class EmailMultiple extends AbstractValidation
     {
         return new IsEmailMultiple($this->value);
     }
-
-    public function getHtml5Attribute(): array
-    {
-        return [];
-    }
 }
