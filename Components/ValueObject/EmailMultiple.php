@@ -21,7 +21,7 @@ final class EmailMultiple
         }
     }
 
-    public function validate(): bool
+    private function validate(): bool
     {
         $validator = Validation::createValidator();
         $emails = \explode(',', $this->emails);
