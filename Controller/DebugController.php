@@ -3,7 +3,7 @@
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
-use EMS\FormBundle\Submit\Client;
+use EMS\FormBundle\Submission\Client;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -15,4 +15,5 @@ interface HandleRequestInterface
     public function getFormConfig(): FormConfig;
     public function getEndPoint(): string;
     public function getMessage(): string;
+    public function getResponseCollector(): HandleResponseCollector;
 }

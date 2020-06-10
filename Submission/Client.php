@@ -1,13 +1,12 @@
 <?php
 
-namespace EMS\FormBundle\Submit;
+declare(strict_types=1);
+
+namespace EMS\FormBundle\Submission;
 
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
-use EMS\FormBundle\Submission\AbstractHandler;
-use EMS\FormBundle\Submission\HandleRequest;
-use EMS\FormBundle\Submission\HandleRequestInterface;
 use Symfony\Component\Form\FormInterface;
 
 class Client
@@ -30,7 +29,7 @@ class Client
         $formConfig = $form->getConfig()->getOption('config');
         $this->loadSubmissions($formConfig);
 
-        $responseCollector = new ResponseCollector();
+        $responseCollector = new HandleResponseCollector();
 
         foreach ($formConfig->getSubmissions() as $submissionConfig) {
             $handleRequest = new HandleRequest($form, $formConfig, $responseCollector, $submissionConfig);
@@ -49,7 +48,7 @@ class Client
             if (! $handler instanceof AbstractHandler) {
                 continue;
             }
-            if ($handler->canHandle($handleRequest->getSubmissionConfig()->getClass())) {
+            if ($handler->canHandle($handleRequest->getClass())) {
                 $handleResponse = $handler->handle($handleRequest);
                 $handleRequest->getResponseCollector()->addResponse($handleResponse);
             }

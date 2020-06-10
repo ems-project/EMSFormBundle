@@ -1,18 +1,20 @@
 <?php
 
-namespace EMS\FormBundle\Submit;
+declare(strict_types=1);
 
-class ResponseCollector
+namespace EMS\FormBundle\Submission;
+
+class HandleResponseCollector
 {
-    /** @var AbstractResponse[] */
+    /** @var HandleResponseInterface[] */
     private $responses = [];
 
-    public function addResponse(AbstractResponse $response): void
+    public function addResponse(HandleResponseInterface $response): void
     {
         $this->responses[] = $response;
     }
 
-    public function getLastResponse(): ?AbstractResponse
+    public function getLastResponse(): ?HandleResponseInterface
     {
         $last = end($this->responses);
         reset($this->responses);
@@ -29,7 +31,7 @@ class ResponseCollector
     private function getResponses(): array
     {
         return array_map(
-            function (AbstractResponse $response) {
+            function (AbstractHandleResponse $response) {
                 return $response->getResponse();
             },
             $this->responses

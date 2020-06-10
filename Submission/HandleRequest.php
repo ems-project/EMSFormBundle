@@ -6,7 +6,6 @@ namespace EMS\FormBundle\Submission;
 
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
-use EMS\FormBundle\Submit\ResponseCollector;
 use Symfony\Component\Form\FormInterface;
 
 final class HandleRequest implements HandleRequestInterface
@@ -15,7 +14,7 @@ final class HandleRequest implements HandleRequestInterface
     private $form;
     /** @var FormConfig */
     private $formConfig;
-    /** @var ResponseCollector */
+    /** @var HandleResponseCollector */
     private $responseCollector;
     /** @var SubmissionConfig */
     private $submissionConfig;
@@ -23,7 +22,7 @@ final class HandleRequest implements HandleRequestInterface
     public function __construct(
         FormInterface $form,
         FormConfig $formConfig,
-        ResponseCollector $responseCollector,
+        HandleResponseCollector $responseCollector,
         SubmissionConfig $submissionConfig
     ) {
         $this->form = $form;
@@ -62,5 +61,10 @@ final class HandleRequest implements HandleRequestInterface
     public function getMessage(): string
     {
         return $this->submissionConfig->getMessage();
+    }
+
+    public function getResponseCollector(): HandleResponseCollector
+    {
+        return $this->responseCollector;
     }
 }

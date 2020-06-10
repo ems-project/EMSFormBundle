@@ -1,8 +1,8 @@
 <?php
 
-namespace EMS\FormBundle\Submission;
+declare(strict_types=1);
 
-use EMS\FormBundle\Submit\AbstractResponse;
+namespace EMS\FormBundle\Submission;
 
 abstract class AbstractHandler
 {
@@ -11,5 +11,5 @@ abstract class AbstractHandler
         return $class === get_called_class();
     }
 
-    abstract public function handle(HandleRequestInterface $handleRequest): AbstractResponse;
+    abstract public function handle(HandleRequestInterface $handleRequest): HandleResponseInterface;
 }
