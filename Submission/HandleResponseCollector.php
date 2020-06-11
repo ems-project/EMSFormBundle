@@ -14,27 +14,18 @@ class HandleResponseCollector
         $this->responses[] = $response;
     }
 
-    public function getLastResponse(): ?HandleResponseInterface
+    public function getResponses(): array
     {
-        $last = end($this->responses);
-        reset($this->responses);
-
-        return $last === false ? null : $last;
+        return $this->responses;
     }
 
     public function toJson(): string
     {
-        $json = \json_encode($this->getResponses());
-        return $json !== false ? $json : "";
-    }
-
-    private function getResponses(): array
-    {
-        return array_map(
-            function (AbstractHandleResponse $response) {
+        $responses = array_map(function (AbstractHandleResponse $response) {
                 return $response->getResponse();
-            },
-            $this->responses
-        );
+        },  $this->responses);
+
+        $json = \json_encode($responses);
+        return $json !== false ? $json : "";
     }
 }

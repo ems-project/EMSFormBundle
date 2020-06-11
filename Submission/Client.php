@@ -49,8 +49,7 @@ class Client
                 continue;
             }
             if ($handler->canHandle($handleRequest->getClass())) {
-                $handleResponse = $handler->handle($handleRequest);
-                $handleRequest->getResponseCollector()->addResponse($handleResponse);
+                $handleRequest->addResponse($handler->handle($handleRequest));
             }
         }
     }

@@ -31,6 +31,11 @@ final class HandleRequest implements HandleRequestInterface
         $this->submissionConfig = $submissionConfig;
     }
 
+    public function addResponse(HandleResponseInterface $response): void
+    {
+        $this->responseCollector->addResponse($response);
+    }
+
     public function getClass(): string
     {
         return $this->submissionConfig->getClass();
@@ -63,8 +68,8 @@ final class HandleRequest implements HandleRequestInterface
         return $this->submissionConfig->getMessage();
     }
 
-    public function getResponseCollector(): HandleResponseCollector
+    public function getResponses(): array
     {
-        return $this->responseCollector;
+        return $this->responseCollector->getResponses();
     }
 }
