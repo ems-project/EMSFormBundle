@@ -1,11 +1,12 @@
 <?php
 
-namespace EMS\FormBundle\Submit;
+declare(strict_types=1);
+
+namespace EMS\FormBundle\Submission;
 
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
-use EMS\FormBundle\Handler\AbstractHandler;
 use Symfony\Component\Form\FormInterface;
 
 class Client
@@ -24,14 +25,15 @@ class Client
 
     public function submit(FormInterface $form): array
     {
-        /** @var FormConfig $config */
-        $config = $form->getConfig()->getOption('config');
-        $this->loadSubmissions($config);
+        /** @var FormConfig $formConfig */
+        $formConfig = $form->getConfig()->getOption('config');
+        $this->loadSubmissions($formConfig);
 
-        $responseCollector = new ResponseCollector();
+        $responseCollector = new HandleResponseCollector();
 
-        foreach ($config->getSubmissions() as $submission) {
-            $this->handle($submission, $responseCollector, $form, $config);
+        foreach ($formConfig->getSubmissions() as $submissionConfig) {
+            $handleRequest = new HandleRequest($form, $formConfig, $responseCollector, $submissionConfig);
+            $this->handle($handleRequest);
         }
 
         return [
@@ -40,14 +42,14 @@ class Client
         ];
     }
 
-    private function handle(SubmissionConfig $submission, ResponseCollector $responseCollector, FormInterface $form, FormConfig $config): void
+    private function handle(HandleRequestInterface $handleRequest): void
     {
         foreach ($this->handlers as $handler) {
             if (! $handler instanceof AbstractHandler) {
                 continue;
             }
-            if ($handler->canHandle($submission->getClass())) {
-                $responseCollector->addResponse($handler->handle($submission, $form, $config, $responseCollector->getLastResponse()));
+            if ($handler->canHandle($handleRequest->getClass())) {
+                $handleRequest->addResponse($handler->handle($handleRequest));
             }
         }
     }
