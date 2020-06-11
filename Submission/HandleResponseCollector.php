@@ -23,7 +23,7 @@ class HandleResponseCollector
     {
         $responses = array_map(function (AbstractHandleResponse $response) {
                 return $response->getResponse();
-        },  $this->responses);
+        }, $this->responses);
 
         $json = \json_encode($responses);
         return $json !== false ? $json : "";
