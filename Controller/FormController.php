@@ -5,7 +5,7 @@ namespace EMS\FormBundle\Controller;
 use EMS\FormBundle\Components\Form;
 use EMS\FormBundle\Components\ValueObject\SymfonyFormFieldsByNameArray;
 use EMS\FormBundle\Security\Guard;
-use EMS\FormBundle\Submit\Client;
+use EMS\FormBundle\Submission\Client;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

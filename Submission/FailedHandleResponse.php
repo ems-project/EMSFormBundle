@@ -1,8 +1,10 @@
 <?php
 
-namespace EMS\FormBundle\Submit;
+declare(strict_types=1);
 
-class FailedResponse extends AbstractResponse
+namespace EMS\FormBundle\Submission;
+
+class FailedHandleResponse extends AbstractHandleResponse
 {
     public function __construct(string $data)
     {

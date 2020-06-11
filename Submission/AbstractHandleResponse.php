@@ -1,8 +1,8 @@
 <?php
 
-namespace EMS\FormBundle\Submit;
+namespace EMS\FormBundle\Submission;
 
-abstract class AbstractResponse
+abstract class AbstractHandleResponse implements HandleResponseInterface
 {
     /** @var string */
     protected $status;

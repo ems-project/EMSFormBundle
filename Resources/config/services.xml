@@ -26,7 +26,7 @@
             <tag name="form.type"/>
         </service>
 
-        <service id="emsf.submit.client" class="EMS\FormBundle\Submit\Client">
+        <service id="emsf.submission.client" class="EMS\FormBundle\Submission\Client">
             <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
             <argument type="tagged" tag="emsf.handler"/>
         </service>
@@ -38,14 +38,14 @@
         <!-- controllers -->
         <service id="emsf.controller.debug" class="EMS\FormBundle\Controller\DebugController"  public="true">
             <argument type="service" id="form.factory"/>
-            <argument type="service" id="emsf.submit.client"/>
+            <argument type="service" id="emsf.submission.client"/>
             <argument type="service" id="twig" />
             <argument type="service" id="router" />
             <argument type="string">%emsch.locales%</argument>
         </service>
         <service id="emsf.controller.form" class="EMS\FormBundle\Controller\FormController"  public="true">
             <argument type="service" id="form.factory"/>
-            <argument type="service" id="emsf.submit.client"/>
+            <argument type="service" id="emsf.submission.client"/>
             <argument type="service" id="emsf.security.guard"/>
             <argument type="service" id="twig" />
         </service>
