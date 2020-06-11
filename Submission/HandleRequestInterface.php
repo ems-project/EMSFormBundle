@@ -19,7 +19,7 @@ interface HandleRequestInterface
     public function getMessage(): string;
 
     /**
-     * @param HandleResponseInterface[]
+     * @return HandleResponseInterface[]
      */
     public function getResponses(): array;
 }
