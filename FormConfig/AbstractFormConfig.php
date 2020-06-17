@@ -32,6 +32,11 @@ abstract class AbstractFormConfig
         $this->name = $name;
     }
 
+    public function getElementByName(string $name): ?ElementInterface
+    {
+        return $this->elements[$name] ?? null;
+    }
+
     /**
      * @return ElementInterface[]
      */

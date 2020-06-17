@@ -16,7 +16,7 @@ This iframe is used for sending messages using the [postMessage](https://develop
 
 The html code has the following structure:
 ```html
-<iframe id="ems-form-iframe" src="https://emsforms-skeleton.example/form/{myCommunicationId}/{lang}"></iframe>
+<iframe id="ems-form-iframe" src="https://emsforms-skeleton.example/iframe/{myCommunicationId}/{lang}"></iframe>
 ```
 Make sure to use the id `"ems-form-iframe"` as this is used by our javascript file to automate communication.
 
