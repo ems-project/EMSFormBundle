@@ -12,6 +12,8 @@ final class HandleRequest implements HandleRequestInterface
 {
     /** @var FormInterface */
     private $form;
+    /** @var FormData */
+    private $formData;
     /** @var FormConfig */
     private $formConfig;
     /** @var HandleResponseCollector */
@@ -26,6 +28,7 @@ final class HandleRequest implements HandleRequestInterface
         SubmissionConfig $submissionConfig
     ) {
         $this->form = $form;
+        $this->formData = new FormData($formConfig, $form);
         $this->formConfig = $formConfig;
         $this->responseCollector = $responseCollector;
         $this->submissionConfig = $submissionConfig;
@@ -46,11 +49,9 @@ final class HandleRequest implements HandleRequestInterface
         return $this->form;
     }
 
-    public function getFormData(): array
+    public function getFormData(): FormData
     {
-        $data = $this->form->getData();
-
-        return is_array($data) ? $data : [];
+        return $this->formData;
     }
 
     public function getFormConfig(): FormConfig

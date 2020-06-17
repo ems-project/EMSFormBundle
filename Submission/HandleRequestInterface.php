@@ -13,7 +13,7 @@ interface HandleRequestInterface
 
     public function getClass(): string;
     public function getForm(): FormInterface;
-    public function getFormData(): array;
+    public function getFormData(): FormData;
     public function getFormConfig(): FormConfig;
     public function getEndPoint(): string;
     public function getMessage(): string;
