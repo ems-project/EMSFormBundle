@@ -21,7 +21,7 @@ final class FormData
     {
         $this->formConfig = $formConfig;
 
-        $formData = $data = $form->getData();
+        $formData = $form->getData();
         $this->raw = is_array($formData) ? $formData : [];
     }
 
