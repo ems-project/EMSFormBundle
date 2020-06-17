@@ -16,11 +16,11 @@ class MultipleFile extends AbstractField
         return FileType::class;
     }
 
-    protected function getAttributes(): array
+    public function getOptions(): array
     {
-        $attributes = parent::getAttributes();
-        $attributes['multiple'] = true;
+        $options = parent::getOptions();
+        $options['multiple'] = true;
 
-        return $attributes;
+        return $options;
     }
 }
