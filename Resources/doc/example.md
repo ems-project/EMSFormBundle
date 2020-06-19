@@ -107,7 +107,10 @@ For each iframe, an `emsForm` object is created for which we configure the `idFo
 * idForm corresponds to the empty div that can be used to render the form fetched through the corresponding iframe.
 * idMessage corresponds to the empty div that can be used for the messages returned after valid submit through the corresponding iframe.
 * idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
-* onLoad can refers to a callback function called once the form has just been initialize
+* onLoad callback function called once the form has just been initialize
+* onSubmit callback function called when the form's data are sent to the backend
+* onResponse callback function called when a response is available
+* onError callback function called when a error appends
 
 ## The response after a valid submit
 The system allows to handle your submit by multiple chained handlers. Each handler will return a json response with two keys:
