@@ -8,7 +8,10 @@ export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
     idForm: 'ems-form',
     idMessage: 'ems-message',
-    onLoad: null
+    onLoad: function(){ console.log('ems-form loaded'); },
+    onSubmit: function(){ console.log('ems-form submit') },
+    onResponse: function(response){ console.log( 'ems-form response: ', response.toString()) },
+    onError: function(message){ console.log( 'ems-form error: ' + message) }
 };
 
 export function defaultCheck() {
@@ -28,6 +31,9 @@ export class emsForm
         this.elementForm = document.getElementById(config.idForm);
         this.elementMessage = document.getElementById(config.idMessage);
         this.onLoad = config.onLoad;
+        this.onSubmit = config.onSubmit;
+        this.onError = config.onError;
+        this.onResponse = config.onResponse;
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
@@ -76,6 +82,9 @@ export class emsForm
         let data = encoding.jsonParse(e.data);
 
         if (!data) {
+            if (typeof this.onError === 'function') {
+                this.onError('JSON parse error or missing data');
+            }
             return;
         }
 
@@ -87,13 +96,19 @@ export class emsForm
                 break;
             case 'submitted':
                 this.elementMessage.innerHTML = data.response;
+                if (typeof this.onResponse === 'function') {
+                    this.onResponse(data.response);
+                }
                 break;
             case 'dynamic':
                 replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
                 addDynamicFields(this.elementForm.querySelector('form'), this);
                 break;
             default:
-               return;
+                if (typeof this.onError === 'function') {
+                    this.onError('Unknown data.instruction : ' + data.instruction);
+                }
+                return;
         }
     }
 
@@ -111,6 +126,9 @@ export class emsForm
             'token': security.createToken(data['form[_token]'], this.difficulty)
         };
 
+        if (typeof this.onSubmit === 'function') {
+            this.onSubmit();
+        }
         this.postMessage(msg);
     }
 
@@ -126,6 +144,13 @@ export class emsForm
 
     postMessage(msg)
     {
-        this.elementIframe.contentWindow.postMessage(msg, this.origin);
+        try {
+            this.elementIframe.contentWindow.postMessage(msg, this.origin);
+        }
+        catch (e) {
+            if (typeof this.onError === 'function') {
+                this.onError('Post message exception : ' + e.toString());
+            }
+        }
     }
 }

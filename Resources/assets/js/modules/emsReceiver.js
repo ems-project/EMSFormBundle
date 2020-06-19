@@ -34,6 +34,7 @@ export class emsReceiver
 
         let xhr = new XMLHttpRequest();
         xhr.addEventListener("load", evt => this.onResponse(evt, xhr, message));
+        xhr.addEventListener("error", evt => this.onError(evt, xhr, message));
 
         switch (data.instruction) {
             case "form": {
@@ -44,7 +45,7 @@ export class emsReceiver
             }
             case "submit": {
                 xhr.open("POST", this.basePath+"/form/"+this.id+"/"+this.lang);
-               security.addHashCashHeader(data, xhr);
+                security.addHashCashHeader(data, xhr);
                 xhr.send(form.getFormDataFromObject(data.form));
                 break;
             }
@@ -65,5 +66,10 @@ export class emsReceiver
         if (xhr.status === 200) {
             message.source.postMessage(xhr.responseText, message.origin);
         }
+    }
+
+    onError(evt, xhr, message)
+    {
+        message.source.postMessage(xhr.responseText, message.origin);
     }
 }
