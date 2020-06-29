@@ -1,7 +1,7 @@
 {
-  "backend.js": "bundles/emsform/js/backend.b995f6985cd5f9871fc1.js",
-  "dynamicFields.js": "bundles/emsform/js/dynamicFields.43bba015ae9789390d61.js",
-  "form.js": "bundles/emsform/js/form.25de383cb50a835bc2ce.js",
-  "formDebug.js": "bundles/emsform/js/formDebug.45df6654ea6c56ae053d.js",
-  "validation.js": "bundles/emsform/js/validation.3af6f2b5ca4cec583307.js"
+  "backend.js": "bundles/emsform/js/backend.js",
+  "dynamicFields.js": "bundles/emsform/js/dynamicFields.js",
+  "form.js": "bundles/emsform/js/form.js",
+  "formDebug.js": "bundles/emsform/js/formDebug.js",
+  "validation.js": "bundles/emsform/js/validation.js"
 }
