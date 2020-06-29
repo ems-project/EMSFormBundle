@@ -76,7 +76,7 @@ abstract class AbstractField implements FieldInterface
         ];
     }
 
-    private function getValidationConstraints(): array
+    protected function getValidationConstraints(): array
     {
         return array_map(function (ValidationInterface $validation) {
             return $validation->getConstraint();
