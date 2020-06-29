@@ -19,6 +19,7 @@ class FileType extends SymfonyFileType
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
+        parent::buildView($view, $form, $options);
         $view->vars['ems_translation_domain'] = $options['ems_translation_domain'];
     }
 
