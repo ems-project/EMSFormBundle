@@ -9,9 +9,9 @@ class SubFormConfig extends AbstractFormConfig implements ElementInterface
     /** @var string */
     private $label;
 
-    public function __construct(string $id, string $name, string $label)
+    public function __construct(string $id, string $locale, string $translationDomain, string $name, string $label)
     {
-        parent::__construct($id, $name);
+        parent::__construct($id, $locale, $translationDomain, $name);
         $this->label = $label;
     }
 

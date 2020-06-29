@@ -4,10 +4,6 @@ namespace EMS\FormBundle\FormConfig;
 
 class FormConfig extends AbstractFormConfig
 {
-    /** @var string */
-    private $locale;
-    /** @var string */
-    private $translationDomain;
     /** @var array */
     private $domains = [];
     /** @var array */
@@ -17,9 +13,7 @@ class FormConfig extends AbstractFormConfig
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
-        parent::__construct($id);
-        $this->locale = $locale;
-        $this->translationDomain = $translationDomain;
+        parent::__construct($id, $locale, $translationDomain);
 
         $this->themes[] = '@EMSForm/form_theme.html.twig';
     }
@@ -44,19 +38,9 @@ class FormConfig extends AbstractFormConfig
         return $this->submissions;
     }
 
-    public function getLocale(): string
-    {
-        return $this->locale;
-    }
-
     public function getThemes(): array
     {
         return $this->themes;
-    }
-
-    public function getTranslationDomain(): string
-    {
-        return $this->translationDomain;
     }
 
     public function setSubmissions(array $submissions): void
