@@ -107,11 +107,68 @@ For each iframe, an `emsForm` object is created for which we configure the `idFo
 * idForm corresponds to the empty div that can be used to render the form fetched through the corresponding iframe.
 * idMessage corresponds to the empty div that can be used for the messages returned after valid submit through the corresponding iframe.
 * idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
-* onLoad callback function called once the form has just been initialize
-* onSubmit callback function called when the form's data are sent to the backend
-* onResponse callback function called when a response is available
-* onError callback function called when a error appends
 
+## Callback functions
+
+* **onLoad** callback function called once the form has just been initialize
+* **onSubmit** function called when the form's data are sent to the backend
+* **onResponse** callback function called when a response is available
+* **onError** callback function called when a error appends
+
+Here is an example where the callback functions are used to handle the different elasticms form's events with a form having a bootstrap template:
+
+```twig
+    <script type="application/javascript">
+        document.getElementById('ems-form-iframe-custom').onload = function() {
+            new emsForm({ 
+                'idForm': 'form-custom', 
+                'idMessage': 'message-custom', 
+                'idIframe': 'ems-form-iframe-custom',
+                'onLoad': function() {
+                    console.log('My onload function');
+                    $(".custom-file-input").on("change", function() {
+                      var fileName = $(this).val().split("\\").pop();
+                      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                    });
+                },
+                'onSubmit': function() {
+                    console.log('My submit function');
+                    $('#form-custom').find('input,button').attr('disabled',true);
+                    
+                },
+                'onError': function(errorMessage) {
+                    console.log('My error function:' + errorMessage);
+                    $('#form-custom').html("{{ 'form.submit_error'|trans|e('js') }}".replace('%error%', errorMessage));
+                },
+                'onResponse': function(json) {
+                    console.log('My response function');
+                    var response = JSON.parse(json);
+                    $('#form-custom').html("{{ 'form.submitted'|trans|e('js') }}");
+                    var li = '';
+                    $.each(response, function(i) {
+                        var submit = JSON.parse(this);
+                        if (submit.status === 'success') {
+                            li += "<li>{{ 'form.success'|trans|e('js') }}</li>".replace('%data%', submit.data);
+                        }
+                        else {
+                            li += "<li>{{ 'form.failed'|trans|e('js') }}</li>".replace('%data%', submit.data, '%status%', submit.status);
+                        }
+                    });
+                    $('#form-custom').append( "<ul>" + li + "</ul>" );
+                }
+            }).init(); 
+        };
+    </script>
+```
+
+The `onLoad` callback function can be used to attached event listeners to the just loaded form. Like attach the Bootstrap custom file upload listener in this example.
+
+The `onSubmit` can be used to give a feedback to the end user that the submission is in progress by, like here, disabling all fields. Or why not, a visual feedback (i.e. a spinning wheel replacing the form)
+
+The `onResponse` is called when the submission is done. This callback function receive a json-encoded message from the different submission services triggered by the submission.
+
+The `onError` is called when an error as been raised. This callback function receives an error message as unique parameter.
+ 
 ## The response after a valid submit
 The system allows to handle your submit by multiple chained handlers. Each handler will return a json response with two keys:
 
