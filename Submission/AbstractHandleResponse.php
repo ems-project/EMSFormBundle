@@ -8,6 +8,8 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
     protected $status;
     /** @var string */
     protected $data;
+    /** @var array */
+    protected $extraData = [];
 
     const STATUS_SUCCESS = 'success';
     const STATUS_ERROR = 'error';
@@ -21,6 +23,11 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
         $this->data = $data;
     }
 
+    public function setExtraData(array $extraData): void
+    {
+        $this->extraData = $extraData;
+    }
+
     public function getStatus(): string
     {
         return $this->status;
@@ -28,7 +35,11 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
 
     public function getResponse(): string
     {
-        $json = \json_encode(['status' => $this->status, 'data' => $this->data]);
+        $json = \json_encode(array_merge([
+            'status' => $this->status,
+            'data' => $this->data
+        ], $this->extraData));
+
         return $json === false ? "" : $json;
     }
 }
