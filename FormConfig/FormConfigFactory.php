@@ -106,7 +106,7 @@ class FormConfigFactory
             case $this->emsConfig['type-form-markup']:
                 return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_' . $locale]);
             case $this->emsConfig['type-form-subform']:
-                return $this->createSubFormConfig($element, $locale);
+                return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
     }
 
@@ -151,10 +151,16 @@ class FormConfigFactory
         return $fieldConfig;
     }
 
-    private function createSubFormConfig(Document $document, string $locale): SubFormConfig
+    private function createSubFormConfig(Document $document, string $locale, string $translationDomain): SubFormConfig
     {
         $source = $document->getSource();
-        $subFormConfig = new SubFormConfig($document->getOuuid(), $source['name'], $source['label_' . $locale]);
+        $subFormConfig = new SubFormConfig(
+            $document->getOuuid(),
+            $locale,
+            $translationDomain,
+            $source['name'],
+            $source['label_' . $locale]
+        );
         $this->createElements($subFormConfig, $source['elements'], $locale);
 
         return $subFormConfig;

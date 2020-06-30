@@ -8,13 +8,19 @@ abstract class AbstractFormConfig
     private $id;
     /** @var string */
     private $name;
+    /** @var string */
+    private $locale;
     /** @var ElementInterface[] */
     private $elements = [];
+    /** @var string */
+    private $translationDomain;
 
-    public function __construct(string $id, string $name = '')
+    public function __construct(string $id, string $locale, string $translationDomain, string $name = '')
     {
         $this->id = $id;
+        $this->locale = $locale;
         $this->name = $name;
+        $this->translationDomain = $translationDomain;
     }
 
     public function getId(): string
@@ -48,5 +54,15 @@ abstract class AbstractFormConfig
     public function addElement(ElementInterface $element): void
     {
         $this->elements[$element->getName()] = $element;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function getTranslationDomain(): string
+    {
+        return $this->translationDomain;
     }
 }

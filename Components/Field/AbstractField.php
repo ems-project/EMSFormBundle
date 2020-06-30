@@ -56,13 +56,10 @@ abstract class AbstractField implements FieldInterface
 
     protected function getAttributes(): array
     {
-        $attributes = array_merge_recursive($this->getValidationHtml5Attribute(), [
-            'class' => [$this->getHtmlClass(), $this->config->getClass()]
+        return array_merge_recursive($this->getValidationHtml5Attribute(), [
+            'class' => \implode(' ', [$this->getHtmlClass(), $this->config->getClass()]),
+            'lang' => $this->config->getParentForm()->getLocale(),
         ]);
-
-        $attributes['class'] = \implode(' ', $attributes['class']);
-
-        return $attributes;
     }
 
     protected function getLabelAttributes(string $postfix = ''): array
@@ -79,7 +76,7 @@ abstract class AbstractField implements FieldInterface
         ];
     }
 
-    private function getValidationConstraints(): array
+    protected function getValidationConstraints(): array
     {
         return array_map(function (ValidationInterface $validation) {
             return $validation->getConstraint();
