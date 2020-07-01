@@ -56,10 +56,14 @@ abstract class AbstractField implements FieldInterface
 
     protected function getAttributes(): array
     {
-        return array_merge_recursive($this->getValidationHtml5Attribute(), [
-            'class' => \implode(' ', [$this->getHtmlClass(), $this->config->getClass()]),
-            'lang' => $this->config->getParentForm()->getLocale(),
+        $attributes = array_merge_recursive($this->getValidationHtml5Attribute(), [
+            'class' => [$this->getHtmlClass(), $this->config->getClass()]
         ]);
+
+        $attributes['class'] = \implode(' ', $attributes['class']);
+        $attributes['lang'] = $this->config->getParentForm()->getLocale();
+
+        return $attributes;
     }
 
     protected function getLabelAttributes(string $postfix = ''): array
