@@ -2,10 +2,14 @@
 
 namespace EMS\FormBundle\FormConfig;
 
+use EMS\ClientHelperBundle\Helper\Twig\TwigLoader;
+
 class FormConfig extends AbstractFormConfig
 {
     /** @var array */
     private $domains = [];
+    /** @var string */
+    private $template;
     /** @var array */
     private $themes = [];
     /** @var array */
@@ -15,6 +19,7 @@ class FormConfig extends AbstractFormConfig
     {
         parent::__construct($id, $locale, $translationDomain);
 
+        $this->template = '@EMSForm/form.html.twig';
         $this->themes[] = '@EMSForm/form_theme.html.twig';
     }
 
@@ -38,6 +43,11 @@ class FormConfig extends AbstractFormConfig
         return $this->submissions;
     }
 
+    public function getTemplate(): string
+    {
+        return $this->template;
+    }
+
     public function getThemes(): array
     {
         return $this->themes;
@@ -46,5 +56,10 @@ class FormConfig extends AbstractFormConfig
     public function setSubmissions(array $submissions): void
     {
         $this->submissions = $submissions;
+    }
+
+    public function setTemplate(string $template): void
+    {
+        $this->template = TwigLoader::PREFIX . '/' . $template;
     }
 }

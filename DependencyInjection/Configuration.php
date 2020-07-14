@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('type-form-markup')->defaultValue('form_structure_markup')->end()
                         ->scalarNode('type-form-subform')->defaultValue('form_structure')->end()
                         ->scalarNode('form-field')->defaultValue('form')->end()
+                        ->scalarNode('form-template-field')->defaultValue('form_template')->end()
                         ->scalarNode('theme-field')->defaultValue('theme_template')->end()
                         ->scalarNode('submission-field')->defaultValue('submissions')->end()
                     ->end()

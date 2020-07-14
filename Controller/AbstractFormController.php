@@ -2,8 +2,22 @@
 
 namespace EMS\FormBundle\Controller;
 
+use EMS\FormBundle\FormConfig\FormConfig;
+use Symfony\Component\Form\FormInterface;
+
 abstract class AbstractFormController
 {
+    protected function getFormConfig(FormInterface $form): FormConfig
+    {
+        $config = $form->getConfig()->getOption('config');
+
+        if (!$config instanceof FormConfig) {
+            throw new \RuntimeException('invalid form config');
+        }
+
+        return $config;
+    }
+
     protected function getFormOptions(string $ouuid, string $locale): array
     {
         return ['ouuid' => $ouuid, 'locale' => $locale];
