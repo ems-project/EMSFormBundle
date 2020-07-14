@@ -32,6 +32,9 @@ class FormConfigFactory
         if (isset($source[$this->emsConfig['theme-field']])) {
             $formConfig->addTheme($source[$this->emsConfig['theme-field']]);
         }
+        if (isset($source[$this->emsConfig['form-template-field']])) {
+            $formConfig->setTemplate($source[$this->emsConfig['form-template-field']]);
+        }
         if (isset($source['domain'])) {
             $this->addDomain($formConfig, $source['domain']);
         }

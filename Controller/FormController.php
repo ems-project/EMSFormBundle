@@ -37,7 +37,7 @@ class FormController extends AbstractFormController
         $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
 
         return new Response($this->twig->render('@EMSForm/iframe.html.twig', [
-            'config' => $form->getConfig()->getOption('config'),
+            'config' => $this->getFormConfig($form),
         ]));
     }
 
@@ -54,9 +54,11 @@ class FormController extends AbstractFormController
             return new JsonResponse($this->client->submit($form));
         }
 
+        $template = $this->getFormConfig($form)->getTemplate();
+
         return new JsonResponse([
             'instruction' => 'form',
-            'response' => $this->twig->render('@EMSForm/form.html.twig', ['form' => $form->createView()]),
+            'response' => $this->twig->render($template, ['form' => $form->createView()]),
             'difficulty' => $this->guard->getDifficulty(),
         ]);
     }
