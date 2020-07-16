@@ -75,6 +75,6 @@ class RrNumber
     
     public function transform(): string
     {
-        return sprintf('%d%d', $this->base, $this->controlNumber);
+        return $this->base . $this->controlNumber;
     }
 }
