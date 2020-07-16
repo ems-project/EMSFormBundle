@@ -4,13 +4,21 @@ export default class
 {
     static getObjectFromFormData(form)
     {
-        let data = {};
+        let object = {};
         let formData = new FormData(form);
-        formData.forEach(function(value, key){
-            data[key] = value;
+
+        formData.forEach((value, key) => {
+            if(!Object.prototype.hasOwnProperty.call(object, key)){
+                object[key] = value;
+                return;
+            }
+            if(!Array.isArray(object[key])){
+                object[key] = [object[key]];
+            }
+            object[key].push(value);
         });
 
-        return data;
+        return object;
     }
 
     static getFormDataFromObject(obj)
@@ -20,6 +28,13 @@ export default class
             let filename = value.name;
             if (filename !== undefined) {
                 formData.set(key, value, filename);
+                return;
+            }
+
+            if(Array.isArray(value)){
+                for (let i = 0; i < value.length; i++) {
+                    formData.append(key, value[i]);
+                }
                 return;
             }
 
