@@ -4,22 +4,22 @@ namespace EMS\FormBundle\Components\ValueObject;
 
 class RrNumber
 {
-    /** @var integer */
+    /** @var string */
     protected $base;
 
-    /** @var integer */
+    /** @var string */
     private $year;
 
-    /** @var integer */
+    /** @var string */
     private $month;
 
-    /** @var integer */
+    /** @var string */
     private $day;
 
-    /** @var integer */
+    /** @var string */
     private $dayCounter;
 
-    /** @var integer */
+    /** @var string */
     private $controlNumber;
 
     const RRN = '/(?<base>(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)(?<dayCounter>\d\d\d))(?<controlNumber>\d\d)/m';
@@ -75,6 +75,6 @@ class RrNumber
     
     public function transform(): string
     {
-        return $this->base . $this->controlNumber;
+        return sprintf('%s%s', $this->base, $this->controlNumber);
     }
 }
