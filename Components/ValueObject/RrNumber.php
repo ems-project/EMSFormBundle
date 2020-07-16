@@ -59,18 +59,17 @@ class RrNumber
 
     protected function validate(): bool
     {
-        $valid = $this->controlNumber == (97 - ($this->base % 97));
+        $controlInt = (int) $this->controlNumber;
+        $baseInt = (int) $this->base;
 
-        if (!$valid && $this->possiblyTwentyFirstCentury()) {
-            $valid = $this->controlNumber == (97 - ((2 . $this->base) % 97));
+        $valid = $controlInt === (97 - ($baseInt % 97));
+
+        if (!$valid) {
+            $base2000int = (int) sprintf('2%s', $this->base);
+            $valid = $controlInt === (97 - ($base2000int % 97));
         }
 
         return $valid;
-    }
-
-    private function possiblyTwentyFirstCentury(): bool
-    {
-        return date("y") <= $this->year;
     }
     
     public function transform(): string

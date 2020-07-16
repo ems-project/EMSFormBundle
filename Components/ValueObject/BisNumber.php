@@ -25,16 +25,17 @@ class BisNumber extends RrNumber
 
     protected function validate(): bool
     {
+        $baseInt = (int) $this->base;
         $baseModifier = 2000000;
 
         //augment once for person with unknown sex
-        $this->base = $this->base + $baseModifier;
+        $this->base = sprintf('%d', ($baseInt + $baseModifier));
         if (parent::validate()) {
             return true;
         }
 
         //augment twice for person with known sex
-        $this->base = $this->base + $baseModifier;
+        $this->base = sprintf('%d', ($baseInt + $baseModifier + $baseModifier));
         if (parent::validate()) {
             return true;
         }
