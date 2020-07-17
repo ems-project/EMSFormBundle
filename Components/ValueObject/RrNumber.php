@@ -4,22 +4,22 @@ namespace EMS\FormBundle\Components\ValueObject;
 
 class RrNumber
 {
-    /** @var integer */
+    /** @var string */
     protected $base;
 
-    /** @var integer */
+    /** @var string */
     private $year;
 
-    /** @var integer */
+    /** @var string */
     private $month;
 
-    /** @var integer */
+    /** @var string */
     private $day;
 
-    /** @var integer */
+    /** @var string */
     private $dayCounter;
 
-    /** @var integer */
+    /** @var string */
     private $controlNumber;
 
     const RRN = '/(?<base>(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)(?<dayCounter>\d\d\d))(?<controlNumber>\d\d)/m';
@@ -59,22 +59,21 @@ class RrNumber
 
     protected function validate(): bool
     {
-        $valid = $this->controlNumber == (97 - ($this->base % 97));
+        $controlInt = (int) $this->controlNumber;
+        $baseInt = (int) $this->base;
 
-        if (!$valid && $this->possiblyTwentyFirstCentury()) {
-            $valid = $this->controlNumber == (97 - ((2 . $this->base) % 97));
+        $valid = $controlInt === (97 - ($baseInt % 97));
+
+        if (!$valid) {
+            $base2000int = (int) sprintf('2%s', $this->base);
+            $valid = $controlInt === (97 - ($base2000int % 97));
         }
 
         return $valid;
     }
-
-    private function possiblyTwentyFirstCentury(): bool
-    {
-        return date("y") <= $this->year;
-    }
     
     public function transform(): string
     {
-        return sprintf('%d%d', $this->base, $this->controlNumber);
+        return sprintf('%s%s', $this->base, $this->controlNumber);
     }
 }
