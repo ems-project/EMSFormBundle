@@ -84,16 +84,14 @@ class FieldChoicesConfig
 
     private function getTopLevel(array $elements): array
     {
-        return \array_filter(
-            \array_map(
-                function ($element) {
-                    if (\is_array($element)) {
-                        return \array_key_first($element);
-                    }
-                    return $element;
-                },
-                $elements
-            )
+        return \array_map(
+            function ($element) {
+                if (\is_array($element)) {
+                    return \array_key_first($element);
+                }
+                return $element;
+            },
+            $elements
         );
     }
 
