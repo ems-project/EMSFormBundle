@@ -46,6 +46,10 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
+        if ($data === null || !is_array($data)) {
+            return;
+        }
+
         foreach ($data as $fieldName => $choice) {
             if ($choice === "") {
                 continue;
