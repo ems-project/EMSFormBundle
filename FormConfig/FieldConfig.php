@@ -41,6 +41,11 @@ class FieldConfig implements ElementInterface
         $this->parentForm = $parentForm;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function addClass(string $class): void
     {
         $this->class[] = $class;

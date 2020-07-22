@@ -14,3 +14,15 @@ export function addDynamicChoiceSelect(element, emsForm) {
         emsForm.onDynamicFieldChange(data);
     });
 }
+
+export function addSendSms(element, emsForm) {
+    element.addEventListener('click', function () {
+        let valueElement = document.getElementById(this.getAttribute('data-value-id'));
+
+        emsForm.onSendSms(JSON.stringify({
+            'token': this.getAttribute('data-token'),
+            'code-field': this.getAttribute('data-name'),
+            'value': valueElement.value
+        }));
+    });
+}

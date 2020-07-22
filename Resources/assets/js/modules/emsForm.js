@@ -132,6 +132,15 @@ export class emsForm
         this.postMessage(msg);
     }
 
+    onSendSms(data)
+    {
+        this.postMessage({
+            'instruction': 'send-sms',
+            'data': data,
+            'token': security.createToken(data['form[_token]'], this.difficulty)
+        });
+    }
+
     onDynamicFieldChange(data)
     {
         let msg = {

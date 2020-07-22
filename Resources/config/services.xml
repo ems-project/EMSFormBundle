@@ -35,6 +35,19 @@
             <argument type="string">%emsf.hashcash.difficulty%</argument>
         </service>
 
+        <!-- services -->
+        <service id="emsf.service.verification" class="EMS\FormBundle\Service\Verification\VerificationService">
+            <argument type="service" id="emsch.api"/>
+            <argument type="service" id="emsch.manager.client_request"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="emsf.form_config.factory"/>
+        </service>
+        <service id="emsf.validator.verification_code" class="EMS\FormBundle\Components\Constraint\IsVerificationCodeValidator">
+            <argument type="service" id="emsf.service.verification"/>
+            <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsVerificationCodeValidator" />
+        </service>
+
+
         <!-- controllers -->
         <service id="emsf.controller.debug" class="EMS\FormBundle\Controller\DebugController"  public="true">
             <argument type="service" id="form.factory"/>
@@ -48,6 +61,11 @@
             <argument type="service" id="emsf.submission.client"/>
             <argument type="service" id="emsf.security.guard"/>
             <argument type="service" id="twig" />
+        </service>
+        <service id="emsf.controller.sms" class="EMS\FormBundle\Controller\SmsController"  public="true">
+            <argument type="service" id="emsf.security.guard"/>
+            <argument type="service" id="emsf.service.verification"/>
+
         </service>
     </services>
 </container>

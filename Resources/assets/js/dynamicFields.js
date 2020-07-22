@@ -1,11 +1,15 @@
 import '@babel/polyfill';
-import {addDynamicChoiceSelect} from "./dynamicFields/dynamicChoiceSelect";
+import {addDynamicChoiceSelect, addSendSms} from "./modules/eventListeners";
 
 export function addDynamicFields(form, emsForm)
 {
     Array.from(form.getElementsByClassName("dynamic-choice-select")).forEach(function(item) {
         addDynamicChoiceSelect(item, emsForm);
     });
+
+    Array.from(form.getElementsByClassName("btn-send-sms")).forEach(function (item) {
+        addSendSms(item, emsForm);
+    })
 }
 
 export function replaceFormFields(response, fieldIds) {

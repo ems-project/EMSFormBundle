@@ -32,3 +32,15 @@
     </label>
     </{{ element|default('div') }}>
 {%- endblock -%}
+
+{%- block ems_sms_confirmation_widget -%}
+    <div class="input-group">
+        <div class="input-group-append">
+            <button class="btn btn-success btn-send-sms" type="button"
+                    data-token="{{ csrf_token(form.vars.token_id) }}"
+                    data-name="{{ form.vars.name }}"
+                    data-value-id="{{ attribute(form.parent.children, form.vars.value_field).vars.id }}">Send confirmation code ...</button>
+        </div>
+        {{ form(form) }}
+    </div>
+{%- endblock -%}
