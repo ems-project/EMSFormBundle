@@ -19,8 +19,8 @@
             <default key="_locale">%locale%</default>
         </route>
 
-        <route id="emsf_sms_send" path="/form/send-sms/{ouuid}/{_locale}" methods="POST">
-            <default key="_controller">emsf.controller.sms::postSend</default>
+        <route id="emsf_confirmation" path="/form/send-confirmation/{ouuid}/{_locale}" methods="POST">
+            <default key="_controller">emsf.controller.confirmation::postSend</default>
             <default key="_locale">%locale%</default>
         </route>
 </routes>

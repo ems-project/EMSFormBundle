@@ -9,12 +9,12 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VerificationCodeType extends TextType
+class SendConfirmationType extends TextType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
-        $resolver->setRequired(['value_field', 'token_id']);
+        $resolver->setRequired(['value_field', 'token_id', 'ems_translation_domain']);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
@@ -22,10 +22,11 @@ class VerificationCodeType extends TextType
         parent::buildView($view, $form, $options);
         $view->vars['value_field'] = $options['value_field'];
         $view->vars['token_id'] = $options['token_id'];
+        $view->vars['ems_translation_domain'] = $options['ems_translation_domain'];
     }
 
     public function getBlockPrefix(): string
     {
-        return 'ems_verification_code';
+        return 'ems_send_confirmation';
     }
 }

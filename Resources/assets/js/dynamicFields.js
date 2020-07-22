@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-import {addDynamicChoiceSelect, addSendSms} from "./modules/eventListeners";
+import {addDynamicChoiceSelect, clickSendConfirmation} from "./modules/eventListeners";
 
 export function addDynamicFields(form, emsForm)
 {
@@ -7,8 +7,8 @@ export function addDynamicFields(form, emsForm)
         addDynamicChoiceSelect(item, emsForm);
     });
 
-    Array.from(form.getElementsByClassName("btn-send-sms")).forEach(function (item) {
-        addSendSms(item, emsForm);
+    Array.from(form.getElementsByClassName("btn-send-confirmation")).forEach(function (item) {
+        clickSendConfirmation(item, emsForm);
     })
 }
 

@@ -25,10 +25,10 @@ export class emsFormDebug
         xhr.send(encoding.urlEncodeData(data));
     }
 
-    onSendSms(data)
+    onSendConfirmation(data)
     {
         let xhr = new XMLHttpRequest();
-        let url = window.location.pathname.replace(/\/debug\/form\//g, '/debug/send-sms/');
+        let url = window.location.pathname.replace(/\/debug\/form\//g, '/debug/send-confirmation/');
 
         xhr.addEventListener("load", evt => emsFormDebug.onResponse(evt, xhr, this));
         xhr.open("POST", url);

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace EMS\FormBundle\Service\Verification;
+namespace EMS\FormBundle\Service\Confirmation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class CreateRequest
+final class ConfirmationRequest
 {
     /** @var string */
     private $codeField;

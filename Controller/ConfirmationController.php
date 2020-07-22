@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Security\Guard;
-use EMS\FormBundle\Service\Verification\CreateRequest;
-use EMS\FormBundle\Service\Verification\VerificationService;
+use EMS\FormBundle\Service\Confirmation\ConfirmationRequest;
+use EMS\FormBundle\Service\Confirmation\ConfirmationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-final class SmsController extends AbstractController
+final class ConfirmationController extends AbstractController
 {
     /** @var Guard */
     private $guard;
-    /** @var VerificationService */
-    private $verificationCodeService;
+    /** @var ConfirmationService */
+    private $confirmationService;
 
-    public function __construct(Guard $guard, VerificationService $verificationCodeService)
+    public function __construct(Guard $guard, ConfirmationService $confirmationService)
     {
         $this->guard = $guard;
-        $this->verificationCodeService = $verificationCodeService;
+        $this->confirmationService = $confirmationService;
     }
 
     public function postSend(Request $request, string $ouuid): Response
@@ -32,13 +32,15 @@ final class SmsController extends AbstractController
             throw new AccessDeniedHttpException('access denied');
         }
 
-        return new JsonResponse();
+        $result = $this->confirmationService->send(new ConfirmationRequest($request), $ouuid);
+
+        return new JsonResponse(['result' => $result]);
     }
 
     public function postDebug(Request $request, string $ouuid): Response
     {
-        $verificationCode = $this->verificationCodeService->create(new CreateRequest($request), $ouuid);
+        $message = $this->confirmationService->getMessage(new ConfirmationRequest($request), $ouuid);
 
-        return new JsonResponse(['code' => $verificationCode]);
+        return new JsonResponse(['message' => $message]);
     }
 }

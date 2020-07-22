@@ -2,10 +2,10 @@
 
 namespace EMS\FormBundle\Components\Field;
 
-use EMS\FormBundle\Components\Form\VerificationCodeType;
+use EMS\FormBundle\Components\Form\SendConfirmationType;
 use EMS\FormBundle\Components\Validation\VerificationCode;
 
-class SmsConfirmation extends AbstractField
+class SendConfirmation extends AbstractField
 {
     public function getHtmlClass(): string
     {
@@ -14,14 +14,14 @@ class SmsConfirmation extends AbstractField
 
     public function getFieldClass(): string
     {
-        return VerificationCodeType::class;
+        return SendConfirmationType::class;
     }
 
     public function getOptions(): array
     {
         $options = parent::getOptions();
-        $options['block_prefix'] = 'ems_sms_confirmation';
         $options['token_id'] = $this->config->getId();
+        $options['ems_translation_domain'] = $this->config->getParentForm()->getTranslationDomain();
 
         $validation = $this->getVerificationCodeValidation();
         if ($validation) {
