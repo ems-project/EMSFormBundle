@@ -11,6 +11,9 @@ export const DEFAULT_CONFIG = {
     onLoad: function(){ console.log('ems-form loaded'); },
     onSubmit: function(){ console.log('ems-form submit') },
     onResponse: function(response){ console.log( 'ems-form response: ', response.toString()) },
+    onConfirmationResponse: function(response){
+        console.log( 'ems-form confirmation: ', response);
+    },
     onError: function(message){ console.log( 'ems-form error: ' + message) }
 };
 
@@ -34,6 +37,7 @@ export class emsForm
         this.onSubmit = config.onSubmit;
         this.onError = config.onError;
         this.onResponse = config.onResponse;
+        this.onConfirmationResponse = config.onConfirmationResponse;
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
@@ -103,6 +107,11 @@ export class emsForm
             case 'dynamic':
                 replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
                 addDynamicFields(this.elementForm.querySelector('form'), this);
+                break;
+            case 'send-confirmation':
+                if (typeof this.onConfirmationResponse === 'function') {
+                    this.onConfirmationResponse(data);
+                }
                 break;
             default:
                 if (typeof this.onError === 'function') {

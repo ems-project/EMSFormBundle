@@ -7,6 +7,7 @@ namespace EMS\FormBundle\Controller;
 use EMS\FormBundle\Security\Guard;
 use EMS\FormBundle\Service\Confirmation\ConfirmationRequest;
 use EMS\FormBundle\Service\Confirmation\ConfirmationService;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,22 +20,32 @@ final class ConfirmationController extends AbstractController
     private $guard;
     /** @var ConfirmationService */
     private $confirmationService;
+    /** @var LoggerInterface */
+    private $logger;
 
-    public function __construct(Guard $guard, ConfirmationService $confirmationService)
+    public function __construct(Guard $guard, ConfirmationService $confirmationService, LoggerInterface $logger)
     {
         $this->guard = $guard;
         $this->confirmationService = $confirmationService;
+        $this->logger = $logger;
     }
 
     public function postSend(Request $request, string $ouuid): Response
     {
-        if (!$this->guard->check($request)) {
-            throw new AccessDeniedHttpException('access denied');
+        $response = ['instruction' => 'send-confirmation', 'response' => false];
+
+        try {
+            if (!$this->guard->check($request)) {
+                throw new AccessDeniedHttpException('access denied');
+            }
+
+            $response['response'] = $this->confirmationService->send(new ConfirmationRequest($request), $ouuid);
+
+            return new JsonResponse($response);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+            return new JsonResponse($response);
         }
-
-        $result = $this->confirmationService->send(new ConfirmationRequest($request), $ouuid);
-
-        return new JsonResponse(['result' => $result]);
     }
 
     public function postDebug(Request $request, string $ouuid): Response

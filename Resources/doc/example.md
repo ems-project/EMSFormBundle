@@ -155,7 +155,10 @@ Here is an example where the callback functions are used to handle the different
                         }
                     });
                     $('#form-custom').append( "<ul>" + li + "</ul>" );
-                }
+                },
+                'onConfirmationResponse': function(response) {
+                    console.log('Response:', response); 
+                },
             }).init(); 
         };
     </script>
@@ -168,6 +171,8 @@ The `onSubmit` can be used to give a feedback to the end user that the submissio
 The `onResponse` is called when the submission is done. This callback function receive a json-encoded message from the different submission services triggered by the submission.
 
 The `onError` is called when an error as been raised. This callback function receives an error message as unique parameter.
+ 
+The `onConfirmationResponse` is called after a send confirmation request.
  
 ## The response after a valid submit
 The system allows to handle your submit by multiple chained handlers. Each handler will return a json response with two keys:
