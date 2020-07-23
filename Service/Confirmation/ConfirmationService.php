@@ -10,6 +10,7 @@ use EMS\FormBundle\Service\Endpoint\Endpoint;
 use EMS\FormBundle\Service\Endpoint\EndpointCollection;
 use EMS\FormBundle\Service\Verification\VerificationService;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
@@ -59,11 +60,16 @@ final class ConfirmationService
             }
 
             $body = $request->createBody($confirmationRequest->getValue(), $verificationCode);
-
             $response = $this->httpClient->request($request->getMethod(), $request->getUrl(), [
                 'headers' => $request->getHeaders(),
                 'body' => $body
             ]);
+
+            $result = json_decode($response->getContent(), true);
+
+            if (!is_array($result) || !isset($result['ResultCode']) || 0 !== $result['ResultCode']) {
+                throw new \Exception(sprintf('Invalid endpoint response %s', $response->getContent()));
+            }
 
             return true;
         } catch (\Exception $e) {
