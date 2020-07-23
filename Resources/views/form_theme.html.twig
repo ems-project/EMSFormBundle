@@ -32,3 +32,17 @@
     </label>
     </{{ element|default('div') }}>
 {%- endblock -%}
+
+{%- block ems_send_confirmation_widget -%}
+    <div class="input-group">
+        <div class="input-group-append">
+            <button class="btn btn-success btn-send-confirmation" type="button"
+                    data-token="{{ csrf_token(token_id) }}"
+                    data-name="{{ name }}"
+                    data-value-id="{{ attribute(form.parent.children, value_field).vars.id }}">
+                {{ 'ems_send_confirmation'|trans({}, ems_translation_domain) }}
+            </button>
+        </div>
+        {{ form(form) }}
+    </div>
+{%- endblock -%}

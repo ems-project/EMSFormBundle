@@ -20,6 +20,11 @@ class MarkupConfig implements ElementInterface
         $this->markup = $markup;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function getClassName(): string
     {
         return MarkupType::class;

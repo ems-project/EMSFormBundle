@@ -11,18 +11,29 @@ export class emsFormDebug
     {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
         this.elementForm = document.getElementById(config.idForm);
-        this.ajaxUrl = window.location.pathname.replace(/\/debug\/form\//g, '/debug/ajax/');
     }
 
     onDynamicFieldChange(data)
     {
         let xhr = new XMLHttpRequest();
+        let url = window.location.pathname.replace(/\/debug\/form\//g, '/debug/ajax/');
         xhr.addEventListener("load", evt => emsFormDebug.onResponse(evt, xhr, this));
 
-        xhr.open("POST", this.ajaxUrl);
+        xhr.open("POST", url);
         xhr.setRequestHeader("Content-Type",  "application/x-www-form-urlencoded");
         security.addHashCashHeader(data, xhr);
         xhr.send(encoding.urlEncodeData(data));
+    }
+
+    onSendConfirmation(data)
+    {
+        let xhr = new XMLHttpRequest();
+        let url = window.location.pathname.replace(/\/debug\/form\//g, '/debug/send-confirmation/');
+
+        xhr.addEventListener("load", evt => emsFormDebug.onResponse(evt, xhr, this));
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type",  "application/json");
+        xhr.send(data);
     }
 
     static onResponse(evt, xhr, emsFormInstance)
