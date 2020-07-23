@@ -70,9 +70,7 @@ export class emsReceiver
 
     onResponse(evt, xhr, message)
     {
-        if (xhr.status === 200) {
-            message.source.postMessage(xhr.responseText, message.origin);
-        }
+        message.source.postMessage(xhr.responseText, message.origin);
     }
 
     onError(evt, xhr, message)
