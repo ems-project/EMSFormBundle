@@ -3,6 +3,7 @@
 ```yaml
 ems_form:
     hashcash_difficulty: '%env(int:EMSF_HASHCASH_DIFFICULTY)%'
+    endpoints: '%env(json:EMSF_ENDPOINTS)%'
     instance:
         type: form_instance
         form-field: form
@@ -18,6 +19,27 @@ By default hashcash is enable because of the default value (16384) for the confi
 This value can be overwritten by setting the environment variable **EMSF_HASHCASH_DIFFICULTY**.
 
 For disabling hashcash set the difficulty value to 0.
+
+## Endpoints
+
+For now this endpoints config is use for sending a confirmation. 
+
+example 1 endpoint configuration for send_confirmation form field:
+```json
+[
+  {
+    "field_name": "send_confirmation",
+    "http_request": {
+      "url": "https://api.example.test/v1/send/sms",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": "{\"To\": \"%value%\", \"Message\": \"%verification_code%\"}"
+    }
+  }
+]
+```
+
 
 ## Instance
 The instance options allows you to configure you form, fields, validations, and security! The config shown above is the default, and informs the system how the content types in ElasticMS are layed out.

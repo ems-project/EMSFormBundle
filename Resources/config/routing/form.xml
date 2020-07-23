@@ -18,4 +18,9 @@
             <default key="_controller">emsf.controller.form::dynamicFieldAjax</default>
             <default key="_locale">%locale%</default>
         </route>
+
+        <route id="emsf_confirmation" path="/form/send-confirmation/{ouuid}/{_locale}" methods="POST">
+            <default key="_controller">emsf.controller.confirmation::postSend</default>
+            <default key="_locale">%locale%</default>
+        </route>
 </routes>

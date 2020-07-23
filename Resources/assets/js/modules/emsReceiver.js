@@ -56,6 +56,13 @@ export class emsReceiver
                 xhr.send(encoding.urlEncodeData(data.data));
                 break;
             }
+            case "send-confirmation": {
+                xhr.open("POST", this.basePath+"/form/send-confirmation/"+this.id+"/"+this.lang);
+                xhr.setRequestHeader("Content-Type",  "application/json");
+                security.addHashCashHeader(data, xhr);
+                xhr.send(data.data);
+                break;
+            }
             default:
                 return;
         }
