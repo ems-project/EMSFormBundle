@@ -1,15 +1,10 @@
 import '@babel/polyfill';
 import {addDynamicChoiceSelect, clickSendConfirmation} from "./modules/eventListeners";
 
-export function addDynamicFields(form, emsForm)
-{
+export function addDynamicFields(form, emsForm) {
     Array.from(form.getElementsByClassName("dynamic-choice-select")).forEach(function(item) {
         addDynamicChoiceSelect(item, emsForm);
     });
-
-    Array.from(form.getElementsByClassName("btn-send-confirmation")).forEach(function (item) {
-        clickSendConfirmation(item, emsForm);
-    })
 }
 
 export function replaceFormFields(response, fieldIds) {
@@ -31,6 +26,12 @@ export function replaceFormFields(response, fieldIds) {
 
         formElement.replaceWith(newElement);
     });
+}
+
+export function addEventListeners(form, emsForm) {
+    Array.from(form.getElementsByClassName("btn-send-confirmation")).forEach(function (item) {
+        clickSendConfirmation(item, emsForm);
+    })
 }
 
 window.dynamicFields = function (form, emsForm) {

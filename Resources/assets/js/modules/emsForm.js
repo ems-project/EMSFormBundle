@@ -1,5 +1,5 @@
 import {addValidation, disableCopyPaste} from "../validation";
-import {addDynamicFields, replaceFormFields} from "../dynamicFields";
+import {addDynamicFields, replaceFormFields, addEventListeners} from "../dynamicFields";
 import {encoding, form, security} from '../helpers';
 import 'url-polyfill';
 import 'formdata-polyfill'
@@ -72,6 +72,7 @@ export class emsForm
         addValidation(form);
         disableCopyPaste(form);
         addDynamicFields(form, this);
+        addEventListeners(form, this);
         if (typeof this.onLoad === 'function') {
             this.onLoad();
         }
