@@ -43,6 +43,6 @@
                 {{ 'ems_send_confirmation'|trans({}, ems_translation_domain) }}
             </button>
         </div>
-        {{ form(form) }}
+        {{- block('form_widget_simple') -}}
     </div>
 {%- endblock -%}
