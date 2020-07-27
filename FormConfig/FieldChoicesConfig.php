@@ -14,6 +14,8 @@ class FieldChoicesConfig
     private $choices = [];
     /** @var ?string */
     private $placeholder;
+    /** @var ?string */
+    private $sort;
 
     public function __construct(string $id, array $values, array $labels)
     {
@@ -68,6 +70,11 @@ class FieldChoicesConfig
         return $this->calculateMaxLevel($this->values);
     }
 
+    public function setSort($sort): void
+    {
+        $this->sort = $sort;
+    }
+
     private function calculateMaxLevel(array $choices): int
     {
         $level = 0;
@@ -118,6 +125,27 @@ class FieldChoicesConfig
         }
 
         $list = \array_combine($this->getTopLevel($labels), $this->getTopLevel($values));
-        return \is_array($list) ? $list : [];
+
+        return $this->sort(\is_array($list) ? $list : []);
+    }
+
+    private function sort(array $list): array
+    {
+        if ($this->values[0] == null) {
+            array_shift($list); //do not sort placeholder
+        }
+
+        if ($this->sort === 'label_alpha') {
+            ksort($list);
+        }
+        if ($this->sort === 'value_alpha') {
+            asort($list);
+        }
+
+        if ($this->values[0] == null) {
+            $list = array_merge([$this->labels[0] => $this->values[0]], $list); // merge placeholder back
+        }
+
+        return $list;
     }
 }

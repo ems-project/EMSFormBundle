@@ -61,17 +61,24 @@ class FormConfigFactory
 
     private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
     {
-        $choices = $this->getDocument($emsLink, ['values', 'labels_' . $locale]);
+        $choices = $this->getDocument($emsLink, ['values', 'labels_' . $locale, 'choice_sort']);
 
         $decoder = function (string $input) {
             return \json_decode($input, true);
         };
 
-        $fieldConfig->setChoices(new FieldChoicesConfig(
+        $source = $choices->getSource();
+        $fieldChoicesConfig = new FieldChoicesConfig(
             $choices->getOuuid(),
-            $decoder($choices->getSource()['values']),
-            $decoder($choices->getSource()['labels_' . $locale])
-        ));
+            $decoder($source['values']),
+            $decoder($source['labels_' . $locale])
+        );
+
+        if (isset($source['choice_sort'])) {
+            $fieldChoicesConfig->setSort($source['choice_sort']);
+        }
+
+        $fieldConfig->setChoices($fieldChoicesConfig);
     }
 
     private function addFieldValidations(FieldConfig $fieldConfig, array $typeValidations = [], array $fieldValidations = []): void
