@@ -71,7 +71,7 @@ class FieldChoicesConfig
         return $this->calculateMaxLevel($this->values);
     }
 
-    public function setSort($sort): void
+    public function setSort(string $sort): void
     {
         $this->sort = $sort;
     }
@@ -130,6 +130,9 @@ class FieldChoicesConfig
         return $this->sort(\is_array($list) ? $list : []);
     }
 
+    /**
+     * @param array<string|int, string> $list
+     */
     private function sort(array $list): array
     {
         if ($list == null) {
