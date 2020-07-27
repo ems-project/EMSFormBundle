@@ -139,22 +139,23 @@ class FieldChoicesConfig
             return $list;
         }
 
-        $firstKey = array_key_first($list);
-        $firstValue = $list[$firstKey] ?? false;
+        $firstKey = \array_key_first($list);
+        /** @var null|string $firstValue */
+        $firstValue = $list[$firstKey] ?? null;
 
-        if ($firstValue == null) {
-            array_shift($list); //do not sort placeholder
+        if ($firstValue === null || $firstValue === '') {
+            \array_shift($list); //do not sort placeholder
         }
 
         if ($this->sort === 'label_alpha') {
-            ksort($list);
+            \ksort($list);
         }
         if ($this->sort === 'value_alpha') {
-            asort($list);
+            \asort($list);
         }
 
-        if ($firstValue == null) {
-            $list = array_merge([$firstKey => $firstValue], $list); // merge placeholder back
+        if ($firstValue === null ||  $firstValue === '') {
+            $list = \array_merge([$firstKey => $firstValue], $list); // merge placeholder back
         }
 
         return $list;
