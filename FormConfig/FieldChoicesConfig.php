@@ -132,8 +132,12 @@ class FieldChoicesConfig
 
     private function sort(array $list): array
     {
+        if ($list == null) {
+            return $list;
+        }
+
         $firstKey = array_key_first($list);
-        $firstValue = $list[$firstKey];
+        $firstValue = $list[$firstKey] ?? false;
 
         if ($firstValue == null) {
             array_shift($list); //do not sort placeholder
