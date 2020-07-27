@@ -30,6 +30,7 @@ class FieldChoicesConfig
         $this->id = $id;
         $this->values = $values;
         $this->labels = $labels;
+        $this->sort = null;
     }
 
     public function getPlaceholder(): ?string
@@ -131,7 +132,10 @@ class FieldChoicesConfig
 
     private function sort(array $list): array
     {
-        if ($this->values[0] == null) {
+        $firstKey = array_key_first($list);
+        $firstValue = $list[$firstKey];
+
+        if ($firstValue == null) {
             array_shift($list); //do not sort placeholder
         }
 
@@ -142,8 +146,8 @@ class FieldChoicesConfig
             asort($list);
         }
 
-        if ($this->values[0] == null) {
-            $list = array_merge([$this->labels[0] => $this->values[0]], $list); // merge placeholder back
+        if ($firstValue == null) {
+            $list = array_merge([$firstKey => $firstValue], $list); // merge placeholder back
         }
 
         return $list;
