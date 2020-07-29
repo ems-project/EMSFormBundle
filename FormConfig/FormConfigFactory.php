@@ -7,24 +7,49 @@ use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\Document;
 use EMS\CommonBundle\Common\EMSLink;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\CacheItem;
 
 class FormConfigFactory
 {
     /** @var ClientRequest */
     private $client;
+    /** @var AdapterInterface */
+    private $cache;
     /** @var LoggerInterface */
     private $logger;
     /** @var array */
     private $emsConfig;
 
-    public function __construct(ClientRequestManager $manager, LoggerInterface $logger, array $emsConfig)
-    {
+    public function __construct(
+        ClientRequestManager $manager,
+        AdapterInterface $cache,
+        LoggerInterface $logger,
+        array $emsConfig
+    ) {
         $this->client = $manager->getDefault();
+        $this->cache = $cache;
         $this->logger = $logger;
         $this->emsConfig = $emsConfig;
     }
 
     public function create(string $ouuid, string $locale): FormConfig
+    {
+        /** @var CacheItem $cacheItem */
+        $cacheItem = $this->cache->getItem(sprintf('formconfig_%s_%s', $ouuid, $locale));
+
+        if (!$cacheItem->isHit()) {
+            $formConfig = $this->build($ouuid, $locale);
+
+            $this->cache->save($cacheItem->set($formConfig)->expiresAfter(900));
+        } else {
+            $formConfig = $cacheItem->get();
+        }
+
+        return $formConfig;
+    }
+
+    private function build(string $ouuid, string $locale): FormConfig
     {
         $source = $this->client->get($this->emsConfig['type'], $ouuid)['_source'];
         $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
