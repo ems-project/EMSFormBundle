@@ -9,6 +9,7 @@
 
         <service id="emsf.form_config.factory" class="EMS\FormBundle\FormConfig\FormConfigFactory">
             <argument type="service" id="emsch.manager.client_request"/>
+            <argument type="service" id="cache.app" />
             <argument type="service" id="logger" />
             <argument type="string">%emsf.ems_config%</argument>
             <tag name="monolog.logger" channel="ems_common"/>
