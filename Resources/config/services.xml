@@ -52,6 +52,7 @@
         <service id="emsf.service.verification" class="EMS\FormBundle\Service\Verification\VerificationService">
             <argument type="service" id="emsch.api"/>
             <argument type="service" id="emsch.manager.client_request"/>
+            <argument type="service" id="session"/>
         </service>
         <service id="emsf.validator.verification_code" class="EMS\FormBundle\Components\Constraint\IsVerificationCodeValidator">
             <argument type="service" id="emsf.service.verification"/>
