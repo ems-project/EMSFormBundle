@@ -51,12 +51,13 @@ class FormController extends AbstractFormController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return new JsonResponse($this->client->submit($form));
+            return new JsonResponse($this->client->submit($form, $ouuid));
         }
 
         $template = $this->getFormConfig($form)->getTemplate();
 
         return new JsonResponse([
+            'ouuid' => $ouuid,
             'instruction' => 'form',
             'response' => $this->twig->render($template, ['form' => $form->createView()]),
             'difficulty' => $this->guard->getDifficulty(),
@@ -72,6 +73,7 @@ class FormController extends AbstractFormController
         $excludeFields = ['form__token'];
 
         return new JsonResponse([
+            'ouuid' => $ouuid,
             'instruction' => 'dynamic',
             'response' => $this->twig->render('@EMSForm/nested_choice_form.html.twig', [
                 'form' => $form->createView(),

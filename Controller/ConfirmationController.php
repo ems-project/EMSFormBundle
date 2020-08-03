@@ -32,7 +32,7 @@ final class ConfirmationController extends AbstractController
 
     public function postSend(Request $request, string $ouuid): Response
     {
-        $response = ['instruction' => 'send-confirmation', 'response' => false];
+        $response = ['instruction' => 'send-confirmation', 'response' => false, 'ouuid' => $ouuid];
 
         try {
             if (!$this->guard->check($request)) {
@@ -52,6 +52,6 @@ final class ConfirmationController extends AbstractController
     {
         $message = $this->confirmationService->getMessage(new ConfirmationRequest($request), $ouuid);
 
-        return new JsonResponse(['message' => $message]);
+        return new JsonResponse(['message' => $message, 'ouuid' => $ouuid]);
     }
 }
