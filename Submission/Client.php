@@ -23,7 +23,7 @@ class Client
         $this->handlers = $handlers;
     }
 
-    public function submit(FormInterface $form): array
+    public function submit(FormInterface $form, string $ouuid): array
     {
         /** @var FormConfig $formConfig */
         $formConfig = $form->getConfig()->getOption('config');
@@ -38,6 +38,7 @@ class Client
 
         return [
             'instruction' => 'submitted',
+            'ouuid' => $ouuid,
             'response' => $responseCollector->toJson(),
         ];
     }
