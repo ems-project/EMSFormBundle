@@ -58,6 +58,10 @@
             <argument type="service" id="emsf.service.verification"/>
             <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsVerificationCodeValidator" />
         </service>
+        <service id="emsf.validator.required_if" class="EMS\FormBundle\Components\Constraint\IsRequiredIfValidator">
+            <argument type="service" id="logger"/>
+            <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsRequiredIfValidator" />
+        </service>
 
 
         <!-- controllers -->
