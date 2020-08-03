@@ -2,6 +2,7 @@
 
 namespace EMS\FormBundle\FormConfig;
 
+use EMS\ClientHelperBundle\Helper\Cache\CacheHelper;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\Document;
@@ -14,8 +15,8 @@ class FormConfigFactory
 {
     /** @var ClientRequest */
     private $client;
-    /** @var AdapterInterface */
-    private $cache;
+    /** @var CacheHelper */
+    private $cacheHelper;
     /** @var LoggerInterface */
     private $logger;
     /** @var array */
@@ -23,30 +24,45 @@ class FormConfigFactory
 
     public function __construct(
         ClientRequestManager $manager,
-        AdapterInterface $cache,
+        CacheHelper $cacheHelper,
         LoggerInterface $logger,
         array $emsConfig
     ) {
         $this->client = $manager->getDefault();
-        $this->cache = $cache;
+        $this->cacheHelper = $cacheHelper;
         $this->logger = $logger;
         $this->emsConfig = $emsConfig;
     }
 
     public function create(string $ouuid, string $locale): FormConfig
     {
+        $lastChangeDate = $this->getLastChangeDate();
+        $cacheKey = $this->client->getCacheKey(sprintf('formconfig_%s_%s_', $ouuid, $locale));
+
         /** @var CacheItem $cacheItem */
-        $cacheItem = $this->cache->getItem(sprintf('formconfig_%s_%s', $ouuid, $locale));
+        $cacheItem = $this->cacheHelper->get($cacheKey);
 
-       // if (!$cacheItem->isHit()) {
-            $formConfig = $this->build($ouuid, $locale);
+        if ($this->cacheHelper->isValid($cacheItem, $lastChangeDate)) {
+            $cacheData = $this->cacheHelper->getData($cacheItem);
 
-         //   $this->cache->save($cacheItem->set($formConfig)->expiresAfter(900));
-       // } else {
-        //    $formConfig = $cacheItem->get();
-       // }
+            if (isset($cacheData['form_config'])) {
+                return $cacheData['form_config'];
+            }
+        }
+
+        $formConfig = $this->build($ouuid, $locale);
+        $this->cacheHelper->save($cacheItem, ['form_config' => $formConfig]);
 
         return $formConfig;
+    }
+
+    private function getLastChangeDate(): \DateTime
+    {
+        $types = array_values(array_filter($this->emsConfig, function ($k) {
+            return substr($k, 0, 4) === "type";
+        }, ARRAY_FILTER_USE_KEY));
+
+        return $this->client->getLastChangeDate(implode(',', $types));
     }
 
     private function build(string $ouuid, string $locale): FormConfig
