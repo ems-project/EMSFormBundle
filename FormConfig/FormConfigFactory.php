@@ -38,13 +38,13 @@ class FormConfigFactory
         /** @var CacheItem $cacheItem */
         $cacheItem = $this->cache->getItem(sprintf('formconfig_%s_%s', $ouuid, $locale));
 
-        if (!$cacheItem->isHit()) {
+       // if (!$cacheItem->isHit()) {
             $formConfig = $this->build($ouuid, $locale);
 
-            $this->cache->save($cacheItem->set($formConfig)->expiresAfter(900));
-        } else {
-            $formConfig = $cacheItem->get();
-        }
+         //   $this->cache->save($cacheItem->set($formConfig)->expiresAfter(900));
+       // } else {
+        //    $formConfig = $cacheItem->get();
+       // }
 
         return $formConfig;
     }
