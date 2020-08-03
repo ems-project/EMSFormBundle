@@ -37,8 +37,10 @@ class FormConfigFactory
     public function create(string $ouuid, string $locale): FormConfig
     {
         $lastChangeDate = $this->getLastChangeDate();
+        $cacheKey = $this->client->getCacheKey(sprintf('formconfig_%s_%s_', $ouuid, $locale));
+
         /** @var CacheItem $cacheItem */
-        $cacheItem = $this->cacheHelper->get(sprintf('formconfig_%s_%s', $ouuid, $locale));
+        $cacheItem = $this->cacheHelper->get($cacheKey);
 
         if ($this->cacheHelper->isValid($cacheItem, $lastChangeDate)) {
             $cacheData = $this->cacheHelper->getData($cacheItem);
