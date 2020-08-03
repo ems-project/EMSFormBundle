@@ -20,6 +20,7 @@
 * [OnssRsz](#onssrsz)
 * [Phone](#phone)
 * [RequiredWithout](#requiredwithout)
+* [RequiredIf](#requiredIf)
 
 ## Validations
 
@@ -72,3 +73,14 @@ Validate that the input is a valid phone number based on Belgium fixed and mobil
 
 ### Required without <a name="requiredwithout"/>
 The field under validation must be present and not empty only if the "other field" is NOT present. The field name of the "other field" (technical key) needs to be added in the default value field.
+
+### Required if <a name="requiredIf"/>
+The field under validation will be required if the expression in the value evaluates to true. 
+
+You can use the full formData as data in the in expression.
+Example value: data["otherFieldX"] === "true" and data["otherFieldY"] > 1
+
+More documentation: 
+    - [Symfony Expression language](https://symfony.com/doc/current/components/expression_language/syntax.html#component-expression-arrays)
+
+Finally if this validation is NOT working, please check the error logs.
