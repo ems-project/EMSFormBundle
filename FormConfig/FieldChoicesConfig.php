@@ -148,10 +148,16 @@ class FieldChoicesConfig
         }
 
         if ($this->sort === 'label_alpha') {
-            \ksort($list);
+            $collator = new \Collator('en');
+            uksort($list, function ($a, $b) use ($collator) {
+                return $collator->compare($a, $b);
+            });
         }
         if ($this->sort === 'value_alpha') {
-            \asort($list);
+            $collator = new \Collator('en');
+            uasort($list, function ($a, $b) use ($collator) {
+                return $collator->compare($a, $b);
+            });
         }
 
         if ($firstValue === null ||  $firstValue === '') {

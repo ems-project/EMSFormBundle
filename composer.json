@@ -26,6 +26,7 @@
 		"symfony/security": "^4.4",
 		"symfony/twig-bridge": "^4.4",
 		"symfony/validator": "^4.4",
+		"symfony/intl": "^5.1",
 		"twig/twig" : "~2.10.0"
 	},
 	"require-dev" : {
