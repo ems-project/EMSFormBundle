@@ -3,7 +3,7 @@
     <file source-language="fr" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="niss_insz">
-                <source>The social security number "{{string}}" has an invalid format.</source>
+                <source>The social security number "{{string}}" is invalid.</source>
                 <target>Le numéro de registre national "{{string}}" est invalide.</target>
             </trans-unit>
             <trans-unit id="belgium_phone">
