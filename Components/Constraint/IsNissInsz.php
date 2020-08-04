@@ -9,5 +9,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsNissInsz extends Constraint
 {
-    public $message = 'The social security number "{{string}}" has an invalid format.';
+    public $message = 'The social security number "{{string}}" is invalid.';
 }
