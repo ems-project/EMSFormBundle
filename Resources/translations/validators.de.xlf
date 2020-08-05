@@ -6,6 +6,18 @@
                 <source>The social security number "{{string}}" is invalid.</source>
                 <target>Die Nationalregisternummer "{{string}}" ist ungültig.</target>
             </trans-unit>
+            <trans-unit id="belgium_phone">
+                <source>The phone number "{{string}}" is invalid.</source>
+                <target>Die Telefonnummer "{{string}}" ist ungültig.</target>
+            </trans-unit>
+            <trans-unit id="confirm_email">
+                <source>The "{{field1}}" and "Confirm {{field2}}" fields must match.</source>
+                <target>Die Felder "{{field1}}" und "Bestätigen {{field2}}" müssen übereinstimmen.</target>
+            </trans-unit>
+            <trans-unit id="confirm_label">
+                <source>Confirm %field%</source>
+                <target>Bestätigen %field%</target>
+            </trans-unit>
             <trans-unit id="date_label">
                 <source>%label_date% (dd/mm/yyyy)</source>
                 <target>%label_date% (dd/mm/jjjj)</target>

@@ -8,5 +8,5 @@ use Symfony\Component\Validator\Constraint;
 
 final class IsEmailMultiple extends Constraint
 {
-    public $message = 'At least one email "{{string}}" has an invalid format.';
+    public $message = 'At least one email "{{string}}" is invalid.';
 }

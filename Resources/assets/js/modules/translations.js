@@ -9,13 +9,13 @@ class Translator
             resources: {
                 en: {
                     translation: {
-                        "niss_insz": "The social security number \"{{string}}\" has an invalid format.",
+                        "niss_insz": "The social security number \"{{string}}\" is invalid.",
                         "max_length_count": "Remaining characters: {{count}}",
-                        "belgium_phone": "The phone number \"{{string}}\" has an invalid format.",
+                        "belgium_phone": "The phone number \"{{string}}\" is invalid.",
                         "repeated": "The field \"{{string}}\" should have the same value as the previous field.",
-                        "belgium_company_number": "The company registration number \"{{string}}\" has an invalid format.",
-                        "belgium_company_number_multiple": "At least one company registration number \"{{string}}\" has an invalid format.",	
-                        "belgium_onss_rsz" : "NSSO number \"{{string}}\" has an invalid format."
+                        "belgium_company_number": "The company registration number \"{{string}}\" is invalid.",
+                        "belgium_company_number_multiple": "At least one company registration number \"{{string}}\" is invalid.",
+                        "belgium_onss_rsz" : "NSSO number \"{{string}}\" is invalid."
                     }
                 },
                 "fr": {
@@ -39,10 +39,21 @@ class Translator
                         "belgium_company_number_multiple": "Minstens één ondernemingsnummer \"{{string}}\" is ongeldig.",
                         "belgium_onss_rsz" : "RSZ number \"{{string}}\" is ongeldig."
                     }
+                },
+                "de": {
+                    translation: {
+                        "niss_insz": "Die Nationalregisternummer \"{{string}}\" ist ungültig.",
+                        "max_length_count": "Verbleibende Zeichen: {{count}}",
+                        "belgium_phone": "Die Telefonnummer \"{{string}}\" ist ungültig.",
+                        "repeated": "Der Feld  \"{{string}}\" sollte den gleichen Wert wie das vorherige Feld haben.",
+                        "belgium_company_number": "Die Firmenregistrierungsnummer \"{{string}}\" ist ungültig.",
+                        "belgium_company_number_multiple": "Mindestens eine Firmenregistrierungsnummer \"{{string}}\" ist ungültig.",
+                        "belgium_onss_rsz" : "LSS-Nummer \"{{string}}\" ist ungültig."
+                    }
                 }
             }
         });
-        translator.init()
+        translator.init();
         this.translator = translator;
     }
     trans(key, options) {
