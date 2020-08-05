@@ -6,5 +6,5 @@ use Symfony\Component\Validator\Constraint;
 
 class IsCompanyNumber extends Constraint
 {
-    public $message = 'The company registration number "{{string}}" has an invalid format.';
+    public $message = 'The company registration number "{{string}}" is invalid.';
 }

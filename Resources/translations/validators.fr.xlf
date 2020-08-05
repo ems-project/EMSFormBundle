@@ -7,7 +7,7 @@
                 <target>Le numéro de registre national "{{string}}" est invalide.</target>
             </trans-unit>
             <trans-unit id="belgium_phone">
-                <source>The phone number "{{string}}" has an invalid format.</source>
+                <source>The phone number "{{string}}" is invalid.</source>
                 <target>Le numéro téléphone "{{string}}" est invalide.</target>
             </trans-unit>
             <trans-unit id="confirm_email">
