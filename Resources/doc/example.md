@@ -93,7 +93,7 @@ The following twig script shows you how to achieve this;
     <script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
     <script type="application/javascript">
         document.getElementById('ems-form-iframe-custom').onload = function() {
-            new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom', 'ouuid': '2cd00b5b92c97fc5fb0c5b955e889814'}).init(); 
+            new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom', 'ouuid': '{ouuid}'}).init(); 
         };
         document.getElementById('ems-form-iframe-custom-second').onload = function() {
             new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', 'ouuid': 'AXITVThtVlTwvgZH9Hym', onLoad: function(){ console.log('foobar') }}).init(); 
@@ -196,6 +196,5 @@ These responses will be made available after submit in the `ems-message` div as 
     ["{\"status\":\"error\",\"data\":\"Submission failed, contact your admin. Notice: Undefined index: from\"}"]
 </div>
 ```
-
 
 
