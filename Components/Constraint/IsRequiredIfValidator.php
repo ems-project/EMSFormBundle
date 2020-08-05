@@ -18,9 +18,26 @@ class IsRequiredIfValidator extends ConstraintValidator
         $this->logger = $logger;
     }
 
+    private function isEmpty($value)
+    {
+        if ($value === null || $value === "") {
+            return true;
+        }
+        if (!is_array($value)) {
+            return false;
+        }
+
+        foreach ($value as $subValue) {
+            if(!$this->isEmpty($subValue)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function validate($value, Constraint $constraint)
     {
-        if (null !== $value || !$constraint instanceof IsRequiredIf) {
+        if (!$this->isEmpty($value)  || !$constraint instanceof IsRequiredIf) {
             return;
         }
 
