@@ -96,7 +96,7 @@ The following twig script shows you how to achieve this;
             new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom', 'ouuid': '{ouuid}'}).init(); 
         };
         document.getElementById('ems-form-iframe-custom-second').onload = function() {
-            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', 'ouuid': 'AXITVThtVlTwvgZH9Hym', onLoad: function(){ console.log('foobar') }}).init(); 
+            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', 'ouuid': '{ouuid2}', onLoad: function(){ console.log('foobar') }}).init(); 
         };
     </script>
  ```
@@ -196,5 +196,4 @@ These responses will be made available after submit in the `ems-message` div as 
     ["{\"status\":\"error\",\"data\":\"Submission failed, contact your admin. Notice: Undefined index: from\"}"]
 </div>
 ```
-
 
