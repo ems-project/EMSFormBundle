@@ -57,7 +57,7 @@ class DebugController extends AbstractFormController
 
         $responses = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            $responses = $this->client->submit($form);
+            $responses = $this->client->submit($form, $ouuid);
         }
 
         return new Response($this->twig->render('@EMSForm/debug/form.html.twig', [

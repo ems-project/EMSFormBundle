@@ -93,20 +93,22 @@ The following twig script shows you how to achieve this;
     <script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
     <script type="application/javascript">
         document.getElementById('ems-form-iframe-custom').onload = function() {
-            new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom'}).init(); 
+            new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom', 'ouuid': '{ouuid}'}).init(); 
         };
         document.getElementById('ems-form-iframe-custom-second').onload = function() {
-            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', onLoad: function(){ console.log('foobar') }}).init(); 
+            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', 'ouuid': '{ouuid2}', onLoad: function(){ console.log('foobar') }}).init(); 
         };
     </script>
  ```
 
 This code assumes that two of our iframes are loaded: `ems-form-iframe-custom` and `ems-form-iframe-custom-second` each containing another form id.
 For each iframe, an `emsForm` object is created for which we configure the `idForm`, `idMessage` and `idIframe` options to the id's used in our page.
+In order to avoid misrouting of the messages to the wrong form it's important to specify in the `ouuid` attribute the form's instance ouuid
 
 * idForm corresponds to the empty div that can be used to render the form fetched through the corresponding iframe.
 * idMessage corresponds to the empty div that can be used for the messages returned after valid submit through the corresponding iframe.
 * idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
+* ouuid corresponds to the id of the form instance, this attribute is required if you plan to instantiate more than one form on the same page
 
 ## Callback functions
 
@@ -194,6 +196,4 @@ These responses will be made available after submit in the `ems-message` div as 
     ["{\"status\":\"error\",\"data\":\"Submission failed, contact your admin. Notice: Undefined index: from\"}"]
 </div>
 ```
-
-
 

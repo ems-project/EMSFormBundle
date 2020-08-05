@@ -8,6 +8,7 @@ export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
     idForm: 'ems-form',
     idMessage: 'ems-message',
+    ouuid: false,
     onLoad: function(){ console.log('ems-form loaded'); },
     onSubmit: function(){ console.log('ems-form submit') },
     onResponse: function(response){ console.log( 'ems-form response: ', response.toString()) },
@@ -38,6 +39,7 @@ export class emsForm
         this.onError = config.onError;
         this.onResponse = config.onResponse;
         this.onConfirmationResponse = config.onConfirmationResponse;
+        this.ouuid = config.ouuid;
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
@@ -85,6 +87,11 @@ export class emsForm
         }
 
         let data = encoding.jsonParse(e.data);
+
+
+        if (this.ouuid && data.ouuid !== this.ouuid) {
+            return;
+        }
 
         if (!data) {
             if (typeof this.onError === 'function') {
