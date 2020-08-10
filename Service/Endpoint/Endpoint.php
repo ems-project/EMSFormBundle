@@ -8,6 +8,8 @@ final class Endpoint
 {
     /** @var string */
     private $fieldName;
+    /** @var null|string */
+    private $messageTranslationKey;
     /** @var HttpRequest */
     private $httpRequest;
 
@@ -15,6 +17,7 @@ final class Endpoint
     {
         $this->fieldName = $config['field_name'];
         $this->httpRequest = new HttpRequest($config['http_request']);
+        $this->messageTranslationKey = $config['message_translation_key'] ?? null;
     }
 
     public function getFieldName(): string
@@ -25,5 +28,10 @@ final class Endpoint
     public function getHttpRequest(): HttpRequest
     {
         return $this->httpRequest;
+    }
+
+    public function getMessageTranslationKey(): ?string
+    {
+        return $this->messageTranslationKey;
     }
 }
