@@ -1,4 +1,4 @@
-import {addDynamicFields, replaceFormFields} from "../dynamicFields";
+import {addDynamicFields, replaceFormFields, addEventListeners} from "../dynamicFields";
 import {encoding, security} from '../helpers';
 
 export const DEFAULT_CONFIG = {
@@ -11,6 +11,7 @@ export class emsFormDebug
     {
         let config = Object.assign({}, DEFAULT_CONFIG, options);
         this.elementForm = document.getElementById(config.idForm);
+        addEventListeners(this.elementForm, this);
     }
 
     onDynamicFieldChange(data)
@@ -52,5 +53,7 @@ export class emsFormDebug
             replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
             addDynamicFields(emsFormInstance.elementForm.querySelector('form'), emsFormInstance);
         }
+
+        addEventListeners(emsFormInstance.elementForm.querySelector('form'), emsFormInstance);
     }
 }

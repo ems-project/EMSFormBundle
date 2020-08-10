@@ -40,8 +40,8 @@ final class HttpRequest
         return $this->headers;
     }
 
-    public function createBody(string $value, string $verificationCode): string
+    public function createBody(array $replace): string
     {
-        return str_replace(['%value%', '%verification_code%'], [$value, $verificationCode], $this->body);
+        return \str_replace(\array_keys($replace), \array_values($replace), $this->body);
     }
 }
