@@ -34,9 +34,4 @@ final class Endpoint
     {
         return $this->messageTranslationKey;
     }
-
-    public function hasMessageTranslationKey(): bool
-    {
-        return null !== $this->messageTranslationKey;
-    }
 }

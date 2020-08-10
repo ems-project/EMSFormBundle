@@ -67,9 +67,9 @@ final class ConfirmationService
 
             $replaceBody = ['%value%' => $confirmationRequest->getValue(), '%verification_code%' => $verificationCode];
 
-            if ($endpoint->hasMessageTranslationKey()) {
+            if (null !== $messageTranslationKey = $endpoint->getMessageTranslationKey()) {
                 $messageTranslation = $this->translator->trans(
-                    $endpoint->getMessageTranslationKey(),
+                    $messageTranslationKey,
                     $replaceBody,
                     $formConfig->getTranslationDomain()
                 );
