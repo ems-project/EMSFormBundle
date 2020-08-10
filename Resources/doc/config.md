@@ -24,21 +24,31 @@ For disabling hashcash set the difficulty value to 0.
 
 For now this endpoints config is use for sending a confirmation. 
 
+###Http request body replacements
+
+The following placeholder(s) can be used in the body and will be replaced.
+- **%verification_code%**: replaced by the verification code
+- **%value%: replaced by** the passed value
+- **%message_translation%**: replaced by the translated value of the defined property *'message_translation_key'*
+
 example 1 endpoint configuration for send_confirmation form field:
 ```json
 [
   {
     "field_name": "send_confirmation",
+    "message_translation_key": "translation_key",
     "http_request": {
       "url": "https://api.example.test/v1/send/sms",
       "headers": {
         "Content-Type": "application/json"
       },
-      "body": "{\"To\": \"%value%\", \"Message\": \"%verification_code%\"}"
+      "body": "{\"To\": \"%value%\", \"Message\": \"%message_translation_key%\", , \"Example\": \"%verification_code%\"}"
     }
   }
 ]
 ```
+
+
 
 
 ## Instance
