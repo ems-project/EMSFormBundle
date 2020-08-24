@@ -86,10 +86,10 @@ More documentation:
 
 Finally if this validation is NOT working, please check the error logs.
 
-### Required if <a name="expression"/>
-The field value use an expression and need to evaluates to true. 
+### Expression <a name="expression"/>
+The field under validation will be evaluated against the expression in the value, and will pass if it evaluates to true.
 
-The expression must always return false or true.
+The expression must explicitly return true or false.
 You can use the full formData as data in the in expression.
 Example value: 1 == (data["myField"] matches "/^[a-zA-Z0-9]{10}$/")
 
