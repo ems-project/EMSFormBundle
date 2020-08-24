@@ -21,6 +21,7 @@
 * [Phone](#phone)
 * [RequiredWithout](#requiredwithout)
 * [RequiredIf](#requiredIf)
+* [Expression](#expression)
 
 ## Validations
 
@@ -82,5 +83,17 @@ Example value: data["otherFieldX"] === "true" and data["otherFieldY"] > 1
 
 More documentation: 
     - [Symfony Expression language](https://symfony.com/doc/current/components/expression_language/syntax.html#component-expression-arrays)
+
+Finally if this validation is NOT working, please check the error logs.
+
+### Required if <a name="expression"/>
+The field value use an expression and need to evaluates to true. 
+
+The expression must always return false or true.
+You can use the full formData as data in the in expression.
+Example value: 1 == (data["myField"] matches "/^[a-zA-Z0-9]{10}$/")
+
+More documentation: 
+    - [Symfony Expression language](https://symfony.com/doc/current/components/expression_language/syntax.html)
 
 Finally if this validation is NOT working, please check the error logs.
