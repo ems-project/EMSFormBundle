@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
 <head>
+    <title>{{ 'form'|trans({}, 'messages') }}</title>
     <meta charset="UTF-8" />
     <meta property="id" data-id="{{ config.id }}" />
     <meta property="domains" data-list="{{ config.domains|json_encode }}" />
