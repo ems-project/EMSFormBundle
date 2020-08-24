@@ -44,7 +44,7 @@ class IsExpressionValidator extends ConstraintValidator
             $expressionLanguage = new ExpressionLanguage();
             $result = $expressionLanguage->evaluate($expression, $values);
             
-            return boolval($result);
+            return is_bool($result) ? $result : false;
         } catch (\Exception $e) {
             $this->logger->error('Expression failed: {message}', [
                 'message' => $e->getMessage(),
