@@ -18,12 +18,16 @@
 {%- endblock ems_nested_choice_row %}
 
 {%- block ems_file_widget -%}
+    {%- set browseLabel = "#{name}_browse"|trans({}, ems_translation_domain) -%}
+    {%- if "#{name}_browse" == browseLabel -%}
+        {%- set browseLabel = "ems_file_browse"|trans({}, ems_translation_domain) -%}
+    {%- endif -%}
     <{{ element|default('div') }} class="custom-file">
     {%- set type = type|default('file') -%}
     {{- block('form_widget_simple') -}}
     {%- set label_attr = label_attr|merge({
         'class': ((label_attr.class|default('') ~ ' custom-file-label')|trim),
-        'data-browse': 'ems_file_browse'|trans({}, ems_translation_domain)
+        'data-browse': browseLabel
     }) -%}
     <label for="{{ form.vars.id }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
         {%- if attr.placeholder is defined and attr.placeholder is not none -%}
@@ -33,7 +37,40 @@
     </{{ element|default('div') }}>
 {%- endblock -%}
 
+{%- block number_widget -%}
+    {%- set type = type|default('text') -%}
+    {%- if confirmation_value_field is defined -%}
+        {{- block('_ems_confirmation_widget') -}}
+    {%- else -%}
+        {{- block('form_widget_simple') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block hidden_widget -%}
+    {%- set type = type|default('hidden') -%}
+    {%- if confirmation_value_field is defined -%}
+        {{- block('_ems_confirmation_widget') -}}
+    {%- else -%}
+        {{- block('form_widget_simple') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block _ems_confirmation_widget -%}
+    <div class="input-group">
+        <div class="input-group-append">
+            <button class="btn btn-success btn-send-confirmation" type="button"
+                    data-token="{{ csrf_token(ems_config_id) }}"
+                    data-name="{{ name }}"
+                    data-value-id="{{ attribute(form.parent.children, confirmation_value_field).vars.id }}">
+                {{ "button_confirm_#{name}"|trans({}, ems_translation_domain) }}
+            </button>
+        </div>
+        {{ block('form_widget_simple') }}
+    </div>
+{%- endblock -%}
+
 {%- block ems_send_confirmation_widget -%}
+    {% deprecated 'The send confirmation form field type is deprecated and will be removed! Use hiddenType or NumberType' %}
     <div class="input-group">
         <div class="input-group-append">
             <button class="btn btn-success btn-send-confirmation" type="button"
