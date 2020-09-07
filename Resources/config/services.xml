@@ -68,6 +68,14 @@
             <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsExpressionValidator" />
         </service>
 
+        <!-- form -->
+        <service id="emsf.form.extension.field" class="EMS\FormBundle\Form\Extension\FieldExtension">
+            <tag name="form.type_extension" priority="1" />
+        </service>
+        <service id="emsf.form.extension.confirmation" class="EMS\FormBundle\Form\Extension\ConfirmationExtension">
+            <tag name="form.type_extension" priority="0" />
+        </service>
+
         <!-- controllers -->
         <service id="emsf.controller.debug" class="EMS\FormBundle\Controller\DebugController"  public="true">
             <argument type="service" id="form.factory"/>

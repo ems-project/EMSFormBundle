@@ -34,6 +34,8 @@ abstract class AbstractField implements FieldInterface
             'label_attr' => $this->getLabelAttributes(),
             'required' => $this->isRequired(),
             'translation_domain' => false,
+            'ems_config_id' => $this->config->getId(),
+            'ems_translation_domain' => $this->config->getParentForm()->getTranslationDomain(),
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace EMS\FormBundle\Components\Field;
 
-use EMS\FormBundle\Components\Form\FileType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class File extends AbstractField
 {
@@ -11,16 +11,16 @@ class File extends AbstractField
         return 'file';
     }
 
-    public function getFieldClass(): string
-    {
-        return FileType::class;
-    }
-
     public function getOptions(): array
     {
         $options = parent::getOptions();
-        $options['ems_translation_domain'] = $this->config->getParentForm()->getTranslationDomain();
+        $options['block_prefix'] = 'ems_file';
 
         return $options;
+    }
+
+    public function getFieldClass(): string
+    {
+        return FileType::class;
     }
 }
