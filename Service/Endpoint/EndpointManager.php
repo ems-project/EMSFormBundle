@@ -4,28 +4,34 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Endpoint;
 
+use EMS\FormBundle\Service\Endpoint\Type\EndpointTypeInterface;
 use Psr\Log\LoggerInterface;
 
-final class EndpointCollection
+final class EndpointManager
 {
     /** @var array<mixed> */
     private $config;
     /** @var LoggerInterface */
     private $logger;
-    /** @var Endpoint[] */
-    private $endpoints;
+    /** @var EndpointInterface[] */
+    private $endpoints = [];
+    /** @var EndpointTypeInterface[] */
+    private $endpointTypes = [];
 
     /**
-     * @param array<mixed> $config
+     * @param array<mixed> $envConfig
      */
-    public function __construct(array $config, LoggerInterface $logger)
-    {
-        $this->config = $config;
+    public function __construct(
+        array $envConfig,
+        \Traversable $endpointTypes,
+        LoggerInterface $logger
+    ) {
+        $this->config = $envConfig;
+        $this->endpointTypes = $endpointTypes;
         $this->logger = $logger;
-        $this->endpoints = [];
     }
 
-    public function getByFieldName(string $fieldName): ?Endpoint
+    public function getByFieldName(string $fieldName): ?EndpointInterface
     {
         foreach ($this->getEndpoints() as $endpoint) {
             if ($fieldName === $endpoint->getFieldname()) {
@@ -37,7 +43,7 @@ final class EndpointCollection
     }
 
     /**
-     * @return Endpoint[]
+     * @return EndpointInterface[]
      */
     private function getEndpoints(): array
     {
@@ -47,7 +53,7 @@ final class EndpointCollection
 
         foreach ($this->config as $config) {
             try {
-                $this->endpoints[] = new Endpoint($config);
+                 $this->endpoints[] = new Endpoint($config);
             } catch (\Exception $e) {
                 $this->logger->error('invalid endpoint configuration', [
                     'config' => $config,

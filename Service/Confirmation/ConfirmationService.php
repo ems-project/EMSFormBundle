@@ -8,7 +8,7 @@ use EMS\FormBundle\FormConfig\ElementInterface;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
 use EMS\FormBundle\Service\Endpoint\Endpoint;
-use EMS\FormBundle\Service\Endpoint\EndpointCollection;
+use EMS\FormBundle\Service\Endpoint\EndpointManager;
 use EMS\FormBundle\Service\Endpoint\HttpRequest;
 use EMS\FormBundle\Service\Verification\VerificationService;
 use Psr\Log\LoggerInterface;
@@ -29,8 +29,8 @@ final class ConfirmationService
     private $logger;
     /** @var VerificationService */
     private $verificationService;
-    /** @var EndpointCollection */
-    private $endpoints;
+    /** @var EndpointManager */
+    private $endpointManager;
     /** @var TranslatorInterface */
     private $translator;
 
@@ -40,7 +40,7 @@ final class ConfirmationService
         HttpClientInterface $httpClient,
         LoggerInterface $logger,
         VerificationService $verificationService,
-        EndpointCollection $endpoints,
+        EndpointManager $endpointManager,
         TranslatorInterface $translator
     ) {
         $this->configFactory = $configFactory;
@@ -48,7 +48,7 @@ final class ConfirmationService
         $this->httpClient = $httpClient;
         $this->logger = $logger;
         $this->verificationService = $verificationService;
-        $this->endpoints = $endpoints;
+        $this->endpointManager = $endpointManager;
         $this->translator = $translator;
     }
 
@@ -100,7 +100,7 @@ final class ConfirmationService
 
     private function getEndPoint(string $fieldName): Endpoint
     {
-        $endpoint = $this->endpoints->getByFieldName($fieldName);
+        $endpoint = $this->endpointManager->getByFieldName($fieldName);
 
         if (null === $endpoint) {
             throw new \Exception(sprintf('No valid endpoint found for form field %s', $fieldName));
