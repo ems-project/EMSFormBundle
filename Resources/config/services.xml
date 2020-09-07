@@ -46,8 +46,9 @@
             <argument type="service" id="emsf.collection.endpoints"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="emsf.collection.endpoints" class="EMS\FormBundle\Service\Endpoint\EndpointCollection">
+        <service id="emsf.collection.endpoints" class="EMS\FormBundle\Service\Endpoint\EndpointManager">
             <argument>%emsf.endpoints%</argument>
+            <argument type="tagged" tag="emsf.endpoint.type"/>
             <argument type="service" id="logger"/>
         </service>
         <service id="emsf.service.verification" class="EMS\FormBundle\Service\Verification\VerificationService">
@@ -55,6 +56,11 @@
             <argument type="service" id="emsch.manager.client_request"/>
             <argument type="service" id="session"/>
         </service>
+        <service id="emsf.endpoint.sms" class="EMS\FormBundle\Service\Endpoint\Type\SmsEndpoint">
+            <tag name="emsf.endpoint.type"/>
+        </service>
+
+        <!-- Constraint services -->
         <service id="emsf.validator.verification_code" class="EMS\FormBundle\Components\Constraint\IsVerificationCodeValidator">
             <argument type="service" id="emsf.service.verification"/>
             <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsVerificationCodeValidator" />
