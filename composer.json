@@ -21,7 +21,6 @@
 		"symfony/http-foundation": "^4.4",
 		"symfony/http-client": "^4.4",
 		"symfony/options-resolver": "^4.4",
-		"symfony/expression-language": "^4.4",
 		"symfony/routing": "^4.4",
 		"symfony/security": "^4.4",
 		"symfony/twig-bridge": "^4.4",
