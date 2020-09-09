@@ -30,7 +30,7 @@
 	},
 	"require-dev" : {
 		"mockery/mockery" : "^0.9",
-		"phpmd/phpmd": "^2.7",
+		"phpmd/phpmd": "^2.9",
 		"phpstan/phpstan": "^0.11",
 		"phpunit/phpunit" : "^5.7",
 		"symfony/phpunit-bridge": "^4.4",
