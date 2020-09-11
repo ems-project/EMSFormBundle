@@ -6,5 +6,13 @@ namespace EMS\FormBundle\Service\Endpoint;
 
 interface EndpointInterface
 {
-    public function getServiceType(): string;
+    public function getType(): string;
+
+    public function getFieldName(): string;
+
+    public function getHttpRequest(): HttpRequest;
+
+    public function saveInSession(): bool;
+
+    public function getMessageTranslationKey(): ?string;
 }

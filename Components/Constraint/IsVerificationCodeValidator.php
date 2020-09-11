@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Components\Constraint;
 
-use EMS\FormBundle\Service\Verification\VerificationService;
+use EMS\FormBundle\Service\Confirmation\ConfirmationService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class IsVerificationCodeValidator extends ConstraintValidator
 {
-    /** @var VerificationService */
-    private $verificationCodeService;
+    /** @var ConfirmationService */
+    private $confirmationService;
 
-    public function __construct(VerificationService $verificationCodeService)
+    public function __construct(ConfirmationService $confirmationService)
     {
-        $this->verificationCodeService = $verificationCodeService;
+        $this->confirmationService = $confirmationService;
     }
 
     /**
@@ -36,18 +36,21 @@ class IsVerificationCodeValidator extends ConstraintValidator
     /**
      * @param IsVerificationCode $constraint
      */
-    private function verify($value, IsVerificationCode $constraint): bool
+    private function verify($verificationCode, IsVerificationCode $constraint): bool
     {
-        $verificationValue = $this->getVerificationValue($constraint);
+        $confirmValue = $this->getConfirmValue($constraint);
 
-        if (null === $value || null === $verificationValue) {
+        if (null === $verificationCode || null === $confirmValue) {
             return false;
         }
 
-        return $this->verificationCodeService->verify($verificationValue, (string) $value);
+        /** @var FormInterface $field */
+        $field = $this->context->getObject();
+
+        return $this->confirmationService->validate($field->getName(), $confirmValue, $verificationCode);
     }
 
-    private function getVerificationValue(IsVerificationCode $constraint): ?string
+    private function getConfirmValue(IsVerificationCode $constraint): ?string
     {
         /** @var FormInterface $form */
         $form = $this->context->getRoot();

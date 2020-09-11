@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Endpoint;
 
+use EMS\FormBundle\Service\Confirmation\Endpoint\HttpEndpointType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class Endpoint implements EndpointInterface
@@ -14,8 +15,10 @@ final class Endpoint implements EndpointInterface
     private $messageTranslationKey;
     /** @var HttpRequest */
     private $httpRequest;
+    /** @var bool */
+    private $saveSession;
     /** @var string */
-    private $serviceType;
+    private $type;
 
     public function __construct(array $config)
     {
@@ -24,12 +27,13 @@ final class Endpoint implements EndpointInterface
         $this->fieldName = $config['field_name'];
         $this->httpRequest = new HttpRequest($config['http_request']);
         $this->messageTranslationKey = $config['message_translation_key'] ?? null;
-        $this->serviceType = $config['service_type'] ?? 'sms';
+        $this->saveSession = $config['save_session'];
+        $this->type = $config['type'];
     }
 
-    public function getServiceType(): string
+    public function getType(): string
     {
-        return $this->serviceType;
+        return $this->type;
     }
 
     public function getFieldName(): string
@@ -47,18 +51,23 @@ final class Endpoint implements EndpointInterface
         return $this->messageTranslationKey;
     }
 
+    public function saveInSession(): bool
+    {
+        return $this->saveSession;
+    }
+
     private function getOptionsResolver(): OptionsResolver
     {
         $optionsResolver = new OptionsResolver();
         $optionsResolver
+            ->setRequired(['field_name'])
             ->setDefaults([
                 'message_translation_key' => null,
                 'http_request' => [],
-                'service_type' => 'sms'
-            ])
-            ->setRequired(['field_name', 'service_type']);
+                'type' => HttpEndpointType::NAME,
+                'save_session' => true
+            ]);
 
         return $optionsResolver;
     }
 }
-

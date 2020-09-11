@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Endpoint;
 
-use EMS\FormBundle\Service\Endpoint\Type\EndpointTypeInterface;
 use Psr\Log\LoggerInterface;
 
 final class EndpointManager
@@ -15,11 +14,12 @@ final class EndpointManager
     private $logger;
     /** @var EndpointInterface[] */
     private $endpoints = [];
-    /** @var EndpointTypeInterface[] */
-    private $endpointTypes = [];
+    /** @var \Traversable|EndpointTypeInterface[] */
+    private $endpointTypes;
 
     /**
-     * @param array<mixed> $envConfig
+     * @param array<mixed>                         $envConfig
+     * @param \Traversable|EndpointTypeInterface[] $endpointTypes
      */
     public function __construct(
         array $envConfig,
@@ -31,21 +31,32 @@ final class EndpointManager
         $this->logger = $logger;
     }
 
-    public function getByFieldName(string $fieldName): ?EndpointInterface
+    public function getEndpointType(EndpointInterface $endpoint): EndpointTypeInterface
     {
-        foreach ($this->getEndpoints() as $endpoint) {
+        foreach ($this->endpointTypes as $endpointType) {
+            if ($endpointType->canExecute($endpoint)) {
+                return $endpointType;
+            }
+        }
+
+        throw new \Exception(sprintf('Endpoint type "%s" not found!', $endpoint->getType()));
+    }
+
+    public function getEndpointByFieldName(string $fieldName): EndpointInterface
+    {
+        foreach ($this->loadEndpoints() as $endpoint) {
             if ($fieldName === $endpoint->getFieldname()) {
                 return $endpoint;
             }
         }
 
-        return null;
+        throw new \Exception(sprintf('No endpoint found for form field %s', $fieldName));
     }
 
     /**
      * @return EndpointInterface[]
      */
-    private function getEndpoints(): array
+    private function loadEndpoints(): array
     {
         if (count($this->endpoints) > 0) {
             return $this->endpoints;
