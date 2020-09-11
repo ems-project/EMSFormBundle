@@ -70,7 +70,7 @@
             <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsRequiredIfValidator" />
         </service>
         <service id="emsf.validator.expression" class="EMS\FormBundle\Components\Constraint\IsExpressionValidator">
-            <argument type="service" id="logger"/>
+            <argument type="service" id="EMS\CommonBundle\Contracts\ExpressionServiceInterface"/>
             <tag name="validator.constraint_validator" alias="EMS\FormBundle\Components\Constraint\IsExpressionValidator" />
         </service>
 

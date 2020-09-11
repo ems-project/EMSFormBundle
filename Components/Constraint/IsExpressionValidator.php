@@ -2,8 +2,7 @@
 
 namespace EMS\FormBundle\Components\Constraint;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use EMS\CommonBundle\Contracts\ExpressionServiceInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -11,17 +10,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class IsExpressionValidator extends ConstraintValidator
 {
-    /** @var LoggerInterface */
-    private $logger;
+    /** @var ExpressionServiceInterface */
+    private $expressionService;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(ExpressionServiceInterface $expressionService)
     {
-        $this->logger = $logger;
+        $this->expressionService = $expressionService;
     }
 
     public function validate($value, Constraint $constraint)
     {
-        
         if (!$constraint instanceof IsExpression) {
             throw new UnexpectedTypeException($constraint, IsExpression::class);
         }
@@ -30,27 +28,18 @@ class IsExpressionValidator extends ConstraintValidator
             return;
         }
         
-        if (!$this->isExpression($constraint->expression)) {
+        if (!$this->evaluate($constraint->expression)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 
-    private function isExpression(string $expression): bool
+    private function evaluate(string $expression): bool
     {
         /** @var FormInterface $form */
         $form = $this->context->getRoot();
-        $values = ['data' => $form->getData()];
-        try {
-            $expressionLanguage = new ExpressionLanguage();
-            $result = $expressionLanguage->evaluate($expression, $values);
-            
-            return is_bool($result) ? $result : false;
-        } catch (\Exception $e) {
-            $this->logger->error('Expression failed: {message}', [
-                'message' => $e->getMessage(),
-                'values' => $values
-            ]);
-            return false;
-        }
+
+        return $this->expressionService->evaluateToBool($expression, [
+            'data' => $form->getData()
+        ]);
     }
 }
