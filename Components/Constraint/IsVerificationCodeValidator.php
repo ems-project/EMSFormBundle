@@ -28,26 +28,22 @@ class IsVerificationCodeValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->verify($value, $constraint)) {
-            $this->context->addViolation($constraint->message, ['{{code}}' => $value]);
-        }
-    }
-
-    /**
-     * @param IsVerificationCode $constraint
-     */
-    private function verify($verificationCode, IsVerificationCode $constraint): bool
-    {
-        $confirmValue = $this->getConfirmValue($constraint);
-
-        if (null === $verificationCode || null === $confirmValue) {
-            return false;
+        if (null === $confirmValue = $this->getConfirmValue($constraint)) {
+            return;
         }
 
         /** @var FormInterface $field */
         $field = $this->context->getObject();
+        $verificationCode = $this->confirmationService->getVerificationCode($field->getName(), $confirmValue);
 
-        return $this->confirmationService->validate($field->getName(), $confirmValue, $verificationCode);
+        if (null === $verificationCode) {
+            $this->context->addViolation($constraint->messageMissing);
+            return;
+        }
+
+        if ($verificationCode !== (string) $value) {
+            $this->context->addViolation($constraint->message, ['{{code}}' => $value]);
+        }
     }
 
     private function getConfirmValue(IsVerificationCode $constraint): ?string

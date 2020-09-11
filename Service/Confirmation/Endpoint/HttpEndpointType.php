@@ -48,15 +48,15 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
         return self::NAME === $endpoint->getType();
     }
 
-    public function verify(EndpointInterface $endpoint, string $confirmValue, string $verificationCode): bool
+    public function getVerificationCode(EndpointInterface $endpoint, string $confirmValue): ?string
     {
         if ($endpoint->saveInSession()) {
-            $expectedCode = $this->session->get($this->getSessionKey($confirmValue), false);
+            $verificationCode = $this->session->get($this->getSessionKey($confirmValue), false);
         } else {
-            $expectedCode = $this->getApiClient()->getFormVerification($confirmValue);
+            $verificationCode = $this->getApiClient()->getFormVerification($confirmValue);
         }
 
-        return $verificationCode === $expectedCode;
+        return is_string($verificationCode) ? $verificationCode : null;
     }
 
     public function createVerificationCode(EndpointInterface $endpoint, string $confirmValue): string

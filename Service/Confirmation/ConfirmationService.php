@@ -36,7 +36,7 @@ final class ConfirmationService
         $this->endpointManager = $endpointManager;
     }
 
-    public function validate(string $fieldName, string $confirmValue, string $verificationCode): bool
+    public function getVerificationCode(string $fieldName, string $confirmValue): ?string
     {
         try {
             $endpoint = $this->endpointManager->getEndpointByFieldName($fieldName);
@@ -44,13 +44,13 @@ final class ConfirmationService
 
             if (!$endpointType instanceof ConfirmationEndpointType) {
                 $this->logger->error('invalid endpoint type');
-                return false;
+                return null;
             }
 
-            return $endpointType->verify($endpoint, $confirmValue, $verificationCode);
+            return $endpointType->getVerificationCode($endpoint, $confirmValue);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            return false;
+            return null;
         }
     }
 
