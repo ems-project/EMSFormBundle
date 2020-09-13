@@ -44,15 +44,15 @@ final class VerificationService
         return $verificationCode;
     }
 
-    public function verify(string $value, string $expectedCode): bool
+    public function getVerificationCode(string $value): ?string
     {
         if ($this->savedInSession) {
-            $verificationCode =  $this->session->get($this->getSessionKey($value), false);
+            $verificationCode = $this->session->get($this->getSessionKey($value), false);
         } else {
             $verificationCode = $this->getApiClient()->getFormVerification($value);
         }
 
-        return $verificationCode === $expectedCode;
+        return is_string($verificationCode) ? $verificationCode : null;
     }
 
     private function getSessionKey(string $value): string
