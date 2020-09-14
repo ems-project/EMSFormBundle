@@ -16,13 +16,16 @@ final class HttpRequest
     private $headers;
     /** @var string */
     private $body;
+    /** @var array */
+    private $options;
 
     public function __construct(array $config)
     {
         $this->method = $config['method'] ?? Request::METHOD_POST;
         $this->url = $config['url'];
         $this->headers = $config['headers'] ?? [];
-        $this->body = $config['body'];
+        $this->body = $config['body'] ?? '';
+        $this->options = $config['options'] ?? [];
     }
 
     public function getMethod(): string
@@ -38,6 +41,11 @@ final class HttpRequest
     public function getHeaders(): array
     {
         return $this->headers;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 
     public function createBody(array $replace): string

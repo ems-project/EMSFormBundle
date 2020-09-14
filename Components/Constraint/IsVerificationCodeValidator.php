@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Components\Constraint;
 
-use EMS\FormBundle\Service\Verification\VerificationService;
+use EMS\FormBundle\Service\Confirmation\ConfirmationService;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class IsVerificationCodeValidator extends ConstraintValidator
 {
-    /** @var VerificationService */
-    private $verificationCodeService;
+    /** @var ConfirmationService */
+    private $confirmationService;
 
-    public function __construct(VerificationService $verificationCodeService)
+    public function __construct(ConfirmationService $confirmationService)
     {
-        $this->verificationCodeService = $verificationCodeService;
+        $this->confirmationService = $confirmationService;
     }
 
     /**
@@ -28,11 +28,13 @@ class IsVerificationCodeValidator extends ConstraintValidator
             return;
         }
 
-        if (null === $verificationValue = $this->getVerificationValue($constraint)) {
+        if (null === $confirmValue = $this->getConfirmValue($constraint)) {
             return;
         }
 
-        $verificationCode = $this->verificationCodeService->getVerificationCode($verificationValue);
+        /** @var FormInterface $field */
+        $field = $this->context->getObject();
+        $verificationCode = $this->confirmationService->getVerificationCode($field->getName(), $confirmValue);
 
         if (null === $verificationCode) {
             $this->context->addViolation($constraint->messageMissing);
@@ -44,7 +46,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
         }
     }
 
-    private function getVerificationValue(IsVerificationCode $constraint): ?string
+    private function getConfirmValue(IsVerificationCode $constraint): ?string
     {
         /** @var FormInterface $form */
         $form = $this->context->getRoot();
@@ -59,6 +61,23 @@ class IsVerificationCodeValidator extends ConstraintValidator
             return null;
         }
 
-        return $data[$constraint->field] ?? null;
+        return $this->getFieldData($data, $constraint->field);
+    }
+
+    private function getFieldData(array $data, string $field): ?string
+    {
+        foreach ($data as $key => $value) {
+            if ($key === $field) {
+                return $value;
+            }
+
+            if (is_array($value)) {
+                if (null !== $subValue = $this->getFieldData($value, $field)) {
+                    return $subValue;
+                }
+            }
+        }
+
+        return null;
     }
 }

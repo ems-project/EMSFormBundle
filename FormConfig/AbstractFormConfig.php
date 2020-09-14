@@ -40,7 +40,21 @@ abstract class AbstractFormConfig
 
     public function getElementByName(string $name): ?ElementInterface
     {
-        return $this->elements[$name] ?? null;
+        foreach ($this->elements as $elementName => $element) {
+            if ($elementName === $name) {
+                return $element;
+            }
+
+            if ($element instanceof SubFormConfig) {
+                $subElement = $element->getElementByName($name);
+
+                if ($subElement instanceof ElementInterface) {
+                    return $subElement;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
