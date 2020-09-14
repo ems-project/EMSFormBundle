@@ -7,15 +7,11 @@ namespace EMS\FormBundle\Service\Confirmation;
 use EMS\FormBundle\FormConfig\ElementInterface;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\FormConfigFactory;
-use EMS\FormBundle\Service\Endpoint\Endpoint;
-use EMS\FormBundle\Service\Endpoint\EndpointCollection;
-use EMS\FormBundle\Service\Endpoint\HttpRequest;
-use EMS\FormBundle\Service\Verification\VerificationService;
+use EMS\FormBundle\Service\Confirmation\Endpoint\ConfirmationEndpointType;
+use EMS\FormBundle\Service\Endpoint\EndpointManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConfirmationService
 {
@@ -23,98 +19,65 @@ final class ConfirmationService
     private $configFactory;
     /** @var CsrfTokenManager */
     private $csrfTokenManager;
-    /** @var HttpClientInterface */
-    private $httpClient;
     /** @var LoggerInterface */
     private $logger;
-    /** @var VerificationService */
-    private $verificationService;
-    /** @var EndpointCollection */
-    private $endpoints;
-    /** @var TranslatorInterface */
-    private $translator;
+    /** @var EndpointManager */
+    private $endpointManager;
 
     public function __construct(
         FormConfigFactory $configFactory,
         CsrfTokenManager $csrfTokenManager,
-        HttpClientInterface $httpClient,
         LoggerInterface $logger,
-        VerificationService $verificationService,
-        EndpointCollection $endpoints,
-        TranslatorInterface $translator
+        EndpointManager $endpointManager
     ) {
         $this->configFactory = $configFactory;
         $this->csrfTokenManager = $csrfTokenManager;
-        $this->httpClient = $httpClient;
         $this->logger = $logger;
-        $this->verificationService = $verificationService;
-        $this->endpoints = $endpoints;
-        $this->translator = $translator;
+        $this->endpointManager = $endpointManager;
     }
 
-    public function send(ConfirmationRequest $confirmationRequest, string $ouuid): bool
+    public function getVerificationCode(string $fieldName, string $confirmValue): ?string
     {
         try {
-            $formConfig = $this->getFormConfig($ouuid, $confirmationRequest->getLocale());
-            $codeFieldElement = $this->getCodeFieldElement($formConfig, $confirmationRequest);
-            $endpoint = $this->getEndPoint($codeFieldElement->getName());
+            $endpoint = $this->endpointManager->getEndpointByFieldName($fieldName);
+            $endpointType = $this->endpointManager->getEndpointType($endpoint);
 
-            $verificationCode = $this->verificationService->create($confirmationRequest->getValue());
-
-            if (null === $verificationCode) {
-                throw new \Exception('Failed getting verification code');
+            if (!$endpointType instanceof ConfirmationEndpointType) {
+                $this->logger->error('invalid endpoint type');
+                return null;
             }
 
-            $replaceBody = ['%value%' => $confirmationRequest->getValue(), '%verification_code%' => $verificationCode];
+            return $endpointType->getVerificationCode($endpoint, $confirmValue);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            return null;
+        }
+    }
 
-            if (null !== $messageTranslationKey = $endpoint->getMessageTranslationKey()) {
-                $messageTranslation = $this->translator->trans(
-                    $messageTranslationKey,
-                    $replaceBody,
-                    $formConfig->getTranslationDomain()
-                );
+    /**
+     * @return mixed
+     */
+    public function send(ConfirmationRequest $confirmationRequest, string $ouuid)
+    {
+        try {
+            $formConfig = $this->configFactory->create($ouuid, $confirmationRequest->getLocale());
+            $codeFieldElement = $this->getConfirmationField($formConfig, $confirmationRequest);
 
-                $replaceBody = array_merge(['%message_translation%' => $messageTranslation], $replaceBody);
+            $endpoint = $this->endpointManager->getEndpointByFieldName($codeFieldElement->getName());
+            $endpointType = $this->endpointManager->getEndpointType($endpoint);
+
+            if (!$endpointType instanceof ConfirmationEndpointType) {
+                throw new \Exception('invalid endpoint type');
             }
 
-            return $this->sendSms($endpoint->getHttpRequest(), $replaceBody);
+            return $endpointType->confirm($endpoint, $formConfig, $confirmationRequest->getValue());
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             return false;
         }
     }
 
-    /**
-     * @return array{message: string, to: string}
-     */
-    public function getMessage(ConfirmationRequest $confirmationRequest, string $ouuid): ?array
-    {
-        $endPoint = $this->getEndPoint($confirmationRequest->getCodeField());
-
-        return [
-            'value' => $confirmationRequest->getValue(),
-            'verification_code' => $this->verificationService->create($confirmationRequest->getValue()),
-            'field_name' => $endPoint->getFieldName(),
-        ];
-    }
-
-    private function getEndPoint(string $fieldName): Endpoint
-    {
-        $endpoint = $this->endpoints->getByFieldName($fieldName);
-
-        if (null === $endpoint) {
-            throw new \Exception(sprintf('No valid endpoint found for form field %s', $fieldName));
-        }
-
-        return $endpoint;
-    }
-
-    private function getFormConfig(string $ouuid, string $locale): FormConfig
-    {
-        return $this->configFactory->create($ouuid, $locale);
-    }
-
-    private function getCodeFieldElement(FormConfig $formConfig, ConfirmationRequest $confirmationRequest): ElementInterface
+    private function getConfirmationField(FormConfig $formConfig, ConfirmationRequest $confirmationRequest): ElementInterface
     {
         $codeFieldElement = $formConfig->getElementByName($confirmationRequest->getCodeField());
 
@@ -134,24 +97,5 @@ final class ConfirmationService
         if (!$this->csrfTokenManager->isTokenValid($csrfToken)) {
             throw new \Exception('invalid csrf token!');
         }
-    }
-
-    /**
-     * @param array<string, string> $replaceBody
-     */
-    private function sendSms(HttpRequest $httpRequest, array $replaceBody): bool
-    {
-        $response = $this->httpClient->request($httpRequest->getMethod(), $httpRequest->getUrl(), [
-            'headers' => $httpRequest->getHeaders(),
-            'body' => $httpRequest->createBody($replaceBody),
-        ]);
-
-        $result = json_decode($response->getContent(), true);
-
-        if (!is_array($result) || !isset($result['ResultCode']) || 0 !== $result['ResultCode']) {
-            throw new \Exception(sprintf('Invalid endpoint response %s', $response->getContent()));
-        }
-
-        return true;
     }
 }

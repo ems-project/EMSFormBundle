@@ -53,7 +53,5 @@ export class emsFormDebug
             replaceFormFields(data.response, Object.values(encoding.jsonParse(data.dynamicFields)));
             addDynamicFields(emsFormInstance.elementForm.querySelector('form'), emsFormInstance);
         }
-
-        addEventListeners(emsFormInstance.elementForm.querySelector('form'), emsFormInstance);
     }
 }

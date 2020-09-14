@@ -32,10 +32,20 @@ final class ConfirmationController extends AbstractController
 
     public function postSend(Request $request, string $ouuid): Response
     {
+        return $this->send($request, $ouuid);
+    }
+
+    public function postDebug(Request $request, string $ouuid): Response
+    {
+        return $this->send($request, $ouuid, true);
+    }
+
+    private function send(Request $request, string $ouuid, bool $debug = false): Response
+    {
         $response = ['instruction' => 'send-confirmation', 'response' => false, 'ouuid' => $ouuid];
 
         try {
-            if (!$this->guard->check($request)) {
+            if (!$debug && !$this->guard->check($request)) {
                 throw new AccessDeniedHttpException('access denied');
             }
 
@@ -46,12 +56,5 @@ final class ConfirmationController extends AbstractController
             $this->logger->error($e->getMessage(), ['exception' => $e]);
             return new JsonResponse($response);
         }
-    }
-
-    public function postDebug(Request $request, string $ouuid): Response
-    {
-        $message = $this->confirmationService->getMessage(new ConfirmationRequest($request), $ouuid);
-
-        return new JsonResponse(['message' => $message, 'ouuid' => $ouuid]);
     }
 }

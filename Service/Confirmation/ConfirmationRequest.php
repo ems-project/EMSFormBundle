@@ -31,7 +31,7 @@ final class ConfirmationRequest
         $this->codeField = $data['code-field'];
         $this->locale = $request->getLocale();
         $this->token = $data['token'];
-        $this->value = $data['value'];
+        $this->value = $data['value'] ?? '';
     }
 
     public function getCodeField(): string
@@ -57,7 +57,9 @@ final class ConfirmationRequest
     private function resolveJson(array $json): array
     {
         $jsonResolver = new OptionsResolver();
-        $jsonResolver->setRequired(['code-field', 'token', 'value']);
+        $jsonResolver
+            ->setDefaults(['value' => null])
+            ->setRequired(['code-field', 'token']);
 
         return $jsonResolver->resolve($json);
     }
