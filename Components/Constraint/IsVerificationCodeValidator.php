@@ -61,6 +61,23 @@ class IsVerificationCodeValidator extends ConstraintValidator
             return null;
         }
 
-        return $data[$constraint->field] ?? null;
+        return $this->getFieldData($data, $constraint->field);
+    }
+
+    private function getFieldData(array $data, string $field): ?string
+    {
+        foreach ($data as $key => $value) {
+            if ($key === $field) {
+                return $value;
+            }
+
+            if (is_array($value)) {
+                if (null !== $subValue = $this->getFieldData($value, $field)) {
+                    return $subValue;
+                }
+            }
+        }
+
+        return null;
     }
 }

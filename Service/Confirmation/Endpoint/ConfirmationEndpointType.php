@@ -12,8 +12,10 @@ abstract class ConfirmationEndpointType implements EndpointTypeInterface
 {
     /**
      * Called for sending a confirmation code
+     *
+     * @return mixed
      */
-    abstract public function confirm(EndpointInterface $endpoint, FormConfig $formConfig, string $confirmValue): bool;
+    abstract public function confirm(EndpointInterface $endpoint, FormConfig $formConfig, string $confirmValue);
 
     /**
      * Get the verification code, for validating the form
