@@ -42,18 +42,32 @@ final class ConfirmationController extends AbstractController
 
     private function send(Request $request, string $ouuid, bool $debug = false): Response
     {
-        $response = ['instruction' => 'send-confirmation', 'response' => false, 'ouuid' => $ouuid];
+        $response = [
+            'instruction' => 'send-confirmation',
+            'response' => false,
+            'ouuid' => $ouuid,
+            'codeField' => 'unknown',
+            'emsStatus' => 200
+        ];
 
         try {
             if (!$debug && !$this->guard->check($request)) {
+                $response['emsStatus'] = 403;
                 throw new AccessDeniedHttpException('access denied');
             }
 
-            $response['response'] = $this->confirmationService->send(new ConfirmationRequest($request), $ouuid);
+            $confirmationRequest = new ConfirmationRequest($request);
+            $response['codeField'] = $confirmationRequest->getCodeField();
+            $response['response'] = $this->confirmationService->send($confirmationRequest, $ouuid);
 
             return new JsonResponse($response);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
+
+            if (200 === $response['emsStatus']) {
+                $response['emsStatus'] = 500;
+            }
+
             return new JsonResponse($response);
         }
     }
