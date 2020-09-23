@@ -105,7 +105,7 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
         $verificationCode =  $this->session->get($this->getSessionKey($confirmValue), null);
 
         if ($verificationCode === null) {
-            $verificationCode = \sprintf("%06d", \mt_rand(1, 999999));
+            $verificationCode = \sprintf("%d%05d", \mt_rand(1, 9), \mt_rand(0, 99999));
             $this->session->set($this->getSessionKey($confirmValue), $verificationCode);
         }
 
