@@ -46,13 +46,13 @@ final class FormDataFile
         ];
     }
 
-    private function getFilename(UploadedFile $uploadedFile, string $fieldName)
+    private function getFilename(UploadedFile $uploadedFile, string $fieldName): string
     {
         $filename = $uploadedFile->getClientOriginalName();
         $extension = MimeTypes::getDefault()->getExtensions($uploadedFile->getClientMimeType())[0] ?? null;
         if ($extension !== null && !RequestRuntime::endsWith($filename, $extension)) {
             $filename .= \sprintf('.%s', $extension);
         }
-        return sprintf('%s.%s', \uniqid(sprintf('%s.', $fieldName), false), $filename);
+        return \sprintf('%s.%s', \uniqid(sprintf('%s.', $fieldName), false), $filename);
     }
 }
