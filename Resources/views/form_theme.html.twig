@@ -17,14 +17,12 @@
     {% endfor %}
 {%- endblock ems_nested_choice_row %}
 
-{%- block ems_file_widget -%}
+
+{%- block ems_file_label -%}
     {%- set browseLabel = "#{name}_browse"|trans({}, ems_translation_domain) -%}
     {%- if "#{name}_browse" == browseLabel -%}
         {%- set browseLabel = "ems_file_browse"|trans({}, ems_translation_domain) -%}
     {%- endif -%}
-    <{{ element|default('div') }} class="custom-file">
-    {%- set type = type|default('file') -%}
-    {{- block('form_widget_simple') -}}
     {%- set label_attr = label_attr|merge({
         'class': ((label_attr.class|default('') ~ ' custom-file-label')|trim),
         'data-browse': browseLabel
@@ -32,8 +30,16 @@
     <label for="{{ form.vars.id }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
         {%- if attr.placeholder is defined and attr.placeholder is not none -%}
             {{- attr.placeholder -}}
+        {%- elseif form.vars.label|default(false) -%}
+            {{- form.vars.label -}}
         {%- endif -%}
     </label>
+{%- endblock -%}
+
+{%- block ems_file_widget -%}
+    <{{ element|default('div') }} class="custom-file">
+    {%- set type = type|default('file') -%}
+    {{- block('form_widget_simple') -}}
     </{{ element|default('div') }}>
 {%- endblock -%}
 
