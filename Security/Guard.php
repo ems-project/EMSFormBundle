@@ -44,13 +44,20 @@ class Guard
             return;
         }
 
+        $formData = $request->get('form', []);
+        $submittedToken = $formData['_token'] ?? null;
+
+        if (null === $submittedToken || !is_string($submittedToken)) {
+            throw new \Exception('guard check validation requires a non empty string csrf token in the submitted formData _token field');
+        }
+
         $header = $request->headers->get('x-hashcash');
 
         if (null === $header || !is_string($header)) {
             throw new \Exception('x-hashcash header missing');
         }
 
-        $hashCash = new HashcashToken($header);
+        $hashCash = new HashcashToken($header, $submittedToken);
 
         if (!$hashCash->isValid($this->difficulty)) {
             throw new \Exception('invalid hashcash token');
