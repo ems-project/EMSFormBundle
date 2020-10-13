@@ -10,18 +10,25 @@ class HashcashToken
     private $nonce;
     /** @var string */
     private $data;
+    /** @var string */
+    private $token;
 
-    public function __construct(string $header)
+    public function __construct(string $header, string $token)
     {
         list($hash, $nonce, $data) = explode('|', $header);
 
         $this->hash = $hash;
         $this->nonce = $nonce;
         $this->data = $data;
+        $this->token = $token;
     }
 
     public function isValid(int $difficulty): bool
     {
+        if ($this->data !== $this->token) {
+            return false;
+        }
+
         if ('0' !== substr($this->hash, 0, 1)) {
             return false;
         }
