@@ -33,7 +33,18 @@ class Client
 
         foreach ($formConfig->getSubmissions() as $submissionConfig) {
             $handleRequest = new HandleRequest($form, $formConfig, $responseCollector, $submissionConfig);
-            $this->handle($handleRequest);
+            $handler = $this->getHandler($handleRequest);
+
+            if (null === $handler) {
+                continue;
+            }
+
+            $handleResponse = $handler->handle($handleRequest);
+            $handleRequest->addResponse($handleResponse);
+
+            if ($handleResponse instanceof AbortHandleResponse) {
+                break;
+            }
         }
 
         return [
@@ -43,16 +54,15 @@ class Client
         ];
     }
 
-    private function handle(HandleRequestInterface $handleRequest): void
+    private function getHandler(HandleRequestInterface $handleRequest): ?AbstractHandler
     {
         foreach ($this->handlers as $handler) {
-            if (! $handler instanceof AbstractHandler) {
-                continue;
-            }
-            if ($handler->canHandle($handleRequest->getClass())) {
-                $handleRequest->addResponse($handler->handle($handleRequest));
+            if ($handler instanceof AbstractHandler && $handler->canHandle($handleRequest->getClass())) {
+                return $handler;
             }
         }
+
+        return null;
     }
 
     private function loadSubmissions(FormConfig $config): void
