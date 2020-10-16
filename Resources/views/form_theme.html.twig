@@ -17,31 +17,17 @@
     {% endfor %}
 {%- endblock ems_nested_choice_row %}
 
-{%- block ems_file_label -%}
+{%- block ems_file_row -%}
     {%- set browseLabel = "#{name}_browse"|trans({}, ems_translation_domain) -%}
     {%- if "#{name}_browse" == browseLabel -%}
         {%- set browseLabel = "ems_file_browse"|trans({}, ems_translation_domain) -%}
     {%- endif -%}
-    {%- set label_attr = label_attr|merge({
+    {%- set label_attr = {
         'data-browse': browseLabel,
         'placeholder': label_attr.placeholder|default(form.vars.label|default(none))
-    }) -%}
-    {{- block('form_label') -}}
+    } -%}
+    {{- form_row(form, {label_attr: label_attr}) -}}
 {%- endblock -%}
-
-{%- block ems_file_widget -%}
-    {%- set browseLabel = "#{name}_browse"|trans({}, ems_translation_domain) -%}
-    {%- if "#{name}_browse" == browseLabel -%}
-        {%- set browseLabel = "ems_file_browse"|trans({}, ems_translation_domain) -%}
-    {%- endif -%}
-    {%- set label_attr = label_attr|merge({
-        'data-browse': browseLabel,
-        'placeholder': label_attr.placeholder|default(form.vars.label|default(none))
-    }) -%}
-    {{- block('form_widget') -}}
-{%- endblock -%}
-
-
 
 {%- block number_widget -%}
     {%- set type = type|default('text') -%}
