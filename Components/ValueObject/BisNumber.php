@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\ValueObject;
 
-class BisNumber extends RrNumber
+final class BisNumber extends RrNumber
 {
     /**
-     * BIS-nummer
+     * BIS-nummer.
      *
      * Dit nummer wordt uitgereikt door de KSZ en bestaat uit 11 cijfers.
      * Het heeft dezelfde opbouw als een rijksregisternummer maar de geboortemaand wordt vermeerderd met 40 indien het geslacht
@@ -19,7 +21,7 @@ class BisNumber extends RrNumber
         try {
             parent::__construct($number);
         } catch (\Exception $exception) {
-            throw new \Exception(sprintf('invalid bis data: %s', $number));
+            throw new \Exception(\sprintf('invalid bis data: %s', $number));
         }
     }
 
@@ -29,13 +31,13 @@ class BisNumber extends RrNumber
         $baseModifier = 2000000;
 
         //augment once for person with unknown sex
-        $this->base = sprintf('%d', ($baseInt + $baseModifier));
+        $this->base = \sprintf('%d', ($baseInt + $baseModifier));
         if (parent::validate()) {
             return true;
         }
 
         //augment twice for person with known sex
-        $this->base = sprintf('%d', ($baseInt + $baseModifier + $baseModifier));
+        $this->base = \sprintf('%d', ($baseInt + $baseModifier + $baseModifier));
         if (parent::validate()) {
             return true;
         }

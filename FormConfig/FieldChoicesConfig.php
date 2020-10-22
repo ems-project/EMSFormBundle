@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\FormConfig;
 
-class FieldChoicesConfig
+final class FieldChoicesConfig
 {
     /** @var string */
     private $id;
@@ -24,7 +26,7 @@ class FieldChoicesConfig
         }
 
         if (\count($values) !== \count($labels)) {
-            throw new \Exception(sprintf('Invalid choice list: %d values != %d labels!', \count($values), \count($labels)));
+            throw new \Exception(\sprintf('Invalid choice list: %d values != %d labels!', \count($values), \count($labels)));
         }
 
         $this->id = $id;
@@ -44,6 +46,7 @@ class FieldChoicesConfig
         $choice = \array_pop($choices);
 
         $list = $this->combineValuesAndLabels($this->values, $this->labels, $choices);
+
         return \array_flip($list)[$choice] ?? '';
     }
 
@@ -87,6 +90,7 @@ class FieldChoicesConfig
                 );
             }
         }
+
         return $level;
     }
 
@@ -97,6 +101,7 @@ class FieldChoicesConfig
                 if (\is_array($element)) {
                     return \array_key_first($element);
                 }
+
                 return $element;
             },
             $elements
@@ -107,20 +112,20 @@ class FieldChoicesConfig
     {
         foreach ($choices as $choice) {
             $idx = \array_search($choice, $this->getTopLevel($values));
-            if ($idx === false) {
+            if (false === $idx) {
                 continue;
             }
             $values = $values[$idx];
             $labels = $labels[$idx];
 
-            if (!is_array($values) || !is_array($labels)) {
+            if (!\is_array($values) || !\is_array($labels)) {
                 return [];
             }
 
             $values = \reset($values);
             $labels = \reset($labels);
 
-            if ($values === false || $labels === false) {
+            if (false === $values || false === $labels) {
                 return [];
             }
         }
@@ -135,32 +140,32 @@ class FieldChoicesConfig
      */
     private function sort(array $list): array
     {
-        if ($list == null) {
+        if (null == $list) {
             return $list;
         }
 
         $firstKey = \array_key_first($list);
-        /** @var null|string $firstValue */
+        /** @var string|null $firstValue */
         $firstValue = $list[$firstKey] ?? null;
 
-        if ($firstValue === null || $firstValue === '') {
+        if (null === $firstValue || '' === $firstValue) {
             \array_shift($list); //do not sort placeholder
         }
 
-        if ($this->sort === 'label_alpha') {
+        if ('label_alpha' === $this->sort) {
             $collator = new \Collator('en');
-            uksort($list, function ($a, $b) use ($collator) {
+            \uksort($list, function ($a, $b) use ($collator) {
                 return $collator->compare($a, $b);
             });
         }
-        if ($this->sort === 'value_alpha') {
+        if ('value_alpha' === $this->sort) {
             $collator = new \Collator('en');
-            uasort($list, function ($a, $b) use ($collator) {
+            \uasort($list, function ($a, $b) use ($collator) {
                 return $collator->compare($a, $b);
             });
         }
 
-        if ($firstValue === null ||  $firstValue === '') {
+        if (null === $firstValue || '' === $firstValue) {
             $list = \array_merge([$firstKey => $firstValue], $list); // merge placeholder back
         }
 

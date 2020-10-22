@@ -44,12 +44,14 @@ final class ConfirmationService
 
             if (!$endpointType instanceof ConfirmationEndpointType) {
                 $this->logger->error('invalid endpoint type');
+
                 return null;
             }
 
             return $endpointType->getVerificationCode($endpoint, $confirmValue);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+
             return null;
         }
     }
@@ -73,6 +75,7 @@ final class ConfirmationService
             return $endpointType->confirm($endpoint, $formConfig, $confirmationRequest->getValue());
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+
             return false;
         }
     }
@@ -82,7 +85,7 @@ final class ConfirmationService
         $codeFieldElement = $formConfig->getElementByName($confirmationRequest->getCodeField());
 
         if (null === $codeFieldElement) {
-            throw new \Exception(sprintf('Code field %s not found in form', $codeFieldElement));
+            throw new \Exception(\sprintf('Code field %s not found in form', $codeFieldElement));
         }
 
         $this->csrfValidation($codeFieldElement, $confirmationRequest->getToken());

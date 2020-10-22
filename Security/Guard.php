@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Security;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class Guard
+final class Guard
 {
     /** @var LoggerInterface */
     private $logger;
@@ -31,9 +33,11 @@ class Guard
 
         try {
             $this->validateHashcash($request);
+
             return true;
         } catch (\Exception $e) {
             $this->logger->error('guard check valid', [$e]);
+
             return false;
         }
     }
@@ -47,13 +51,13 @@ class Guard
         $formData = $request->get('form', []);
         $submittedToken = $formData['_token'] ?? null;
 
-        if (! \is_string($submittedToken)) {
+        if (!\is_string($submittedToken)) {
             throw new \Exception('guard check validation requires a non empty string csrf token in the submitted formData _token field');
         }
 
         $header = $request->headers->get('x-hashcash');
 
-        if (! \is_string($header)) {
+        if (!\is_string($header)) {
             throw new \Exception('x-hashcash header missing');
         }
 

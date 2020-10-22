@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\FormConfig;
 
 use EMS\ClientHelperBundle\Helper\Twig\TwigLoader;
 
-class FormConfig extends AbstractFormConfig
+final class FormConfig extends AbstractFormConfig
 {
     /** @var array */
     private $domains = [];
@@ -30,7 +32,7 @@ class FormConfig extends AbstractFormConfig
 
     public function addTheme(string $theme): void
     {
-        array_unshift($this->themes, $theme);
+        \array_unshift($this->themes, $theme);
     }
 
     public function getDomains(): array
@@ -60,6 +62,6 @@ class FormConfig extends AbstractFormConfig
 
     public function setTemplate(string $template): void
     {
-        $this->template = TwigLoader::PREFIX . '/' . $template;
+        $this->template = TwigLoader::PREFIX.'/'.$template;
     }
 }

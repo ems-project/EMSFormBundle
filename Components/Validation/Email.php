@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Email as EmailValidation;
 
-class Email extends AbstractValidation
+final class Email extends AbstractValidation
 {
     public function getHtml5AttributeName(): string
     {

@@ -9,7 +9,7 @@ use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
 use Symfony\Component\Form\FormInterface;
 
-class Client
+final class Client
 {
     /** @var ClientRequest */
     private $clientRequest;

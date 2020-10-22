@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class File extends AbstractField
+final class File extends AbstractField
 {
     public function getHtmlClass(): string
     {

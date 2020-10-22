@@ -22,7 +22,7 @@ final class FormData
         $this->formConfig = $formConfig;
 
         $formData = $form->getData();
-        $this->raw = is_array($formData) ? $formData : [];
+        $this->raw = \is_array($formData) ? $formData : [];
     }
 
     public function raw(): array
@@ -37,11 +37,11 @@ final class FormData
         foreach ($this->raw as $formField => $value) {
             $element = $this->formConfig->getElementByName($formField);
 
-            if (null === $element || !in_array($element->getClassName(), [MultipleFile::class, File::class])) {
+            if (null === $element || !\in_array($element->getClassName(), [MultipleFile::class, File::class])) {
                 continue;
             }
 
-            $uploadedFiles = is_array($value) ? $value : [$value];
+            $uploadedFiles = \is_array($value) ? $value : [$value];
 
             foreach ($uploadedFiles as $uploadedFile) {
                 if ($uploadedFile instanceof UploadedFile) {

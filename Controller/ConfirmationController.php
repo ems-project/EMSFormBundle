@@ -47,7 +47,7 @@ final class ConfirmationController extends AbstractController
             'response' => false,
             'ouuid' => $ouuid,
             'codeField' => 'unknown',
-            'emsStatus' => 200
+            'emsStatus' => 200,
         ];
 
         try {

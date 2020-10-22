@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
@@ -8,12 +10,12 @@ use EMS\FormBundle\Security\Guard;
 use EMS\FormBundle\Submission\Client;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Twig\Environment;
 
-class FormController extends AbstractFormController
+final class FormController extends AbstractFormController
 {
     /** @var FormFactory */
     private $formFactory;

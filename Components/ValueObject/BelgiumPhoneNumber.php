@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\ValueObject;
 
-class BelgiumPhoneNumber
+final class BelgiumPhoneNumber
 {
     /** @var NumberValue */
     private $number;
@@ -16,7 +18,7 @@ class BelgiumPhoneNumber
         $this->number = new NumberValue($phone);
 
         if (!$this->validate()) {
-            throw new \Exception(sprintf('invalid phone data: %s', $phone));
+            throw new \Exception(\sprintf('invalid phone data: %s', $phone));
         }
     }
 
@@ -33,18 +35,18 @@ class BelgiumPhoneNumber
 
     private function validateNumberOfDigit(string $numberType): bool
     {
-        $numberOfDigits = strlen($this->number->getDigits());
+        $numberOfDigits = \strlen($this->number->getDigits());
 
-        if ($numberType === self::INTERNATIONAL_ZEROS) {
-            return ($numberOfDigits === 13) || ($numberOfDigits === 12);
+        if (self::INTERNATIONAL_ZEROS === $numberType) {
+            return (13 === $numberOfDigits) || (12 === $numberOfDigits);
         }
 
-        if ($numberType === self::INTERNATIONAL_PLUS) {
-            return ($numberOfDigits === 11) || ($numberOfDigits === 10);
+        if (self::INTERNATIONAL_PLUS === $numberType) {
+            return (11 === $numberOfDigits) || (10 === $numberOfDigits);
         }
 
-        if ($numberType === self::LOCAL) {
-            return ($numberOfDigits === 10) || ($numberOfDigits === 9);
+        if (self::LOCAL === $numberType) {
+            return (10 === $numberOfDigits) || (9 === $numberOfDigits);
         }
 
         return false;
@@ -52,15 +54,15 @@ class BelgiumPhoneNumber
 
     private function validateCountryCode(string $numberType)
     {
-        if ($numberType === self::INTERNATIONAL_ZEROS) {
-            return strpos($this->transform(), '32') === 2;
+        if (self::INTERNATIONAL_ZEROS === $numberType) {
+            return 2 === \strpos($this->transform(), '32');
         }
 
-        if ($numberType === self::INTERNATIONAL_PLUS) {
-            return strpos($this->transform(), '32') === 1;
+        if (self::INTERNATIONAL_PLUS === $numberType) {
+            return 1 === \strpos($this->transform(), '32');
         }
 
-        if ($numberType === self::LOCAL) {
+        if (self::LOCAL === $numberType) {
             return true;
         }
 
@@ -69,16 +71,16 @@ class BelgiumPhoneNumber
 
     private function validateLongDistanceCode(string $numberType)
     {
-        if ($numberType === self::INTERNATIONAL_ZEROS) {
-            return strpos($this->transform(), '0', 2) !== 4;
+        if (self::INTERNATIONAL_ZEROS === $numberType) {
+            return 4 !== \strpos($this->transform(), '0', 2);
         }
 
-        if ($numberType === self::INTERNATIONAL_PLUS) {
-            return strpos($this->transform(), '0') !== 3;
+        if (self::INTERNATIONAL_PLUS === $numberType) {
+            return 3 !== \strpos($this->transform(), '0');
         }
 
-        if ($numberType === self::LOCAL) {
-            return strpos($this->transform(), '0') === 0;
+        if (self::LOCAL === $numberType) {
+            return 0 === \strpos($this->transform(), '0');
         }
 
         return false;
@@ -86,21 +88,21 @@ class BelgiumPhoneNumber
 
     private function getNumberType(): string
     {
-        if (strpos($this->transform(), '+') === 0) {
+        if (0 === \strpos($this->transform(), '+')) {
             return self::INTERNATIONAL_PLUS;
         }
 
-        if (strpos($this->transform(), '00') === 0) {
+        if (0 === \strpos($this->transform(), '00')) {
             return self::INTERNATIONAL_ZEROS;
         }
 
         return self::LOCAL;
     }
-    
+
     public function transform(): string
     {
-        if (strpos($this->number->getInput(), '+') === 0) {
-            return '+' .  $this->number->getDigits();
+        if (0 === \strpos($this->number->getInput(), '+')) {
+            return '+'.$this->number->getDigits();
         }
 
         return $this->number->getDigits();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\Form\SendConfirmationType;
@@ -8,7 +10,7 @@ use EMS\FormBundle\Components\Validation\VerificationCode;
 /**
  * @deprecated SendConfirmation will be removed, use numberType or HiddenType with VerificationCode validator
  */
-class SendConfirmation extends AbstractField
+final class SendConfirmation extends AbstractField
 {
     public function getHtmlClass(): string
     {

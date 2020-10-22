@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\FormConfig;
 
 use EMS\ClientHelperBundle\Helper\Cache\CacheHelper;
@@ -8,10 +10,9 @@ use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\Document;
 use EMS\CommonBundle\Common\EMSLink;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\CacheItem;
 
-class FormConfigFactory
+final class FormConfigFactory
 {
     /** @var ClientRequest */
     private $client;
@@ -37,7 +38,7 @@ class FormConfigFactory
     public function create(string $ouuid, string $locale): FormConfig
     {
         $lastChangeDate = $this->getLastChangeDate();
-        $cacheKey = $this->client->getCacheKey(sprintf('formconfig_%s_%s_', $ouuid, $locale));
+        $cacheKey = $this->client->getCacheKey(\sprintf('formconfig_%s_%s_', $ouuid, $locale));
 
         /** @var CacheItem $cacheItem */
         $cacheItem = $this->cacheHelper->get($cacheKey);
@@ -58,11 +59,11 @@ class FormConfigFactory
 
     private function getLastChangeDate(): \DateTime
     {
-        $types = array_values(array_filter($this->emsConfig, function ($k) {
-            return substr($k, 0, 4) === "type";
+        $types = \array_values(\array_filter($this->emsConfig, function ($k) {
+            return 'type' === \substr($k, 0, 4);
         }, ARRAY_FILTER_USE_KEY));
 
-        return $this->client->getLastChangeDate(implode(',', $types));
+        return $this->client->getLastChangeDate(\implode(',', $types));
     }
 
     private function build(string $ouuid, string $locale): FormConfig
@@ -102,7 +103,7 @@ class FormConfigFactory
 
     private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
     {
-        $choices = $this->getDocument($emsLink, ['values', 'labels_' . $locale, 'choice_sort']);
+        $choices = $this->getDocument($emsLink, ['values', 'labels_'.$locale, 'choice_sort']);
 
         $decoder = function (string $input) {
             return \json_decode($input, true);
@@ -112,7 +113,7 @@ class FormConfigFactory
         $fieldChoicesConfig = new FieldChoicesConfig(
             $choices->getOuuid(),
             $decoder($source['values']),
-            $decoder($source['labels_' . $locale])
+            $decoder($source['labels_'.$locale])
         );
 
         if (isset($source['choice_sort'])) {
@@ -124,7 +125,7 @@ class FormConfigFactory
 
     private function addFieldValidations(FieldConfig $fieldConfig, array $typeValidations = [], array $fieldValidations = []): void
     {
-        $allValidations = array_merge($typeValidations, $fieldValidations);
+        $allValidations = \array_merge($typeValidations, $fieldValidations);
 
         foreach ($allValidations as $v) {
             try {
@@ -155,7 +156,7 @@ class FormConfigFactory
             case $this->emsConfig['type-form-field']:
                 return $this->createFieldConfig($element, $locale, $config);
             case $this->emsConfig['type-form-markup']:
-                return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_' . $locale]);
+                return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
             case $this->emsConfig['type-form-subform']:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
@@ -189,11 +190,11 @@ class FormConfigFactory
         if (isset($source['default'])) {
             $fieldConfig->setDefaultValue($source['default']);
         }
-        if (isset($source['label_' . $locale])) {
-            $fieldConfig->setLabel($source['label_' . $locale]);
+        if (isset($source['label_'.$locale])) {
+            $fieldConfig->setLabel($source['label_'.$locale]);
         }
-        if (isset($source['help_' . $locale])) {
-            $fieldConfig->setHelp($source['help_' . $locale]);
+        if (isset($source['help_'.$locale])) {
+            $fieldConfig->setHelp($source['help_'.$locale]);
         }
         if (isset($fieldType['class'])) {
             $fieldConfig->addClass($fieldType['class']);
@@ -210,7 +211,7 @@ class FormConfigFactory
             $locale,
             $translationDomain,
             $source['name'],
-            $source['label_' . $locale]
+            $source['label_'.$locale]
         );
         $this->createElements($subFormConfig, $source['elements'], $locale);
 
@@ -222,7 +223,7 @@ class FormConfigFactory
         $document = $this->client->getByEmsKey($emsLink, $fields);
 
         if (!$document) {
-            throw new \LogicException(sprintf('Document type "%s" not found!', $emsLink));
+            throw new \LogicException(\sprintf('Document type "%s" not found!', $emsLink));
         }
 
         return new Document($document['_type'], $document['_id'], $document['_source']);
@@ -235,27 +236,27 @@ class FormConfigFactory
      */
     private function getElements(array $emsLinks): array
     {
-        $emsLinks = array_map(function (string $emsLink) {
+        $emsLinks = \array_map(function (string $emsLink) {
             return EMSLink::fromText($emsLink);
         }, $emsLinks);
         $types = [
             $this->emsConfig['type-form-field'],
             $this->emsConfig['type-form-markup'],
-            $this->emsConfig['type-form-subform']
+            $this->emsConfig['type-form-subform'],
         ];
 
         $search = $this->client->search($types, [
             'size' => \count($emsLinks),
             'query' => [
                 'terms' => [
-                    '_id' => array_map(function (EMSLink $emsLink) {
+                    '_id' => \array_map(function (EMSLink $emsLink) {
                         return $emsLink->getOuuid();
-                    }, $emsLinks)
-                ]
-            ]
+                    }, $emsLinks),
+                ],
+            ],
         ])['hits']['hits'];
 
-        return array_filter(array_map(function (EMSLink $emsLink) use ($search) {
+        return \array_filter(\array_map(function (EMSLink $emsLink) use ($search) {
             foreach ($search as $hit) {
                 if ($hit['_id'] === $emsLink->getOuuid()) {
                     return new Document($hit['_type'], $hit['_id'], $hit['_source']);

@@ -23,7 +23,7 @@ final class IsEmailMultipleValidator extends AbstractConstraintValidator
             return;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
 

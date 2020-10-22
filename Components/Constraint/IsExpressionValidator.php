@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Constraint;
 
 use EMS\CommonBundle\Contracts\ExpressionServiceInterface;
@@ -8,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class IsExpressionValidator extends ConstraintValidator
+final class IsExpressionValidator extends ConstraintValidator
 {
     /** @var ExpressionServiceInterface */
     private $expressionService;
@@ -23,11 +25,11 @@ class IsExpressionValidator extends ConstraintValidator
         if (!$constraint instanceof IsExpression) {
             throw new UnexpectedTypeException($constraint, IsExpression::class);
         }
-        
+
         if (null === $value || '' === $value) {
             return;
         }
-        
+
         if (!$this->evaluate($constraint->expression)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
@@ -39,7 +41,7 @@ class IsExpressionValidator extends ConstraintValidator
         $form = $this->context->getRoot();
 
         return $this->expressionService->evaluateToBool($expression, [
-            'data' => $form->getData()
+            'data' => $form->getData(),
         ]);
     }
 }

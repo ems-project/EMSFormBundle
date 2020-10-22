@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Constraint;
 
 use EMS\FormBundle\Components\ValueObject\BelgiumPhoneNumber;
@@ -7,12 +9,12 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class IsBelgiumPhoneNumberValidator extends AbstractConstraintValidator
+final class IsBelgiumPhoneNumberValidator extends AbstractConstraintValidator
 {
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $value The value that should be validated
+     * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
     public function validate($value, Constraint $constraint)
@@ -27,7 +29,7 @@ class IsBelgiumPhoneNumberValidator extends AbstractConstraintValidator
             return;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
 

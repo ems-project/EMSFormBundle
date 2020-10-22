@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Constraint;
 
 use Psr\Log\LoggerInterface;
@@ -8,7 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class IsRequiredIfValidator extends ConstraintValidator
+final class IsRequiredIfValidator extends ConstraintValidator
 {
     /** @var LoggerInterface */
     private $logger;
@@ -20,7 +22,7 @@ class IsRequiredIfValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$this->isEmpty($value)  || !$constraint instanceof IsRequiredIf) {
+        if (!$this->isEmpty($value) || !$constraint instanceof IsRequiredIf) {
             return;
         }
 
@@ -39,22 +41,23 @@ class IsRequiredIfValidator extends ConstraintValidator
             $expressionLanguage = new ExpressionLanguage();
             $result = $expressionLanguage->evaluate($expression, $values);
 
-            return is_bool($result) ? $result : false;
+            return \is_bool($result) ? $result : false;
         } catch (\Exception $e) {
             $this->logger->error('Required if failed: {message}', [
                 'message' => $e->getMessage(),
-                'values' => $values
+                'values' => $values,
             ]);
+
             return false;
         }
     }
 
     private function isEmpty($value): bool
     {
-        if ($value === null || $value === "") {
+        if (null === $value || '' === $value) {
             return true;
         }
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             return false;
         }
 
@@ -63,6 +66,7 @@ class IsRequiredIfValidator extends ConstraintValidator
                 return false;
             }
         }
+
         return true;
     }
 }

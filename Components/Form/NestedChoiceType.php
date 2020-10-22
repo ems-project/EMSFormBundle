@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Form;
 
 use EMS\FormBundle\Components\EventSubscriber\NestedChoiceEventSubscriber;
@@ -12,7 +14,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NestedChoiceType extends Form
+final class NestedChoiceType extends Form
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,7 +26,7 @@ class NestedChoiceType extends Form
 
         $builder->add('level_0', $field->getFieldClass(), $field->getOptions());
 
-        if ($choices === null) {
+        if (null === $choices) {
             return;
         }
         $builder->addEventSubscriber(new NestedChoiceEventSubscriber($field, $choices));

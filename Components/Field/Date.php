@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class Date extends AbstractField
+final class Date extends AbstractField
 {
     public function getHtmlClass(): string
     {
@@ -27,7 +29,7 @@ class Date extends AbstractField
         $options['input'] = 'string';
         $options['format'] = 'dd/MM/yyyy';
         $options['html5'] = false;
-        
+
         return $options;
     }
 }

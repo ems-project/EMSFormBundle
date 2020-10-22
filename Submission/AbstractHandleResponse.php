@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Submission;
 
 abstract class AbstractHandleResponse implements HandleResponseInterface
@@ -16,8 +18,8 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
 
     public function __construct(string $status, string $data)
     {
-        if ($status !== self::STATUS_SUCCESS && $status !== self::STATUS_ERROR) {
-            throw new \Exception(sprintf('Invalid status for response: %s', $status));
+        if (self::STATUS_SUCCESS !== $status && self::STATUS_ERROR !== $status) {
+            throw new \Exception(\sprintf('Invalid status for response: %s', $status));
         }
         $this->status = $status;
         $this->data = $data;
@@ -40,11 +42,11 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
 
     public function getResponse(): string
     {
-        $json = \json_encode(array_merge([
+        $json = \json_encode(\array_merge([
             'status' => $this->status,
-            'data' => $this->data
+            'data' => $this->data,
         ], $this->extra));
 
-        return $json === false ? "" : $json;
+        return false === $json ? '' : $json;
     }
 }

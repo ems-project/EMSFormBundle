@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Security;
 
-class HashcashToken
+final class HashcashToken
 {
     /** @var string */
     private $hash;
@@ -15,7 +17,7 @@ class HashcashToken
 
     public function __construct(string $header, string $token)
     {
-        list($hash, $nonce, $data) = explode('|', $header);
+        list($hash, $nonce, $data) = \explode('|', $header);
 
         $this->hash = $hash;
         $this->nonce = $nonce;
@@ -29,12 +31,12 @@ class HashcashToken
             return false;
         }
 
-        if ('0' !== substr($this->hash, 0, 1)) {
+        if ('0' !== \substr($this->hash, 0, 1)) {
             return false;
         }
 
         $data = ['difficulty' => $difficulty, 'data' => $this->data, 'nonce' => $this->nonce];
 
-        return $this->hash === hash('sha256', \implode('|', $data));
+        return $this->hash === \hash('sha256', \implode('|', $data));
     }
 }

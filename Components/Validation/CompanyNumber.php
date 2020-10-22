@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use EMS\FormBundle\Components\Constraint\IsCompanyNumber;
 use Symfony\Component\Validator\Constraint;
 
-class CompanyNumber extends AbstractValidation
+final class CompanyNumber extends AbstractValidation
 {
     public function getConstraint(): Constraint
     {

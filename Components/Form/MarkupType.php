@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Form;
 
 use EMS\FormBundle\FormConfig\MarkupConfig;
@@ -9,7 +11,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MarkupType extends AbstractType
+final class MarkupType extends AbstractType
 {
     public function buildView(FormView $view, FormInterface $form, array $options)
     {

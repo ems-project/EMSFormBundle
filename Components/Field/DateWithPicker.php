@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
-class DateWithPicker extends Date
+final class DateWithPicker extends Date
 {
     public function getHtmlClass(): string
     {

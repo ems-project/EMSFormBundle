@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\FormConfig;
 
 use EMS\FormBundle\Components\Form\MarkupType;
 
-class MarkupConfig implements ElementInterface
+final class MarkupConfig implements ElementInterface
 {
     /** @var string */
     private $id;

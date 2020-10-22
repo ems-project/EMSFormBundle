@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
 
-class MinLength extends AbstractValidation
+final class MinLength extends AbstractValidation
 {
     public function getHtml5AttributeName(): string
     {

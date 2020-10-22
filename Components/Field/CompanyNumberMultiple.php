@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use EMS\FormBundle\Components\ValueObject\BelgiumCompanyNumberMultiple;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class CompanyNumberMultiple extends AbstractForgivingNumberField
+final class CompanyNumberMultiple extends AbstractForgivingNumberField
 {
     public function getHtmlClass(): string
     {

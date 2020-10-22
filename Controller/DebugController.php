@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Controller;
 
 use EMS\FormBundle\Components\Form;
 use EMS\FormBundle\Submission\Client;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
-class DebugController extends AbstractFormController
+final class DebugController extends AbstractFormController
 {
     /** @var FormFactory */
     private $formFactory;
@@ -40,7 +42,7 @@ class DebugController extends AbstractFormController
         return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
             'config' => $this->getFormConfig($form),
             'locales' => $this->locales,
-            'url' => $request->getSchemeAndHttpHost() . $request->getBasePath(),
+            'url' => $request->getSchemeAndHttpHost().$request->getBasePath(),
         ]));
     }
 
@@ -64,13 +66,14 @@ class DebugController extends AbstractFormController
             'form' => $form->createView(),
             'locales' => $this->locales,
             'response' => $responses,
-            'url' => $request->getSchemeAndHttpHost() . $request->getBasePath(),
+            'url' => $request->getSchemeAndHttpHost().$request->getBasePath(),
         ]));
     }
 
     public function dynamicFieldAjax(Request $request, string $ouuid): Response
     {
         $forward = $this->router->generate('_emsf_dynamic_field_ajax', ['ouuid' => $ouuid, '_locale' => $request->getLocale()]);
+
         return new RedirectResponse($forward, 307);
     }
 }

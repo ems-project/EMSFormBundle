@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\FormConfig;
 
-class SubmissionConfig
+final class SubmissionConfig
 {
     /** @var string */
     private $class;

@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class IsVerificationCodeValidator extends ConstraintValidator
+final class IsVerificationCodeValidator extends ConstraintValidator
 {
     /** @var ConfirmationService */
     private $confirmationService;
@@ -19,9 +19,6 @@ class IsVerificationCodeValidator extends ConstraintValidator
         $this->confirmationService = $confirmationService;
     }
 
-    /**
-     * @param Constraint $constraint
-     */
     public function validate($value, Constraint $constraint)
     {
         if (null === $value || !$constraint instanceof IsVerificationCode) {
@@ -38,6 +35,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
 
         if (null === $verificationCode) {
             $this->context->addViolation($constraint->messageMissing);
+
             return;
         }
 
@@ -57,7 +55,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
 
         $data = $form->getData();
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             return null;
         }
 
@@ -71,7 +69,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
                 return $value;
             }
 
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 if (null !== $subValue = $this->getFieldData($value, $field)) {
                     return $subValue;
                 }

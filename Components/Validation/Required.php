@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class Required extends AbstractValidation
+final class Required extends AbstractValidation
 {
     public function getHtml5AttributeName(): string
     {

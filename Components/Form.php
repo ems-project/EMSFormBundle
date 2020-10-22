@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components;
 
 use EMS\FormBundle\Components\Field\AbstractForgivingNumberField;
@@ -19,7 +21,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Form extends AbstractType
+final class Form extends AbstractType
 {
     /** @var FormConfigFactory */
     private $configFactory;
@@ -94,12 +96,12 @@ class Form extends AbstractType
     {
         $field = $this->createField($element);
         $configOption = ['field_config' => $element];
-        $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
+        $options = ChoiceSelectNested::class !== $element->getClassName() ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
 
         $builder->add($element->getName(), $field->getFieldClass(), $options);
         $this->addModelTransformers($builder, $element, $field);
     }
-    
+
     private function addModelTransformers(FormBuilderInterface $builder, ElementInterface $element, FieldInterface $field): void
     {
         if ($field instanceof AbstractForgivingNumberField) {

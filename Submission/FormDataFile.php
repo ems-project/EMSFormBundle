@@ -24,9 +24,9 @@ final class FormDataFile
 
     public function base64(): ?string
     {
-        $content = file_get_contents($this->file->getPathname());
+        $content = \file_get_contents($this->file->getPathname());
 
-        return $content ? base64_encode($content) : null;
+        return $content ? \base64_encode($content) : null;
     }
 
     public function getFile(): UploadedFile
@@ -37,12 +37,13 @@ final class FormDataFile
     public function toArray(): array
     {
         $fileName = $this->getFilename($this->file, $this->formElement->getName());
+
         return [
             'filename' => $fileName,
             'pathname' => $this->file->getPathname(),
             'mimeType' => $this->file->getMimeType(),
             'size' => $this->file->getSize(),
-            'form_field' => $this->formElement->getName()
+            'form_field' => $this->formElement->getName(),
         ];
     }
 
@@ -50,9 +51,10 @@ final class FormDataFile
     {
         $filename = $uploadedFile->getClientOriginalName();
         $extension = MimeTypes::getDefault()->getExtensions($uploadedFile->getClientMimeType())[0] ?? null;
-        if ($extension !== null && !RequestRuntime::endsWith($filename, $extension)) {
+        if (null !== $extension && !RequestRuntime::endsWith($filename, $extension)) {
             $filename .= \sprintf('.%s', $extension);
         }
-        return \sprintf('%s.%s', \uniqid(sprintf('%s.', $fieldName), false), $filename);
+
+        return \sprintf('%s.%s', \uniqid(\sprintf('%s.', $fieldName), false), $filename);
     }
 }

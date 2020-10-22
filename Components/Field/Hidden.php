@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class Hidden extends AbstractField
+final class Hidden extends AbstractField
 {
     public function getHtmlClass(): string
     {

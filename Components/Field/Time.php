@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
-class Time extends AbstractField
+final class Time extends AbstractField
 {
     public function getHtmlClass(): string
     {
@@ -15,7 +17,7 @@ class Time extends AbstractField
     {
         return TimeType::class;
     }
-    
+
     public function getOptions(): array
     {
         $label = $this->config->getLabel() ?? '';
@@ -27,6 +29,7 @@ class Time extends AbstractField
         $options['input'] = 'string';
         $options['input_format'] = 'H:i';
         $options['html5'] = false;
+
         return $options;
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @deprecated SendConfirmation will be removed, use numberType or HiddenType with VerificationCode validator
  */
-class SendConfirmationType extends TextType
+final class SendConfirmationType extends TextType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Constraint;
 
 use Symfony\Component\Validator\ConstraintValidator;
@@ -10,6 +12,7 @@ abstract class AbstractConstraintValidator extends ConstraintValidator
     {
         try {
             new $class($value);
+
             return true;
         } catch (\Exception $exception) {
             return false;

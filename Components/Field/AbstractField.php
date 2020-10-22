@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\Validation\ValidationInterface;
@@ -42,7 +44,7 @@ abstract class AbstractField implements FieldInterface
     private function isRequired(): bool
     {
         foreach ($this->validations as $validation) {
-            if ($validation->getHtml5AttributeName() === 'required') {
+            if ('required' === $validation->getHtml5AttributeName()) {
                 return true;
             }
         }
@@ -53,13 +55,14 @@ abstract class AbstractField implements FieldInterface
     private function createValidation(ValidationConfig $config): ValidationInterface
     {
         $class = $config->getClassName();
+
         return new $class($config);
     }
 
     protected function getAttributes(): array
     {
-        $attributes = array_merge_recursive($this->getValidationHtml5Attribute(), [
-            'class' => [$this->getHtmlClass(), $this->config->getClass()]
+        $attributes = \array_merge_recursive($this->getValidationHtml5Attribute(), [
+            'class' => [$this->getHtmlClass(), $this->config->getClass()],
         ]);
 
         $attributes['class'] = \implode(' ', $attributes['class']);
@@ -73,12 +76,12 @@ abstract class AbstractField implements FieldInterface
         $parentForm = $this->config->getParentForm();
 
         return [
-            'id' => sprintf(
+            'id' => \sprintf(
                 'form_%s%s%s_label',
-                $parentForm instanceof SubFormConfig ? sprintf('%s_', $parentForm->getName()) : '',
+                $parentForm instanceof SubFormConfig ? \sprintf('%s_', $parentForm->getName()) : '',
                 $this->config->getName(),
                 $postfix
-            )
+            ),
         ];
     }
 
@@ -89,7 +92,7 @@ abstract class AbstractField implements FieldInterface
 
     protected function getValidationConstraints(): array
     {
-        return array_map(function (ValidationInterface $validation) {
+        return \array_map(function (ValidationInterface $validation) {
             return $validation->getConstraint();
         }, $this->validations);
     }
@@ -99,7 +102,7 @@ abstract class AbstractField implements FieldInterface
         $html5Attributes = [];
 
         foreach ($this->validations as $validation) {
-            $html5Attributes = array_merge($html5Attributes, $validation->getHtml5Attribute());
+            $html5Attributes = \array_merge($html5Attributes, $validation->getHtml5Attribute());
         }
 
         return $html5Attributes;

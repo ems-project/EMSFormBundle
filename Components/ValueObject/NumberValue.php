@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\ValueObject;
 
-class NumberValue
+final class NumberValue
 {
     /** @var string */
     private $input;
@@ -27,14 +29,15 @@ class NumberValue
 
     private function filterNumbers(string $number): string
     {
-        preg_match_all('!\d+!', $number, $matches);
+        \preg_match_all('!\d+!', $number, $matches);
         $digits = '';
         foreach ($matches[0] as $digit) {
             $digits .= $digit;
         }
+
         return $digits;
     }
-    
+
     public function transform(): string
     {
         return $this->getDigits();

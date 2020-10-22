@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
 
-class MaxFileSize extends AbstractValidation
+final class MaxFileSize extends AbstractValidation
 {
     public function getConstraint(): Constraint
     {

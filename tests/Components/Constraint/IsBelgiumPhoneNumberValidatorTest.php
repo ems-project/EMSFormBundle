@@ -9,7 +9,7 @@ use EMS\FormBundle\Components\Constraint\IsBelgiumPhoneNumberValidator;
 use EMS\FormBundle\Components\ValueObject\BelgiumPhoneNumber;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
+final class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator()
     {
@@ -45,13 +45,13 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
             ['+320470123456'],
             ['+32047012345'],
             ['00320470123456'],
-            ['0032047012345']
+            ['0032047012345'],
         ];
     }
 
     /**
- * @dataProvider getValidPhoneNumbers
- */
+     * @dataProvider getValidPhoneNumbers
+     */
     public function testValidPhoneNumber(string $phoneNumber)
     {
         $this->validator->validate($phoneNumber, new IsBelgiumPhoneNumber());

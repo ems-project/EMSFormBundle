@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\Form\NestedChoiceType;
 
-class ChoiceSelectNested extends AbstractField
+final class ChoiceSelectNested extends AbstractField
 {
     public function getHtmlClass(): string
     {

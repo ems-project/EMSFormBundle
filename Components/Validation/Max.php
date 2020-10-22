@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
-class Max extends AbstractValidation
+final class Max extends AbstractValidation
 {
     public function getHtml5AttributeName(): string
     {

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\File;
 
-class FileMimeTypes extends AbstractValidation
+final class FileMimeTypes extends AbstractValidation
 {
     public function getHtml5AttributeName(): string
     {
@@ -14,6 +16,6 @@ class FileMimeTypes extends AbstractValidation
 
     public function getConstraint(): Constraint
     {
-        return new File(['mimeTypes' => explode(',', $this->value)]);
+        return new File(['mimeTypes' => \explode(',', $this->value)]);
     }
 }
