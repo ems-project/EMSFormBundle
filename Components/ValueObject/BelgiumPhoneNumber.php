@@ -96,7 +96,7 @@ class BelgiumPhoneNumber
 
         return self::LOCAL;
     }
-    
+
     public function transform(): string
     {
         if (strpos($this->number->getInput(), '+') === 0) {

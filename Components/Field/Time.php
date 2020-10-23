@@ -15,7 +15,7 @@ class Time extends AbstractField
     {
         return TimeType::class;
     }
-    
+
     public function getOptions(): array
     {
         $label = $this->config->getLabel() ?? '';

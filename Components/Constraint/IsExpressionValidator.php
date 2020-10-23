@@ -23,11 +23,11 @@ class IsExpressionValidator extends ConstraintValidator
         if (!$constraint instanceof IsExpression) {
             throw new UnexpectedTypeException($constraint, IsExpression::class);
         }
-        
+
         if (null === $value || '' === $value) {
             return;
         }
-        
+
         if (!$this->evaluate($constraint->expression)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }

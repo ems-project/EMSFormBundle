@@ -10,7 +10,7 @@ class OnssRsz extends AbstractForgivingNumberField
     {
         return 'onss-rsz';
     }
-    
+
     public function getTransformerClasses(): array
     {
         return [BelgiumOnssRszNumber::class];
