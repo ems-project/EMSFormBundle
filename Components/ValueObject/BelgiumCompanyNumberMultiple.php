@@ -21,7 +21,7 @@ class BelgiumCompanyNumberMultiple
         if (strlen($this->number->getDigits()) % 10) {
             return false;
         }
-        
+
         $numbers = str_split($this->number->getDigits(), 10);
         foreach ($numbers as $number) {
             try {
@@ -30,10 +30,10 @@ class BelgiumCompanyNumberMultiple
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     public function transform(): string
     {
         $numbers = str_split($this->number->getDigits(), 10);

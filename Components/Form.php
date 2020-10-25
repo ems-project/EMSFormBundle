@@ -99,7 +99,7 @@ class Form extends AbstractType
         $builder->add($element->getName(), $field->getFieldClass(), $options);
         $this->addModelTransformers($builder, $element, $field);
     }
-    
+
     private function addModelTransformers(FormBuilderInterface $builder, ElementInterface $element, FieldInterface $field): void
     {
         if ($field instanceof AbstractForgivingNumberField) {

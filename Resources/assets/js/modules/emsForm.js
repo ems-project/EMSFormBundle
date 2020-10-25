@@ -86,6 +86,11 @@ export class emsForm
             return;
         }
 
+        if (typeof e.data !== 'string') {
+            //Probably a message from a browser plugin
+            return;
+        }
+
         let data = encoding.jsonParse(e.data);
 
 
@@ -99,7 +104,11 @@ export class emsForm
             }
             return;
         }
-
+        
+        if (data.instruction === undefined) {
+            return;
+        }
+        
         switch (data.instruction) {
             case 'form':
             case 'validation-error':

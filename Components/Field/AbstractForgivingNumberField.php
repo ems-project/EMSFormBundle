@@ -13,12 +13,12 @@ abstract class AbstractForgivingNumberField extends AbstractField
     {
         return TextType::class;
     }
-    
+
     public function getTransformerClasses(): array
     {
         return [];
     }
-    
+
     public function getDataTransformer(): DataTransformerInterface
     {
         return new ForgivingNumberDataTransformer($this->getTransformerClasses());

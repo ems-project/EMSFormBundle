@@ -29,7 +29,7 @@ class SymfonyFormFieldsByNameArray
                 $result = $this->flattenWithKeys($value, $childPrefix, $root . $key . $childPrefix, $result);
                 continue;
             }
-            
+
             $result[ $root . $key ] = $value;
         }
         return $result;

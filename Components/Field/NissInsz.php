@@ -11,7 +11,7 @@ class NissInsz extends AbstractForgivingNumberField
     {
         return 'niss-insz';
     }
-    
+
     public function getTransformerClasses(): array
     {
         return [BisNumber::class, RrNumber::class];
