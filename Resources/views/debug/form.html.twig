@@ -34,9 +34,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('formDebug.js') }} "></script>
-    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('validation.js') }} "></script>
-    <script type="application/javascript" src="{{ "#{url}/bundles/emsform/manifest.json"|ems_manifest('dynamicFields.js') }} "></script>
+    <script type="application/javascript" src="{{ asset('bundles/emsform/js/formDebug.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('bundles/emsform/js/validation.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('bundles/emsform/js/dynamicFields.js') }}"></script>
     <script type="application/javascript">
         document.addEventListener('DOMContentLoaded', function () {
             let form = document.getElementById("{{ form.vars.attr.id }}");
