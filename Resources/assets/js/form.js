@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+import '@babel/polyfill/noConflict';
 import {emsForm, defaultCheck} from "./modules/emsForm";
 
 window.emsForm = emsForm;

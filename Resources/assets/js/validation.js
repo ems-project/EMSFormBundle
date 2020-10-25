@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+import '@babel/polyfill/noConflict';
 import {setNissInszValidation} from "./validation/niss";
 import {addMaxLengthCounter} from "./validation/maxLengthCounter";
 import {setBelgiumPhoneValidation} from "./validation/belgiumPhone";

@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+import '@babel/polyfill/noConflict';
 import {emsReceiver} from './modules/emsReceiver';
 
 document.addEventListener('DOMContentLoaded', onLoad);

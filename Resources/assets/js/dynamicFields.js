@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+import '@babel/polyfill/noConflict';
 import "child-replace-with-polyfill";
 import {addDynamicChoiceSelect, clickSendConfirmation} from "./modules/eventListeners";
 
