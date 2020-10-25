@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         'form': './Resources/assets/js/form.js',
         'formDebug': './Resources/assets/js/formDebug.js',
+        'debug': './Resources/assets/js/debug.js',
         'backend': './Resources/assets/js/backend.js',
         'dynamicFields': './Resources/assets/js/dynamicFields.js',
         'validation': './Resources/assets/js/validation.js'
@@ -23,6 +24,10 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
             {
                 enforce: 'pre',
                 test: /\.js$/,
