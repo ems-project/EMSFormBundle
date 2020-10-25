@@ -10,7 +10,7 @@ class NumberForgivingInput extends AbstractForgivingNumberField
     {
         return 'number-forgiving-input';
     }
-    
+
     public function getTransformerClasses(): array
     {
         return [NumberValue::class];

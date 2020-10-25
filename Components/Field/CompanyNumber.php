@@ -11,7 +11,7 @@ class CompanyNumber extends AbstractForgivingNumberField
     {
         return 'company-number';
     }
-    
+
     public function getTransformerClasses(): array
     {
         return [BelgiumCompanyNumber::class];

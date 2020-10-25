@@ -20,24 +20,24 @@ class IsCompanyNumberMultipleValidator extends AbstractConstraintValidator
         if (!$constraint instanceof IsCompanyNumberMultiple) {
             throw new UnexpectedTypeException($constraint, IsCompanyNumberMultiple::class);
         }
-        
+
         // custom constraints should ignore null and empty values to allow
         // other constraints (NotBlank, NotNull, etc.) take care of that
         if (null === $value || '' === $value) {
             return;
         }
-        
+
         if (!is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
-        
+
         if (!$this->isCompanyNumberMultiple($value)) {
             $this->context->buildViolation($constraint->message)
             ->setParameter('{{string}}', $value)
             ->addViolation();
         }
     }
-    
+
     /**
      * This list of numbers should be constructed as a combination of multiple CompanyNumbers
      */
