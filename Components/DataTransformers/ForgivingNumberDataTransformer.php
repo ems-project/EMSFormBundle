@@ -9,12 +9,12 @@ class ForgivingNumberDataTransformer implements DataTransformerInterface
 {
     /** @var array */
     private $transformerClasses;
-    
+
     public function __construct(array $transformerClasses)
     {
         $this->transformerClasses = $transformerClasses;
     }
-    
+
     public function transform($value)
     {
         return $value;

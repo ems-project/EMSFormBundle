@@ -20,10 +20,10 @@ class BelgiumOnssRszNumber
     public function validate(): bool
     {
         $numberOfDigits = strlen($this->number->getDigits());
-        
+
         return (($numberOfDigits >= 9) and ($numberOfDigits <= 10));
     }
-    
+
     public function transform(): string
     {
         return $this->number->getDigits();

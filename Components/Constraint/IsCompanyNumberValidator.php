@@ -21,24 +21,24 @@ class IsCompanyNumberValidator extends AbstractConstraintValidator
         if (!$constraint instanceof IsCompanyNumber) {
             throw new UnexpectedTypeException($constraint, IsCompanyNumber::class);
         }
-        
+
         // custom constraints should ignore null and empty values to allow
         // other constraints (NotBlank, NotNull, etc.) take care of that
         if (null === $value || '' === $value) {
             return;
         }
-        
+
         if (!is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
-        
+
         if (!$this->isCompanyNumber($value)) {
             $this->context->buildViolation($constraint->message)
             ->setParameter('{{string}}', $value)
             ->addViolation();
         }
     }
-    
+
     /**
      * This number need only 10 numbers and must start with 0 or 1
      */
