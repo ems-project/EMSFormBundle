@@ -23,7 +23,7 @@ export class emsReceiver
     onMessage(message)
     {
         if ( !this.domains.includes(message.origin) ) {
-            console.log('Domain not allowed ');
+            console.log('Domain not allowed');
             return;
         }
 
