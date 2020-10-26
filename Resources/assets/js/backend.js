@@ -1,3 +1,4 @@
+import 'core-js';
 import {emsReceiver} from './modules/emsReceiver';
 
 document.addEventListener('DOMContentLoaded', onLoad);
