@@ -1,3 +1,4 @@
+import 'core-js';
 import {emsForm, defaultCheck} from "./modules/emsForm";
 
 window.emsForm = emsForm;
