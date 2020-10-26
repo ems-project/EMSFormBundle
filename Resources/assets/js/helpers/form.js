@@ -25,6 +25,9 @@ export default class
     {
         let formData = new FormData();
         Object.entries(obj).forEach(([key,value])=>{
+            if (value.size === 0) {
+                return;
+            }
             let filename = value.name;
             if (filename !== undefined) {
                 if (value.size > 0) {

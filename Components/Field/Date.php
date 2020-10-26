@@ -27,7 +27,7 @@ class Date extends AbstractField
         $options['input'] = 'string';
         $options['format'] = 'dd/MM/yyyy';
         $options['html5'] = false;
-        
+
         return $options;
     }
 }

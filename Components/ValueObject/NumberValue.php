@@ -34,7 +34,7 @@ class NumberValue
         }
         return $digits;
     }
-    
+
     public function transform(): string
     {
         return $this->getDigits();

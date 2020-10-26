@@ -23,7 +23,7 @@ class BelgiumCompanyNumber
 
         return (($numberOfDigits === 10) && (($firstDigit === '0') || ($firstDigit === '1')));
     }
-    
+
     public function transform(): string
     {
         return $this->number->getDigits();
