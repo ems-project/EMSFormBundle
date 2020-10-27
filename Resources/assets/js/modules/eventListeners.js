@@ -17,12 +17,13 @@ export function addDynamicChoiceSelect(element, emsForm) {
 
 export function clickSendConfirmation(element, emsForm) {
     element.addEventListener('click', function () {
-        let valueElement = document.getElementById(this.getAttribute('data-value-id'));
+        const valueElement = document.getElementById(this.getAttribute('data-value-id'));
+        const token = this.getAttribute('data-token');
 
         emsForm.onSendConfirmation(JSON.stringify({
-            'token': this.getAttribute('data-token'),
+            'token': token,
             'code-field': this.getAttribute('data-name'),
             'value': valueElement.value
-        }));
+        }), token);
     });
 }
