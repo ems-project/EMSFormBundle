@@ -23,14 +23,17 @@ class Guard
         return $this->difficulty;
     }
 
-    public function check(Request $request, string $tokenFieldName): bool
+    public function checkForm(Request $request): bool
     {
-        if (!$request->isMethod('POST')) {
-            return true;
-        }
+        $formData = $request->get('form', []);
+        $submittedToken = $formData['_token'] ?? null;
+        return $this->checkToken($request, $submittedToken);
+    }
 
+    public function checkToken(Request $request, string $token): bool
+    {
         try {
-            $this->validateHashcash($request, $tokenFieldName);
+            $this->validateHashcash($request, $token);
             return true;
         } catch (\Exception $e) {
             $this->logger->error('guard check valid', [$e]);
@@ -38,17 +41,18 @@ class Guard
         }
     }
 
-    private function validateHashcash(Request $request, string $tokenFieldName): void
+    private function validateHashcash(Request $request, ?string $token): void
     {
+        if (!$request->isMethod('POST')) {
+            throw new \Exception('Not allowed method');
+        }
+
         if (0 === $this->difficulty) {
             return;
         }
 
-        $formData = $request->get('form', []);
-        $submittedToken = $formData[$tokenFieldName] ?? null;
-
-        if (! \is_string($submittedToken)) {
-            throw new \Exception(\sprintf('guard check validation requires a non empty string csrf token in the submitted data %s field', $tokenFieldName));
+        if (! \is_string($token)) {
+            throw new \Exception('guard check validation requires a non empty string csrf token in the submitted token');
         }
 
         $header = $request->headers->get('x-hashcash');
@@ -57,7 +61,7 @@ class Guard
             throw new \Exception('x-hashcash header missing');
         }
 
-        $hashCash = new HashcashToken($header, $submittedToken);
+        $hashCash = new HashcashToken($header, $token);
 
         if (!$hashCash->isValid($this->difficulty)) {
             throw new \Exception('invalid hashcash token');
