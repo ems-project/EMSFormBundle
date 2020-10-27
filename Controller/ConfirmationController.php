@@ -51,7 +51,7 @@ final class ConfirmationController extends AbstractController
         ];
 
         try {
-            if (!$debug && !$this->guard->check($request)) {
+            if (!$debug && !$this->guard->check($request, 'token')) {
                 $response['emsStatus'] = 403;
                 throw new AccessDeniedHttpException('access denied');
             }
