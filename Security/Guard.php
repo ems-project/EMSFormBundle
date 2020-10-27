@@ -23,14 +23,14 @@ class Guard
         return $this->difficulty;
     }
 
-    public function check(Request $request): bool
+    public function check(Request $request, string $tokenFieldName = '_token'): bool
     {
         if (!$request->isMethod('POST')) {
             return true;
         }
 
         try {
-            $this->validateHashcash($request);
+            $this->validateHashcash($request, $tokenFieldName);
             return true;
         } catch (\Exception $e) {
             $this->logger->error('guard check valid', [$e]);
@@ -38,17 +38,17 @@ class Guard
         }
     }
 
-    private function validateHashcash(Request $request): void
+    private function validateHashcash(Request $request, string $tokenFieldName): void
     {
         if (0 === $this->difficulty) {
             return;
         }
 
         $formData = $request->get('form', []);
-        $submittedToken = $formData['_token'] ?? null;
+        $submittedToken = $formData[$tokenFieldName] ?? null;
 
         if (! \is_string($submittedToken)) {
-            throw new \Exception('guard check validation requires a non empty string csrf token in the submitted formData _token field');
+            throw new \Exception(\sprintf('guard check validation requires a non empty string csrf token in the submitted data %s field', $tokenFieldName));
         }
 
         $header = $request->headers->get('x-hashcash');
