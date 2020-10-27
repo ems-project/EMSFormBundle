@@ -51,12 +51,13 @@ final class ConfirmationController extends AbstractController
         ];
 
         try {
-            if (!$debug && !$this->guard->check($request, 'token')) {
+            $confirmationRequest = new ConfirmationRequest($request);
+
+            if (!$debug && !$this->guard->checkToken($request, $confirmationRequest->getToken())) {
                 $response['emsStatus'] = 403;
                 throw new AccessDeniedHttpException('access denied');
             }
 
-            $confirmationRequest = new ConfirmationRequest($request);
             $response['codeField'] = $confirmationRequest->getCodeField();
             $response['response'] = $this->confirmationService->send($confirmationRequest, $ouuid);
 
