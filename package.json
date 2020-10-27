@@ -18,15 +18,10 @@
   "bugs": {
     "url": "https://github.com/ems-project/EMSFormBundle/issues"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "IE 10"
-  ],
   "homepage": "https://github.com/ems-projectEMSFormBundle#readme",
   "devDependencies": {
     "@babel/core": "^7.12.3",
-    "@babel/polyfill": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "@types/jest": "^25.2.3",
     "babel-eslint": "^10.1.0",
@@ -35,6 +30,7 @@
     "bootstrap": "^4.4.1",
     "child-replace-with-polyfill": "^1.0.1",
     "clean-webpack-plugin": "^3.0.0",
+    "core-js-pure": "^3.6.5",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
     "eslint-loader": "^2.2.1",
@@ -44,15 +40,13 @@
     "jest": "^25.5.4",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
+    "style-loader": "^2.0.0",
     "url-polyfill": "^1.1.11",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
-    "webpack-manifest-plugin": "^2.2.0",
-    "style-loader": "^2.0.0"
+    "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
-    "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/runtime": "^7.12.1",
-    "@babel/runtime-corejs2": "^7.12.1"
+    "@babel/runtime-corejs3": "^7.12.1"
   }
 }
