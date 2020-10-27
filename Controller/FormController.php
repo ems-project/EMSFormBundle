@@ -43,7 +43,7 @@ class FormController extends AbstractFormController
 
     public function form(Request $request, string $ouuid): JsonResponse
     {
-        if (!$this->guard->check($request)) {
+        if (!$this->guard->check($request, '_token')) {
             throw new AccessDeniedHttpException('access denied');
         }
 
