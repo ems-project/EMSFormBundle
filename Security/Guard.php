@@ -23,7 +23,7 @@ class Guard
         return $this->difficulty;
     }
 
-    public function check(Request $request, string $tokenFieldName = '_token'): bool
+    public function check(Request $request, string $tokenFieldName): bool
     {
         if (!$request->isMethod('POST')) {
             return true;
