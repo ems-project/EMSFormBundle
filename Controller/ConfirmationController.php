@@ -47,14 +47,14 @@ final class ConfirmationController extends AbstractController
             'response' => false,
             'ouuid' => $ouuid,
             'codeField' => 'unknown',
-            'emsStatus' => 200
+            'emsStatus' => 200,
+            'message' => null,
         ];
 
         try {
             $confirmationRequest = new ConfirmationRequest($request);
 
             if (!$debug && !$this->guard->checkToken($request, $confirmationRequest->getToken())) {
-                $response['emsStatus'] = 403;
                 throw new AccessDeniedHttpException('access denied');
             }
 
@@ -62,13 +62,14 @@ final class ConfirmationController extends AbstractController
             $response['response'] = $this->confirmationService->send($confirmationRequest, $ouuid);
 
             return new JsonResponse($response);
+        } catch (AccessDeniedHttpException $e) {
+            $response['emsStatus'] = 403;
+            $response['message'] = $e->getMessage();
+            return new JsonResponse($response);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
-
-            if (200 === $response['emsStatus']) {
-                $response['emsStatus'] = 500;
-            }
-
+            $response['emsStatus'] = 500;
+            $response['message'] = $e->getMessage();
             return new JsonResponse($response);
         }
     }
