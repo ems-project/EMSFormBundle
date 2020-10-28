@@ -158,12 +158,12 @@ export class emsForm
         this.postMessage(msg);
     }
 
-    onSendConfirmation(data)
+    onSendConfirmation(data, token)
     {
         this.postMessage({
             'instruction': 'send-confirmation',
             'data': data,
-            'token': security.createToken(data['form[_token]'], this.difficulty)
+            'token': security.createToken(token, this.difficulty)
         });
     }
 
