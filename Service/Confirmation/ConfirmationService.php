@@ -10,6 +10,7 @@ use EMS\FormBundle\FormConfig\FormConfigFactory;
 use EMS\FormBundle\Service\Confirmation\Endpoint\ConfirmationEndpointType;
 use EMS\FormBundle\Service\Endpoint\EndpointManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
@@ -59,17 +60,18 @@ final class ConfirmationService
      */
     public function send(ConfirmationRequest $confirmationRequest, string $ouuid)
     {
+
+        $formConfig = $this->configFactory->create($ouuid, $confirmationRequest->getLocale());
+        $codeFieldElement = $this->getConfirmationField($formConfig, $confirmationRequest);
+
+        $endpoint = $this->endpointManager->getEndpointByFieldName($codeFieldElement->getName());
+        $endpointType = $this->endpointManager->getEndpointType($endpoint);
+
+        if (!$endpointType instanceof ConfirmationEndpointType) {
+            throw new \Exception('invalid endpoint type');
+        }
+
         try {
-            $formConfig = $this->configFactory->create($ouuid, $confirmationRequest->getLocale());
-            $codeFieldElement = $this->getConfirmationField($formConfig, $confirmationRequest);
-
-            $endpoint = $this->endpointManager->getEndpointByFieldName($codeFieldElement->getName());
-            $endpointType = $this->endpointManager->getEndpointType($endpoint);
-
-            if (!$endpointType instanceof ConfirmationEndpointType) {
-                throw new \Exception('invalid endpoint type');
-            }
-
             return $endpointType->confirm($endpoint, $formConfig, $confirmationRequest->getValue());
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
@@ -95,7 +97,7 @@ final class ConfirmationService
         $csrfToken = new CsrfToken($codeField->getId(), $token);
 
         if (!$this->csrfTokenManager->isTokenValid($csrfToken)) {
-            throw new \Exception('invalid csrf token!');
+            throw new AccessDeniedHttpException('invalid csrf token!');
         }
     }
 }

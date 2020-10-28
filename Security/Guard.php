@@ -30,7 +30,7 @@ class Guard
         return $this->checkToken($request, $submittedToken);
     }
 
-    public function checkToken(Request $request, string $token): bool
+    public function checkToken(Request $request, ?string $token): bool
     {
         try {
             $this->validateHashcash($request, $token);
@@ -43,11 +43,7 @@ class Guard
 
     private function validateHashcash(Request $request, ?string $token): void
     {
-        if (!$request->isMethod('POST')) {
-            throw new \Exception('Not allowed method');
-        }
-
-        if (0 === $this->difficulty) {
+        if ($request->isMethodSafe() || 0 === $this->difficulty) {
             return;
         }
 
