@@ -29,12 +29,13 @@ class HashcashToken
             return false;
         }
 
-        if ('0' !== substr($this->hash, 0, 1)) {
+        $hashcashLevel = \floor(\log($difficulty, 2) / 4.0);
+        if (!\preg_match(sprintf('/^0{%d}/', $hashcashLevel), $this->hash)) {
             return false;
         }
 
         $data = ['difficulty' => $difficulty, 'data' => $this->data, 'nonce' => $this->nonce];
 
-        return $this->hash === hash('sha256', \implode('|', $data));
+        return $this->hash === \hash('sha256', \implode('|', $data));
     }
 }
