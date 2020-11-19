@@ -31,7 +31,8 @@ final class HashcashToken
             return false;
         }
 
-        if ('0' !== \substr($this->hash, 0, 1)) {
+        $hashcashLevel = \floor(\log($difficulty, 2) / 4.0);
+        if (!\preg_match(\sprintf('/^0{%d}/', $hashcashLevel), $this->hash)) {
             return false;
         }
 

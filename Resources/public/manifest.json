@@ -1,5 +1,6 @@
 {
   "backend.js": "bundles/emsform/js/backend.js",
+  "debug.js": "bundles/emsform/js/debug.js",
   "dynamicFields.js": "bundles/emsform/js/dynamicFields.js",
   "form.js": "bundles/emsform/js/form.js",
   "formDebug.js": "bundles/emsform/js/formDebug.js",

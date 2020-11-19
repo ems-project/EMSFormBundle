@@ -25,14 +25,18 @@ final class Guard
         return $this->difficulty;
     }
 
-    public function check(Request $request): bool
+    public function checkForm(Request $request): bool
     {
-        if (!$request->isMethod('POST')) {
-            return true;
-        }
+        $formData = $request->get('form', []);
+        $submittedToken = $formData['_token'] ?? null;
 
+        return $this->checkToken($request, $submittedToken);
+    }
+
+    public function checkToken(Request $request, ?string $token): bool
+    {
         try {
-            $this->validateHashcash($request);
+            $this->validateHashcash($request, $token);
 
             return true;
         } catch (\Exception $e) {
@@ -42,17 +46,14 @@ final class Guard
         }
     }
 
-    private function validateHashcash(Request $request): void
+    private function validateHashcash(Request $request, ?string $token): void
     {
-        if (0 === $this->difficulty) {
+        if ($request->isMethodSafe() || 0 === $this->difficulty) {
             return;
         }
 
-        $formData = $request->get('form', []);
-        $submittedToken = $formData['_token'] ?? null;
-
-        if (!\is_string($submittedToken)) {
-            throw new \Exception('guard check validation requires a non empty string csrf token in the submitted formData _token field');
+        if (!\is_string($token)) {
+            throw new \Exception('guard check validation requires a non empty string csrf token in the submitted token');
         }
 
         $header = $request->headers->get('x-hashcash');
@@ -61,7 +62,7 @@ final class Guard
             throw new \Exception('x-hashcash header missing');
         }
 
-        $hashCash = new HashcashToken($header, $submittedToken);
+        $hashCash = new HashcashToken($header, $token);
 
         if (!$hashCash->isValid($this->difficulty)) {
             throw new \Exception('invalid hashcash token');

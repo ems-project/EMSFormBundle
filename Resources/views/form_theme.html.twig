@@ -59,6 +59,7 @@
                 {{ "button_confirm_#{name}"|trans({}, ems_translation_domain) }}
             </button>
         </div>
+        {% set attr = attr|merge({inputmode: 'numeric', pattern: '[0-9]*', autocomplete: 'one-time-code' }) -%}
         {{ block('form_widget_simple') }}
     </div>
 {%- endblock -%}

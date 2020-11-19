@@ -86,6 +86,11 @@ export class emsForm
             return;
         }
 
+        if (typeof e.data !== 'string') {
+            //Probably a message from a browser plugin
+            return;
+        }
+
         let data = encoding.jsonParse(e.data);
 
 
@@ -99,7 +104,11 @@ export class emsForm
             }
             return;
         }
-
+        
+        if (data.instruction === undefined) {
+            return;
+        }
+        
         switch (data.instruction) {
             case 'form':
             case 'validation-error':
@@ -149,12 +158,12 @@ export class emsForm
         this.postMessage(msg);
     }
 
-    onSendConfirmation(data)
+    onSendConfirmation(data, token)
     {
         this.postMessage({
             'instruction': 'send-confirmation',
             'data': data,
-            'token': security.createToken(data['form[_token]'], this.difficulty)
+            'token': security.createToken(token, this.difficulty)
         });
     }
 
