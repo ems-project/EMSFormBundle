@@ -27,6 +27,7 @@ class Time extends AbstractField
         $options['input'] = 'string';
         $options['input_format'] = 'H:i';
         $options['html5'] = false;
+
         return $options;
     }
 }

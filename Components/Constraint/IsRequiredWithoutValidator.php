@@ -4,25 +4,23 @@ namespace EMS\FormBundle\Components\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class IsRequiredWithoutValidator extends AbstractConstraintValidator
 {
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $value The value that should be validated
+     * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
     public function validate($value, Constraint $constraint)
     {
-
         if (!$constraint instanceof IsRequiredWithout) {
             throw new UnexpectedTypeException($constraint, IsRequiredWithout::class);
         }
 
         if (\is_null($constraint->otherField)) {
-            throw new \InvalidArgumentException(sprintf('The %s::$otherField parameter value is not valid.', \get_class($constraint)));
+            throw new \InvalidArgumentException(\sprintf('The %s::$otherField parameter value is not valid.', \get_class($constraint)));
         }
 
         if (!$this->isRequiredWithout($value, $constraint->otherField)) {

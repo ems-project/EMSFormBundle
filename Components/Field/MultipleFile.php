@@ -19,7 +19,7 @@ class MultipleFile extends File
     protected function getValidationConstraints(): array
     {
         $constraints = parent::getValidationConstraints();
-        $countConstraints = array_filter($constraints, function (Constraint $constraint) {
+        $countConstraints = \array_filter($constraints, function (Constraint $constraint) {
             return $constraint instanceof Count;
         });
 
@@ -27,10 +27,10 @@ class MultipleFile extends File
             return $constraints;
         }
 
-        $otherConstraints = array_filter($constraints, function (Constraint $constraint) {
+        $otherConstraints = \array_filter($constraints, function (Constraint $constraint) {
             return !$constraint instanceof Count;
         });
 
-        return array_merge($countConstraints, [new All(['constraints' => $otherConstraints])]);
+        return \array_merge($countConstraints, [new All(['constraints' => $otherConstraints])]);
     }
 }

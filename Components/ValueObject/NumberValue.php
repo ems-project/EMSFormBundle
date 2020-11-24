@@ -27,11 +27,12 @@ class NumberValue
 
     private function filterNumbers(string $number): string
     {
-        preg_match_all('!\d+!', $number, $matches);
+        \preg_match_all('!\d+!', $number, $matches);
         $digits = '';
         foreach ($matches[0] as $digit) {
             $digits .= $digit;
         }
+
         return $digits;
     }
 

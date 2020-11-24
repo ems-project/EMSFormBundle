@@ -39,7 +39,7 @@ final class EndpointManager
             }
         }
 
-        throw new \Exception(sprintf('Endpoint type "%s" not found!', $endpoint->getType()));
+        throw new \Exception(\sprintf('Endpoint type "%s" not found!', $endpoint->getType()));
     }
 
     public function getEndpointByFieldName(string $fieldName): EndpointInterface
@@ -50,7 +50,7 @@ final class EndpointManager
             }
         }
 
-        throw new \Exception(sprintf('No endpoint found for form field %s', $fieldName));
+        throw new \Exception(\sprintf('No endpoint found for form field %s', $fieldName));
     }
 
     /**
@@ -58,13 +58,13 @@ final class EndpointManager
      */
     private function loadEndpoints(): array
     {
-        if (count($this->endpoints) > 0) {
+        if (\count($this->endpoints) > 0) {
             return $this->endpoints;
         }
 
         foreach ($this->config as $config) {
             try {
-                 $this->endpoints[] = new Endpoint($config);
+                $this->endpoints[] = new Endpoint($config);
             } catch (\Exception $e) {
                 $this->logger->error('invalid endpoint configuration', [
                     'config' => $config,

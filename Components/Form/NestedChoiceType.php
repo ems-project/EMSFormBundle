@@ -24,7 +24,7 @@ class NestedChoiceType extends Form
 
         $builder->add('level_0', $field->getFieldClass(), $field->getOptions());
 
-        if ($choices === null) {
+        if (null === $choices) {
             return;
         }
         $builder->addEventSubscriber(new NestedChoiceEventSubscriber($field, $choices));

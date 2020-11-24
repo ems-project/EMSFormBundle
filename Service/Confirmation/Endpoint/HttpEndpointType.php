@@ -56,7 +56,7 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
             $verificationCode = $this->getApiClient()->getFormVerification($confirmValue);
         }
 
-        return is_string($verificationCode) ? $verificationCode : null;
+        return \is_string($verificationCode) ? $verificationCode : null;
     }
 
     public function confirm(EndpointInterface $endpoint, FormConfig $formConfig, string $confirmValue)
@@ -71,7 +71,7 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
                 $formConfig->getTranslationDomain()
             );
 
-            $replaceBody = array_merge(['%message_translation%' => $messageTranslation], $replaceBody);
+            $replaceBody = \array_merge(['%message_translation%' => $messageTranslation], $replaceBody);
         }
 
         $httpRequest = $endpoint->getHttpRequest();
@@ -81,10 +81,10 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
             'body' => $httpRequest->createBody($replaceBody),
         ]);
 
-        $result = json_decode($response->getContent(), true);
+        $result = \json_decode($response->getContent(), true);
 
-        if (!is_array($result) || !isset($result['ResultCode']) || 0 !== $result['ResultCode']) {
-            throw new \Exception(sprintf('Invalid endpoint response %s', $response->getContent()));
+        if (!\is_array($result) || !isset($result['ResultCode']) || 0 !== $result['ResultCode']) {
+            throw new \Exception(\sprintf('Invalid endpoint response %s', $response->getContent()));
         }
 
         return true;
@@ -102,10 +102,10 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
             return $apiVerificationCode;
         }
 
-        $verificationCode =  $this->session->get($this->getSessionKey($confirmValue), null);
+        $verificationCode = $this->session->get($this->getSessionKey($confirmValue), null);
 
-        if ($verificationCode === null) {
-            $verificationCode = \sprintf("%d%05d", \mt_rand(1, 9), \mt_rand(0, 99999));
+        if (null === $verificationCode) {
+            $verificationCode = \sprintf('%d%05d', \mt_rand(1, 9), \mt_rand(0, 99999));
             $this->session->set($this->getSessionKey($confirmValue), $verificationCode);
         }
 

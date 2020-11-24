@@ -11,7 +11,7 @@ final class Endpoint implements EndpointInterface
 {
     /** @var string */
     private $fieldName;
-    /** @var null|string */
+    /** @var string|null */
     private $messageTranslationKey;
     /** @var HttpRequest */
     private $httpRequest;
@@ -65,7 +65,7 @@ final class Endpoint implements EndpointInterface
                 'message_translation_key' => null,
                 'http_request' => [],
                 'type' => HttpEndpointType::NAME,
-                'save_session' => true
+                'save_session' => true,
             ]);
 
         return $optionsResolver;

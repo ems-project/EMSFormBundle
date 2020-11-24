@@ -2,7 +2,6 @@
 
 namespace EMS\FormBundle\Components\Constraint;
 
-use EMS\FormBundle\Components\Validation\CompanyNumber;
 use EMS\FormBundle\Components\ValueObject\BelgiumCompanyNumber;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,7 +12,7 @@ class IsCompanyNumberValidator extends AbstractConstraintValidator
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $value The value that should be validated
+     * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
     public function validate($value, Constraint $constraint)
@@ -28,7 +27,7 @@ class IsCompanyNumberValidator extends AbstractConstraintValidator
             return;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
 
@@ -40,7 +39,7 @@ class IsCompanyNumberValidator extends AbstractConstraintValidator
     }
 
     /**
-     * This number need only 10 numbers and must start with 0 or 1
+     * This number need only 10 numbers and must start with 0 or 1.
      */
     private function isCompanyNumber(string $number): bool
     {

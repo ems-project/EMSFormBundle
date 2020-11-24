@@ -35,7 +35,7 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
         $fieldName = $this->initialFieldName($form);
-        for ($level = 1; $level <= $this->choices->getMaxLevel(); $level++) {
+        for ($level = 1; $level <= $this->choices->getMaxLevel(); ++$level) {
             $fieldName = $this->nextFieldName($fieldName);
             $form->add($fieldName, HiddenType::class);
         }
@@ -46,12 +46,12 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
-        if ($data === null || !is_array($data)) {
+        if (null === $data || !\is_array($data)) {
             return;
         }
 
         foreach ($data as $fieldName => $choice) {
-            if ($choice === "") {
+            if ('' === $choice) {
                 continue;
             }
 
@@ -62,15 +62,16 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
     private function nextFieldName(string $name): string
     {
         $split = \explode('_', $name);
+
         return \sprintf('level_%d', ((int) $split[1] + 1));
     }
 
     private function initialFieldName(FormInterface $form): string
     {
         $fields = $form->all();
-        $firstField =  \reset($fields);
+        $firstField = \reset($fields);
 
-        if ($firstField === false) {
+        if (false === $firstField) {
             return '';
         }
 
@@ -87,7 +88,7 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (count($this->choices->list()) === 0) {
+        if (0 === \count($this->choices->list())) {
             return;
         }
 
