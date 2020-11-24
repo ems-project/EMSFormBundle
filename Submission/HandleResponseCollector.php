@@ -21,11 +21,12 @@ class HandleResponseCollector
 
     public function toJson(): string
     {
-        $responses = array_map(function (AbstractHandleResponse $response) {
-                return $response->getResponse();
+        $responses = \array_map(function (AbstractHandleResponse $response) {
+            return $response->getResponse();
         }, $this->responses);
 
         $json = \json_encode($responses);
-        return $json !== false ? $json : "";
+
+        return false !== $json ? $json : '';
     }
 }

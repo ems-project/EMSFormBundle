@@ -22,21 +22,19 @@ class ForgivingNumberDataTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if ($value === null) {
+        if (null === $value) {
             return;
         }
 
         foreach ($this->transformerClasses as $class) {
             try {
                 $validation = new $class($value);
+
                 return $validation->transform();
             } catch (\Exception $exception) {
                 continue;
             }
         }
-        throw new TransformationFailedException(sprintf(
-            'Is not a valid number "%s"',
-            $value
-        ));
+        throw new TransformationFailedException(\sprintf('Is not a valid number "%s"', $value));
     }
 }

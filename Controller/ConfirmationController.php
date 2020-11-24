@@ -65,11 +65,13 @@ final class ConfirmationController extends AbstractController
         } catch (AccessDeniedHttpException $e) {
             $response['emsStatus'] = 403;
             $response['message'] = $e->getMessage();
+
             return new JsonResponse($response);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
             $response['emsStatus'] = 500;
             $response['message'] = $e->getMessage();
+
             return new JsonResponse($response);
         }
     }

@@ -29,8 +29,8 @@ class FieldConfig implements ElementInterface
 
     public function __construct(string $id, string $name, string $type, string $className, AbstractFormConfig $parentForm)
     {
-        if (!class_exists($className)) {
-            throw new \Exception(sprintf('Error field class "%s" does not exists!', $className));
+        if (!\class_exists($className)) {
+            throw new \Exception(\sprintf('Error field class "%s" does not exists!', $className));
         }
 
         $this->id = $id;
@@ -58,7 +58,7 @@ class FieldConfig implements ElementInterface
 
     public function hasChoices(): bool
     {
-        return ($this->choices instanceof FieldChoicesConfig) && (count($this->choices->list()) > 0);
+        return ($this->choices instanceof FieldChoicesConfig) && (\count($this->choices->list()) > 0);
     }
 
     public function getChoicePlaceholder(): ?string
@@ -79,10 +79,11 @@ class FieldConfig implements ElementInterface
     public function getClass(): string
     {
         $classes = $this->class;
-        if ($this->getChoices() !== null && $this->getChoices()->isMultiLevel()) {
+        if (null !== $this->getChoices() && $this->getChoices()->isMultiLevel()) {
             $classes[] = 'dynamic-choice-select';
         }
-        return implode(' ', $classes);
+
+        return \implode(' ', $classes);
     }
 
     public function getClassName(): string

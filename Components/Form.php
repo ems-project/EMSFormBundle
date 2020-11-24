@@ -94,7 +94,7 @@ class Form extends AbstractType
     {
         $field = $this->createField($element);
         $configOption = ['field_config' => $element];
-        $options = $element->getClassName() !== ChoiceSelectNested::class ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
+        $options = ChoiceSelectNested::class !== $element->getClassName() ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
 
         $builder->add($element->getName(), $field->getFieldClass(), $options);
         $this->addModelTransformers($builder, $element, $field);

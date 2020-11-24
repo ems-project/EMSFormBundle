@@ -12,10 +12,15 @@ interface HandleRequestInterface
     public function addResponse(HandleResponseInterface $response): void;
 
     public function getClass(): string;
+
     public function getForm(): FormInterface;
+
     public function getFormData(): FormData;
+
     public function getFormConfig(): FormConfig;
+
     public function getEndPoint(): string;
+
     public function getMessage(): string;
 
     /**

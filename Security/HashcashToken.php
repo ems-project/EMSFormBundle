@@ -15,7 +15,7 @@ class HashcashToken
 
     public function __construct(string $header, string $token)
     {
-        list($hash, $nonce, $data) = explode('|', $header);
+        list($hash, $nonce, $data) = \explode('|', $header);
 
         $this->hash = $hash;
         $this->nonce = $nonce;
@@ -30,7 +30,7 @@ class HashcashToken
         }
 
         $hashcashLevel = \floor(\log($difficulty, 2) / 4.0);
-        if (!\preg_match(sprintf('/^0{%d}/', $hashcashLevel), $this->hash)) {
+        if (!\preg_match(\sprintf('/^0{%d}/', $hashcashLevel), $this->hash)) {
             return false;
         }
 
