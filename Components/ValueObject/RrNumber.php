@@ -25,7 +25,7 @@ class RrNumber
     const RRN = '/(?<base>(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)(?<dayCounter>\d\d\d))(?<controlNumber>\d\d)/m';
 
     /**
-     * Rijksregisternummer
+     * Rijksregisternummer.
      *
      * Dit nummer wordt uitgereikt door het Rijksregister en bestaat uit 11 cijfers. Het heeft de volgende structuur:
      * •    de eerste 6 cijfers vormen de geboortedatum in het formaat YYMMDD met DD= # dagen, MM= # maanden, YY= # jaren;
@@ -42,7 +42,7 @@ class RrNumber
     public function __construct(string $number)
     {
         $rrn = (new NumberValue($number))->getDigits();
-        preg_match_all(self::RRN, $rrn, $matches, PREG_SET_ORDER, 0);
+        \preg_match_all(self::RRN, $rrn, $matches, PREG_SET_ORDER, 0);
 
         $data = $matches[0];
         $this->base = $data['base'];
@@ -52,8 +52,8 @@ class RrNumber
         $this->dayCounter = $data['dayCounter'];
         $this->controlNumber = $data['controlNumber'];
 
-        if (!$this->validate() || strlen($rrn) > 11) {
-            throw new \Exception(sprintf('invalid rrn data: %s', $number));
+        if (!$this->validate() || \strlen($rrn) > 11) {
+            throw new \Exception(\sprintf('invalid rrn data: %s', $number));
         }
     }
 
@@ -65,7 +65,7 @@ class RrNumber
         $valid = $controlInt === (97 - ($baseInt % 97));
 
         if (!$valid) {
-            $base2000int = (int) sprintf('2%s', $this->base);
+            $base2000int = (int) \sprintf('2%s', $this->base);
             $valid = $controlInt === (97 - ($base2000int % 97));
         }
 
@@ -74,6 +74,6 @@ class RrNumber
 
     public function transform(): string
     {
-        return sprintf('%s%s', $this->base, $this->controlNumber);
+        return \sprintf('%s%s', $this->base, $this->controlNumber);
     }
 }

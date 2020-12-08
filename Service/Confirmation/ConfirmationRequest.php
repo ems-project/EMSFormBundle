@@ -20,13 +20,13 @@ final class ConfirmationRequest
 
     public function __construct(Request $request)
     {
-        $json = json_decode((string) $request->getContent(), true);
+        $json = \json_decode((string) $request->getContent(), true);
 
-        if (json_last_error() !== JSON_ERROR_NONE || !is_array($json)) {
+        if (JSON_ERROR_NONE !== \json_last_error() || !\is_array($json)) {
             throw new \Exception('invalid JSON!');
         }
 
-        $data = $this->resolveJson(array_filter($json));
+        $data = $this->resolveJson(\array_filter($json));
 
         $this->codeField = $data['code-field'];
         $this->locale = $request->getLocale();

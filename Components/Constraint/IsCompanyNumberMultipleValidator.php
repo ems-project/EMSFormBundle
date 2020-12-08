@@ -12,7 +12,7 @@ class IsCompanyNumberMultipleValidator extends AbstractConstraintValidator
     /**
      * Checks if the passed value is valid.
      *
-     * @param mixed $value The value that should be validated
+     * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
     public function validate($value, Constraint $constraint)
@@ -27,7 +27,7 @@ class IsCompanyNumberMultipleValidator extends AbstractConstraintValidator
             return;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new UnexpectedValueException($value, 'string');
         }
 
@@ -39,7 +39,7 @@ class IsCompanyNumberMultipleValidator extends AbstractConstraintValidator
     }
 
     /**
-     * This list of numbers should be constructed as a combination of multiple CompanyNumbers
+     * This list of numbers should be constructed as a combination of multiple CompanyNumbers.
      */
     private function isCompanyNumberMultiple(string $number): bool
     {

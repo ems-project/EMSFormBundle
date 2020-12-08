@@ -14,24 +14,26 @@ class SymfonyFormFieldsByNameArray
 
     public function getFieldIdsJson(array $exclude = []): string
     {
-        if (count($this->fields) === 0) {
-            return "";
+        if (0 === \count($this->fields)) {
+            return '';
         }
 
         $json = \json_encode(\array_diff(\array_keys($this->flattenWithKeys($this->fields)), $exclude));
-        return $json === false ? "" : $json;
+
+        return false === $json ? '' : $json;
     }
 
     private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = [])
     {
         foreach ($array as $key => $value) {
             if (\is_array($value)) {
-                $result = $this->flattenWithKeys($value, $childPrefix, $root . $key . $childPrefix, $result);
+                $result = $this->flattenWithKeys($value, $childPrefix, $root.$key.$childPrefix, $result);
                 continue;
             }
 
-            $result[ $root . $key ] = $value;
+            $result[$root.$key] = $value;
         }
+
         return $result;
     }
 }

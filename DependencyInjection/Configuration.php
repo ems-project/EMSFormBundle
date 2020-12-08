@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->variableNode('hashcash_difficulty')->defaultValue(16384)->end()
                 ->variableNode('endpoints')
+                    ->defaultValue([])
                     ->example('[{"field_name":"send_confirmation","http_request":{"url":"https://api.example.test/v1/send/sms","headers":{"Content-Type":"application/json"},"body":"{\"To\": \"%value%\", \"Message\": \"%verification_code%\"}"}}]')
                 ->end()
                 ->arrayNode('instance')

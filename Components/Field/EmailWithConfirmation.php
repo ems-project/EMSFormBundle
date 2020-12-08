@@ -20,7 +20,7 @@ class EmailWithConfirmation extends AbstractField
     public function getOptions(): array
     {
         $label = $this->config->getLabel() ?? '';
-        $confirmLabel = lcfirst($label);
+        $confirmLabel = \lcfirst($label);
 
         $options = parent::getOptions();
         $options['type'] = EmailType::class;
@@ -34,7 +34,7 @@ class EmailWithConfirmation extends AbstractField
             'label_attr' => $this->getLabelAttributes('_second'),
             'label_translation_parameters' => ['%field%' => $confirmLabel],
             'translation_domain' => 'validators',
-            'attr' => ['class' => sprintf('%s, repeated', $options['attr']['class'])],
+            'attr' => ['class' => \sprintf('%s, repeated', $options['attr']['class'])],
             ];
         $options['invalid_message'] = 'The "{{field1}}" and "Confirm {{field2}}" fields must match.';
         $options['invalid_message_parameters'] = [

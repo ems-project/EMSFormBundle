@@ -39,7 +39,7 @@ class IsExpressionValidator extends ConstraintValidator
         $form = $this->context->getRoot();
 
         return $this->expressionService->evaluateToBool($expression, [
-            'data' => $form->getData()
+            'data' => $form->getData(),
         ]);
     }
 }

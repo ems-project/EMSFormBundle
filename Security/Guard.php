@@ -27,6 +27,7 @@ class Guard
     {
         $formData = $request->get('form', []);
         $submittedToken = $formData['_token'] ?? null;
+
         return $this->checkToken($request, $submittedToken);
     }
 
@@ -34,9 +35,11 @@ class Guard
     {
         try {
             $this->validateHashcash($request, $token);
+
             return true;
         } catch (\Exception $e) {
             $this->logger->error('guard check valid', [$e]);
+
             return false;
         }
     }
@@ -47,13 +50,13 @@ class Guard
             return;
         }
 
-        if (! \is_string($token)) {
+        if (!\is_string($token)) {
             throw new \Exception('guard check validation requires a non empty string csrf token in the submitted token');
         }
 
         $header = $request->headers->get('x-hashcash');
 
-        if (! \is_string($header)) {
+        if (!\is_string($header)) {
             throw new \Exception('x-hashcash header missing');
         }
 

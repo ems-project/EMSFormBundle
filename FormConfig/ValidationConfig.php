@@ -17,8 +17,8 @@ class ValidationConfig
 
     public function __construct(string $id, string $name, string $className, $defaultValue = null, $value = null)
     {
-        if (!class_exists($className)) {
-            throw new \Exception(sprintf('Error validation class "%s" does not exists!', $className));
+        if (!\class_exists($className)) {
+            throw new \Exception(\sprintf('Error validation class "%s" does not exists!', $className));
         }
 
         $this->id = $id;

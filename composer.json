@@ -29,6 +29,7 @@
 		"twig/twig" : "~2.10.0"
 	},
 	"require-dev" : {
+		"friendsofphp/php-cs-fixer" : "^2.16",
 		"mockery/mockery" : "^0.9",
 		"phpmd/phpmd": "2.8.2",
 		"phpstan/phpstan": "^0.11",
@@ -50,8 +51,7 @@
 		}
 	},
 	"scripts": {
-		"phpcs": "phpcs --standard=phpcs.xml.dist --extensions=php,lib,inc",
-		"phpcbf": "phpcbf --standard=phpcs.xml.dist --extensions=php,lib,inc",
+		"phpcs": "php-cs-fixer fix",
 		"phpstan": "phpstan analyse .",
 		"phpmd": "./vendor/bin/phpmd . html ./phpmd.xml.dist --suffixes php --exclude vendor --ignore-violations-on-exit --reportfile phpmd.html",
 		"phpmd-win": "vendor\\bin\\phpmd %cd% html phpmd.xml.dist --suffixes php --exclude %cd%\\vendor --ignore-violations-on-exit --reportfile phpmd.html",

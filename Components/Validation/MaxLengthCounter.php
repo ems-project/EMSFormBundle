@@ -8,7 +8,7 @@ class MaxLengthCounter extends MaxLength
     {
         return [
             'maxlength' => $this->value,
-            'class' => ['counter']
+            'class' => ['counter'],
         ];
     }
 }

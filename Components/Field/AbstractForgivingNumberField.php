@@ -3,7 +3,6 @@
 namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\DataTransformers\ForgivingNumberDataTransformer;
-use EMS\FormBundle\Components\ValueObject\NumberValue;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
