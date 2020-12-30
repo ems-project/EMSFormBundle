@@ -15,7 +15,7 @@
 	"require" : {
 		"php" : "^7.2",
 		"ext-json": "*",
-		"elasticms/client-helper-bundle" : "^3.3",
+		"elasticms/client-helper-bundle" : "^3.4",
 		"symfony/form": "^4.4",
 		"symfony/framework-bundle": "^4.4",
 		"symfony/http-foundation": "^4.4",
