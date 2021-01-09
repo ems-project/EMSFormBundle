@@ -39,19 +39,23 @@ class FormConfigFactory
 
         $cache = null;
         foreach ($contentTypes as $contentType) {
-            $cache = $contentType->getCacheItem($ouuid);
-            if (null === $cache) {
+            $cacheItem = $contentType->getCacheItem($ouuid);
+            if (null === $cacheItem) {
                 break;
+            }
+            if ($cacheItem instanceof FormConfig) {
+                $cache = $cacheItem;
             }
         }
         if ($cache instanceof FormConfig) {
             return $cache;
         }
 
-        $formConfig = $this->build($ouuid, $locale);
+        $cache = $formConfig = $this->build($ouuid, $locale);
         foreach ($contentTypes as $contentType) {
-            $contentType->setCacheItem($ouuid, $formConfig);
+            $contentType->setCacheItem($ouuid, $cache);
             $this->client->cacheContentType($contentType);
+            $cache = true;
         }
 
         return $formConfig;
