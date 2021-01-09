@@ -3,12 +3,12 @@
 namespace EMS\FormBundle\FormConfig;
 
 use EMS\ClientHelperBundle\Helper\Cache\CacheHelper;
+use EMS\ClientHelperBundle\Helper\ContentType\ContentType;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\Document;
 use EMS\CommonBundle\Common\EMSLink;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\CacheItem;
 
 class FormConfigFactory
 {
@@ -35,33 +35,47 @@ class FormConfigFactory
 
     public function create(string $ouuid, string $locale): FormConfig
     {
-        $lastChangeDate = $this->getLastChangeDate();
-        $cacheKey = $this->client->getCacheKey(\sprintf('formconfig_%s_%s_', $ouuid, $locale));
+        $contentTypes = $this->getContentTypes();
 
-        /** @var CacheItem $cacheItem */
-        $cacheItem = $this->cacheHelper->get($cacheKey);
-
-        if ($this->cacheHelper->isValid($cacheItem, $lastChangeDate)) {
-            $cacheData = $this->cacheHelper->getData($cacheItem);
-
-            if (isset($cacheData['form_config'])) {
-                return $cacheData['form_config'];
+        $cache = null;
+        foreach ($contentTypes as $contentType) {
+            $cache = $contentType->getCacheItem($ouuid);
+            if (null === $cache) {
+                break;
             }
+        }
+        if ($cache instanceof FormConfig) {
+            return $cache;
         }
 
         $formConfig = $this->build($ouuid, $locale);
-        $this->cacheHelper->save($cacheItem, ['form_config' => $formConfig]);
+        foreach ($contentTypes as $contentType) {
+            $contentType->setCacheItem($ouuid, $formConfig);
+            $this->client->cacheContentType($contentType);
+        }
 
         return $formConfig;
     }
 
-    private function getLastChangeDate(): \DateTime
+    /**
+     * @return ContentType[]
+     */
+    private function getContentTypes(): array
     {
-        $types = \array_values(\array_filter($this->emsConfig, function ($k) {
-            return 'type' === \substr($k, 0, 4);
+        $contentTypes = [];
+        $types = \array_values(\array_filter($this->emsConfig, function ($name) {
+            return 'type' === \substr($name, 0, 4);
         }, ARRAY_FILTER_USE_KEY));
 
-        return $this->client->getLastChangeDate(\implode(',', $types));
+        foreach ($types as $type) {
+            $contentType = $this->client->getContentType($type);
+            if (null === $contentType) {
+                continue;
+            }
+            $contentTypes[] = $contentType;
+        }
+
+        return $contentTypes;
     }
 
     private function build(string $ouuid, string $locale): FormConfig
