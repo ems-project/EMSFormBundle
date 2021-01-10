@@ -2,66 +2,74 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-use EMS\ClientHelperBundle\Helper\Cache\CacheHelper;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
-use EMS\CommonBundle\Common\Document;
 use EMS\CommonBundle\Common\EMSLink;
+use EMS\CommonBundle\Elasticsearch\Document\Document;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\CacheItem;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class FormConfigFactory
 {
-    /** @var ClientRequest */
-    private $client;
-    /** @var CacheHelper */
-    private $cacheHelper;
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var array */
-    private $emsConfig;
+    private ClientRequest $client;
+    private AdapterInterface $cache;
+    private LoggerInterface $logger;
+    /** @var array<string, string> */
+    private array $emsConfig;
 
     public function __construct(
         ClientRequestManager $manager,
-        CacheHelper $cacheHelper,
+        AdapterInterface $cache,
         LoggerInterface $logger,
         array $emsConfig
     ) {
         $this->client = $manager->getDefault();
-        $this->cacheHelper = $cacheHelper;
+        $this->cache = $cache;
         $this->logger = $logger;
         $this->emsConfig = $emsConfig;
     }
 
     public function create(string $ouuid, string $locale): FormConfig
     {
-        $lastChangeDate = $this->getLastChangeDate();
+        $validityTags = $this->getValidityTags();
         $cacheKey = $this->client->getCacheKey(\sprintf('formconfig_%s_%s_', $ouuid, $locale));
+        $cacheItem = $this->cache->getItem($cacheKey);
 
-        /** @var CacheItem $cacheItem */
-        $cacheItem = $this->cacheHelper->get($cacheKey);
+        if ($cacheItem->isHit()) {
+            $data = $cacheItem->get();
 
-        if ($this->cacheHelper->isValid($cacheItem, $lastChangeDate)) {
-            $cacheData = $this->cacheHelper->getData($cacheItem);
+            $cacheValidityTags = $data['validity_tags'] ?? null;
+            $formConfig = $data['form_config'] ?? null;
 
-            if (isset($cacheData['form_config'])) {
-                return $cacheData['form_config'];
+            if ($formConfig && $cacheValidityTags === $validityTags) {
+                return $formConfig;
             }
         }
 
         $formConfig = $this->build($ouuid, $locale);
-        $this->cacheHelper->save($cacheItem, ['form_config' => $formConfig]);
+
+        $this->cache->save($cacheItem->set([
+            'validity_tags' => $validityTags,
+            'form_config' => $formConfig,
+        ]));
 
         return $formConfig;
     }
 
-    private function getLastChangeDate(): \DateTime
+    private function getValidityTags(): string
     {
-        $types = \array_values(\array_filter($this->emsConfig, function ($k) {
-            return 'type' === \substr($k, 0, 4);
-        }, ARRAY_FILTER_USE_KEY));
+        $validityTags = '';
+        foreach ($this->emsConfig as $key => $value) {
+            if ('type' !== \substr($key, 0, 4)) {
+                continue;
+            }
 
-        return $this->client->getLastChangeDate(\implode(',', $types));
+            if (null !== $contentType = $this->client->getContentType($value)) {
+                $validityTags .= $contentType->getCacheValidityTag();
+            }
+        }
+
+        return $validityTags;
     }
 
     private function build(string $ouuid, string $locale): FormConfig
@@ -109,7 +117,7 @@ class FormConfigFactory
 
         $source = $choices->getSource();
         $fieldChoicesConfig = new FieldChoicesConfig(
-            $choices->getOuuid(),
+            $choices->getId(),
             $decoder($source['values']),
             $decoder($source['labels_'.$locale])
         );
@@ -129,7 +137,7 @@ class FormConfigFactory
             try {
                 $validation = $this->getDocument($v['validation'], ['name', 'classname', 'default_value']);
                 $fieldConfig->addValidation(new ValidationConfig(
-                    $validation->getOuuid(),
+                    $validation->getId(),
                     $validation->getSource()['name'],
                     $validation->getSource()['classname'],
                     ($validation->getSource()['default_value'] ?? null),
@@ -154,7 +162,7 @@ class FormConfigFactory
             case $this->emsConfig['type-form-field']:
                 return $this->createFieldConfig($element, $locale, $config);
             case $this->emsConfig['type-form-markup']:
-                return new MarkupConfig($element->getOuuid(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
+                return new MarkupConfig($element->getId(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
             case $this->emsConfig['type-form-subform']:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
@@ -178,7 +186,7 @@ class FormConfigFactory
     {
         $source = $document->getSource();
         $fieldType = $this->getDocument($source['type'], ['name', 'class', 'classname', 'validations'])->getSource();
-        $fieldConfig = new FieldConfig($document->getOuuid(), $source['name'], $fieldType['name'], $fieldType['classname'], $config);
+        $fieldConfig = new FieldConfig($document->getId(), $source['name'], $fieldType['name'], $fieldType['classname'], $config);
 
         $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
@@ -205,7 +213,7 @@ class FormConfigFactory
     {
         $source = $document->getSource();
         $subFormConfig = new SubFormConfig(
-            $document->getOuuid(),
+            $document->getId(),
             $locale,
             $translationDomain,
             $source['name'],
@@ -224,7 +232,7 @@ class FormConfigFactory
             throw new \LogicException(\sprintf('Document type "%s" not found!', $emsLink));
         }
 
-        return new Document($document['_type'], $document['_id'], $document['_source']);
+        return Document::fromArray($document);
     }
 
     /**
@@ -234,34 +242,30 @@ class FormConfigFactory
      */
     private function getElements(array $emsLinks): array
     {
-        $emsLinks = \array_map(function (string $emsLink) {
-            return EMSLink::fromText($emsLink);
-        }, $emsLinks);
-        $types = [
-            $this->emsConfig['type-form-field'],
-            $this->emsConfig['type-form-markup'],
-            $this->emsConfig['type-form-subform'],
-        ];
+        $emsLinks = \array_map(fn ($emsLink) => EMSLink::fromText($emsLink), $emsLinks);
 
-        $search = $this->client->search($types, [
-            'size' => \count($emsLinks),
-            'query' => [
-                'terms' => [
-                    '_id' => \array_map(function (EMSLink $emsLink) {
-                        return $emsLink->getOuuid();
-                    }, $emsLinks),
-                ],
-            ],
-        ])['hits']['hits'];
+        $documentIds = \array_reduce($emsLinks, function (array $carry, EMSLink $emsLink) {
+            $carry[$emsLink->getContentType()][] = $emsLink->getOuuid();
+            return $carry;
+        }, []);
 
-        return \array_filter(\array_map(function (EMSLink $emsLink) use ($search) {
-            foreach ($search as $hit) {
-                if ($hit['_id'] === $emsLink->getOuuid()) {
-                    return new Document($hit['_type'], $hit['_id'], $hit['_source']);
-                }
+        $documents = [];
+        foreach ($documentIds as $contentType => $ouuids) {
+            $search = $this->client->getByOuuids($contentType, $ouuids);
+            $documents = \array_merge($documents, $search['hits']['hits'] ?? []);
+        }
+
+        $indexedDocuments = \array_reduce($documents, function (array $carry, array $hit) {
+            $carry[$hit['_id']] = Document::fromArray($hit);
+
+            return $carry;
+        }, []);
+
+        return \array_reduce($emsLinks, function (array $carry, EMSLink $emsLink) use ($indexedDocuments) {
+            if ($indexedDocuments[$emsLink->getOuuid()]) {
+                $carry[] = $indexedDocuments[$emsLink->getOuuid()];
             }
-
-            return null;
-        }, $emsLinks));
+            return $carry;
+        }, []);
     }
 }
