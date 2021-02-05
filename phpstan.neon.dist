@@ -6,6 +6,6 @@ parameters:
         - %currentWorkingDirectory%/src
     excludes_analyse:
         - %currentWorkingDirectory%/vendor/*
-        - %currentWorkingDirectory%/DependencyInjection/Configuration.php
+        - %currentWorkingDirectory%/src/DependencyInjection/Configuration.php
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
