@@ -246,6 +246,7 @@ class FormConfigFactory
 
         $documentIds = \array_reduce($emsLinks, function (array $carry, EMSLink $emsLink) {
             $carry[$emsLink->getContentType()][] = $emsLink->getOuuid();
+
             return $carry;
         }, []);
 
@@ -265,6 +266,7 @@ class FormConfigFactory
             if ($indexedDocuments[$emsLink->getOuuid()]) {
                 $carry[] = $indexedDocuments[$emsLink->getOuuid()];
             }
+
             return $carry;
         }, []);
     }

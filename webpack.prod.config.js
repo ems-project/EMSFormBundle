@@ -6,12 +6,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     mode: 'production',
     entry: {
-        'form': './Resources/assets/js/form.js',
-        'formDebug': './Resources/assets/js/formDebug.js',
-        'debug': './Resources/assets/js/debug.js',
-        'backend': './Resources/assets/js/backend.js',
-        'dynamicFields': './Resources/assets/js/dynamicFields.js',
-        'validation': './Resources/assets/js/validation.js'
+        'form': './src/Resources/assets/js/form.js',
+        'formDebug': './src/Resources/assets/js/formDebug.js',
+        'debug': './src/Resources/assets/js/debug.js',
+        'backend': './src/Resources/assets/js/backend.js',
+        'dynamicFields': './src/Resources/assets/js/dynamicFields.js',
+        'validation': './src/Resources/assets/js/validation.js'
     },
     plugins: [
         new ManifestPlugin({'publicPath': 'bundles/emsform/'}),
@@ -24,7 +24,7 @@ module.exports = {
     ],
     output: {
         filename: 'js/[name].js',
-        path: path.resolve(__dirname, 'Resources/public')
+        path: path.resolve(__dirname, 'src/Resources/public')
     },
     module: {
         rules: [

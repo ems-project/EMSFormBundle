@@ -39,7 +39,7 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"EMS\\FormBundle\\" : ""
+			"EMS\\FormBundle\\" : "src/"
 		},
 		"exclude-from-classmap" : [
 			"tests/"
