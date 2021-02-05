@@ -621,6 +621,11 @@ parameters:
 			path: src/DependencyInjection/EMSFormExtension.php
 
 		-
+			message: "#^Method EMS\\\\FormBundle\\\\EMSFormBundle\\:\\:build\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/EMSFormBundle.php
+
+		-
 			message: "#^Method EMS\\\\FormBundle\\\\Form\\\\Extension\\\\ConfirmationExtension\\:\\:buildView\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
 			count: 1
 			path: src/Form/Extension/ConfirmationExtension.php
