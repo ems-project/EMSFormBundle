@@ -16,7 +16,7 @@ class IsNissInszValidator extends AbstractConstraintValidator
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsNissInsz) {
             throw new UnexpectedTypeException($constraint, IsNissInsz::class);

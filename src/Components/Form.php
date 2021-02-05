@@ -29,7 +29,7 @@ class Form extends AbstractType
         $this->configFactory = $configFactory;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $config = $this->getConfig($options);
 
@@ -42,14 +42,14 @@ class Form extends AbstractType
         }
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['form_config'] = $options['config'];
 
         parent::buildView($view, $form, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 

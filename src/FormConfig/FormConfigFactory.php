@@ -107,7 +107,7 @@ class FormConfigFactory
         }
     }
 
-    private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
+    private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale): void
     {
         $choices = $this->getDocument($emsLink, ['values', 'labels_'.$locale, 'choice_sort']);
 

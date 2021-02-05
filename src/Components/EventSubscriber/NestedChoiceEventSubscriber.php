@@ -23,7 +23,8 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         $this->choices = $choices;
     }
 
-    public static function getSubscribedEvents()
+    /** @return string[] */
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'onPreSetData',
@@ -31,7 +32,7 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onPreSetData(FormEvent $event)
+    public function onPreSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $fieldName = $this->initialFieldName($form);
@@ -41,7 +42,7 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onPreSubmit(FormEvent $event)
+    public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();
         $form = $event->getForm();
