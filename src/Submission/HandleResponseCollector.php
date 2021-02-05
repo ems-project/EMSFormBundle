@@ -7,13 +7,14 @@ namespace EMS\FormBundle\Submission;
 class HandleResponseCollector
 {
     /** @var HandleResponseInterface[] */
-    private $responses = [];
+    private array $responses = [];
 
     public function addResponse(HandleResponseInterface $response): void
     {
         $this->responses[] = $response;
     }
 
+    /** @return HandleResponseInterface[] */
     public function getResponses(): array
     {
         return $this->responses;

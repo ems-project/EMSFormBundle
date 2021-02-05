@@ -67,6 +67,9 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         return \sprintf('level_%d', ((int) $split[1] + 1));
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
     private function initialFieldName(FormInterface $form): string
     {
         $fields = $form->all();
@@ -79,6 +82,9 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
         return $firstField->getName();
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
     private function addField(string $fieldName, string $choice, FormInterface $form): void
     {
         $options = $this->field->getOptions();

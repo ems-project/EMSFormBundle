@@ -29,6 +29,10 @@ class Form extends AbstractType
         $this->configFactory = $configFactory;
     }
 
+    /**
+     * @param FormBuilderInterface<FormBuilderInterface> $builder
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $config = $this->getConfig($options);
@@ -42,6 +46,10 @@ class Form extends AbstractType
         }
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['form_config'] = $options['config'];
@@ -74,6 +82,7 @@ class Form extends AbstractType
         ;
     }
 
+    /** @param array<string, mixed> $options */
     private function getConfig(array $options): AbstractFormConfig
     {
         if (isset($options['config'])) {
@@ -90,6 +99,9 @@ class Form extends AbstractType
         return new $class($config);
     }
 
+    /**
+     * @param FormBuilderInterface<FormBuilderInterface> $builder
+     */
     private function addField(FormBuilderInterface $builder, FieldConfig $element): void
     {
         $field = $this->createField($element);
@@ -100,6 +112,9 @@ class Form extends AbstractType
         $this->addModelTransformers($builder, $element, $field);
     }
 
+    /**
+     * @param FormBuilderInterface<FormBuilderInterface> $builder
+     */
     private function addModelTransformers(FormBuilderInterface $builder, ElementInterface $element, FieldInterface $field): void
     {
         if ($field instanceof AbstractForgivingNumberField) {

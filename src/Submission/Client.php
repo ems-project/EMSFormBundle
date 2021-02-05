@@ -11,18 +11,22 @@ use Symfony\Component\Form\FormInterface;
 
 class Client
 {
-    /** @var ClientRequest */
-    private $clientRequest;
-
-    /** @var \Traversable */
+    private ClientRequest $clientRequest;
+    /** @var \Traversable<AbstractHandler> */
     private $handlers;
 
+    /** @param \Traversable<AbstractHandler> $handlers */
     public function __construct(ClientRequest $clientRequest, \Traversable $handlers)
     {
         $this->clientRequest = $clientRequest;
         $this->handlers = $handlers;
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     *
+     * @return array<string, string>
+     */
     public function submit(FormInterface $form, string $ouuid): array
     {
         /** @var FormConfig $formConfig */

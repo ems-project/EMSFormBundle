@@ -14,6 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ConfirmationExtension extends AbstractTypeExtension
 {
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
@@ -25,6 +29,7 @@ final class ConfirmationExtension extends AbstractTypeExtension
         $view->vars['confirmation_value_field'] = $isVerificationCode->field;
     }
 
+    /** @param array<string, mixed> $options */
     private function getVerificationCodeConstraint(array $options): ?IsVerificationCode
     {
         foreach ($options['constraints'] as $constraint) {
@@ -42,6 +47,7 @@ final class ConfirmationExtension extends AbstractTypeExtension
         $resolver->setDefaults(['confirmation_value_field' => null]);
     }
 
+    /** @return string[] */
     public function getExtendedTypes(): iterable
     {
         return [NumberType::class, HiddenType::class];

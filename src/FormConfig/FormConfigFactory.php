@@ -6,6 +6,7 @@ use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\EMSLink;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
+use phpDocumentor\Reflection\Types\Array_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
@@ -17,6 +18,7 @@ class FormConfigFactory
     /** @var array<string, string> */
     private array $emsConfig;
 
+    /** @param array<string, string> $emsConfig */
     public function __construct(
         ClientRequestManager $manager,
         AdapterInterface $cache,
@@ -129,6 +131,10 @@ class FormConfigFactory
         $fieldConfig->setChoices($fieldChoicesConfig);
     }
 
+    /**
+     * @param array<array> $typeValidations
+     * @param array<array> $fieldValidations
+     */
     private function addFieldValidations(FieldConfig $fieldConfig, array $typeValidations = [], array $fieldValidations = []): void
     {
         $allValidations = \array_merge($typeValidations, $fieldValidations);
@@ -168,6 +174,7 @@ class FormConfigFactory
         }
     }
 
+    /** @param string[] $elementEmsLinks */
     private function createElements(AbstractFormConfig $config, array $elementEmsLinks, string $locale): void
     {
         $elements = $this->getElements($elementEmsLinks);
@@ -224,6 +231,7 @@ class FormConfigFactory
         return $subFormConfig;
     }
 
+    /** @param string[] $fields */
     private function getDocument(string $emsLink, array $fields = []): Document
     {
         $document = $this->client->getByEmsKey($emsLink, $fields);

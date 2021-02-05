@@ -10,5 +10,6 @@ interface ValidationInterface
 
     public function getConstraint(): Constraint;
 
+    /** @return array<string, mixed> */
     public function getHtml5Attribute(): array;
 }
