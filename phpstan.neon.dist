@@ -1,5 +1,8 @@
 parameters:
+    paths:
+        - %currentWorkingDirectory%/src
     excludes_analyse:
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/DependencyInjection/Configuration.php
-    level: 7
+    level: 8
+    inferPrivatePropertyTypeFromConstructor: true
