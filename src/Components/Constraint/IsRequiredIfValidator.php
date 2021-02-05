@@ -31,7 +31,7 @@ class IsRequiredIfValidator extends ConstraintValidator
 
     private function isRequiredIf(string $expression): bool
     {
-        /** @var FormInterface $form */
+        /** @var FormInterface<FormInterface> $form */
         $form = $this->context->getRoot();
         $values = ['data' => $form->getData()];
 

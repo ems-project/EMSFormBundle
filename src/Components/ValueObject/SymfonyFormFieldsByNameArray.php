@@ -4,14 +4,16 @@ namespace EMS\FormBundle\Components\ValueObject;
 
 class SymfonyFormFieldsByNameArray
 {
-    /** @var array */
+    /** @var mixed[] */
     private $fields;
 
+    /** @param mixed[] $fields */
     public function __construct(array $fields)
     {
         $this->fields = $fields;
     }
 
+    /** @param string[] $exclude */
     public function getFieldIdsJson(array $exclude = []): string
     {
         if (0 === \count($this->fields)) {
@@ -23,7 +25,11 @@ class SymfonyFormFieldsByNameArray
         return false === $json ? '' : $json;
     }
 
-    /** @return mixed[] */
+    /**
+     * @param mixed[] $array
+     *
+     * @return mixed[]
+     */
     private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = []): array
     {
         foreach ($array as $key => $value) {

@@ -4,28 +4,19 @@ namespace EMS\FormBundle\FormConfig;
 
 class FieldConfig implements ElementInterface
 {
-    /** @var string */
-    private $id;
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $type;
-    /** @var array */
-    private $class = [];
-    /** @var string */
-    private $className;
-    /** @var ?string */
-    private $defaultValue;
-    /** @var ?string */
-    private $label;
-    /** @var ?string */
-    private $help;
+    private string $id;
+    private string $name;
+    private string $type;
+    /** @var string[] */
+    private array $class = [];
+    private string $className;
+    private ?string $defaultValue;
+    private ?string $label;
+    private ?string $help;
     /** @var ValidationConfig[] */
-    private $validations = [];
-    /** @var ?FieldChoicesConfig */
-    private $choices;
-    /** @var AbstractFormConfig */
-    private $parentForm;
+    private array $validations = [];
+    private ?FieldChoicesConfig $choices;
+    private AbstractFormConfig $parentForm;
 
     public function __construct(string $id, string $name, string $type, string $className, AbstractFormConfig $parentForm)
     {
@@ -66,6 +57,7 @@ class FieldConfig implements ElementInterface
         return $this->choices ? $this->choices->getPlaceHolder() : null;
     }
 
+    /** @return mixed[] */
     public function getChoiceList(): array
     {
         return $this->choices ? $this->choices->list() : [];

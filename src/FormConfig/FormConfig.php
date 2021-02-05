@@ -6,14 +6,13 @@ use EMS\ClientHelperBundle\Helper\Twig\TwigLoader;
 
 class FormConfig extends AbstractFormConfig
 {
-    /** @var array */
-    private $domains = [];
-    /** @var string */
-    private $template;
-    /** @var array */
-    private $themes = [];
-    /** @var array */
-    private $submissions = [];
+    /** @var string[] */
+    private array $domains = [];
+    private string $template;
+    /** @var string[] */
+    private array $themes = [];
+    /** @var SubmissionConfig[] */
+    private array $submissions = [];
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
@@ -33,11 +32,13 @@ class FormConfig extends AbstractFormConfig
         \array_unshift($this->themes, $theme);
     }
 
+    /** @return string[] */
     public function getDomains(): array
     {
         return $this->domains;
     }
 
+    /** @return SubmissionConfig[] */
     public function getSubmissions(): array
     {
         return $this->submissions;
@@ -48,11 +49,13 @@ class FormConfig extends AbstractFormConfig
         return $this->template;
     }
 
+    /** @return string[] */
     public function getThemes(): array
     {
         return $this->themes;
     }
 
+    /** @param SubmissionConfig[] $submissions */
     public function setSubmissions(array $submissions): void
     {
         $this->submissions = $submissions;

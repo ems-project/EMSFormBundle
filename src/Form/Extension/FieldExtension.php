@@ -12,6 +12,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FieldExtension extends AbstractTypeExtension
 {
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
@@ -29,6 +33,7 @@ final class FieldExtension extends AbstractTypeExtension
         ]);
     }
 
+    /** @return string[] */
     public function getExtendedTypes(): iterable
     {
         return [FormType::class];

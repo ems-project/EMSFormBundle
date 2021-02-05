@@ -8,17 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class HttpRequest
 {
-    /** @var string */
-    private $method;
-    /** @var string */
-    private $url;
-    /** @var array */
-    private $headers;
-    /** @var string */
-    private $body;
-    /** @var array */
-    private $options;
+    private string $method;
+    private string $url;
+    /** @var mixed[] */
+    private array $headers;
+    private string $body;
+    /** @var array<string, mixed> $options */
+    private array $options;
 
+    /** @param array<string, mixed> $config */
     public function __construct(array $config)
     {
         $this->method = $config['method'] ?? Request::METHOD_POST;
@@ -38,16 +36,19 @@ final class HttpRequest
         return $this->url;
     }
 
+    /** @return mixed[] */
     public function getHeaders(): array
     {
         return $this->headers;
     }
 
+    /** @return mixed[] */ 
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /** @param array<string, string> $replace */
     public function createBody(array $replace): string
     {
         return \str_replace(\array_keys($replace), \array_values($replace), $this->body);

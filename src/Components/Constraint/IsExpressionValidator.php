@@ -35,7 +35,7 @@ class IsExpressionValidator extends ConstraintValidator
 
     private function evaluate(string $expression): bool
     {
-        /** @var FormInterface $form */
+        /** @var FormInterface<FormInterface> $form */
         $form = $this->context->getRoot();
 
         return $this->expressionService->evaluateToBool($expression, [

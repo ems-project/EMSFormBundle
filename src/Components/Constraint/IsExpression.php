@@ -12,7 +12,8 @@ class IsExpression extends Constraint
     public ?string $expression;
     public string $message = 'This value is not valid.';
 
-    public function getRequiredOptions()
+    /** @return string[] */
+    public function getRequiredOptions(): array
     {
         return ['expression'];
     }

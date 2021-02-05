@@ -54,6 +54,11 @@ final class ConfirmationRequest
         return $this->value;
     }
 
+    /**
+     * @param mixed[] $json
+     *
+     * @return mixed[]
+     */
     private function resolveJson(array $json): array
     {
         $jsonResolver = new OptionsResolver();

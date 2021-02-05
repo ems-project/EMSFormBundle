@@ -13,6 +13,7 @@ abstract class AbstractForgivingNumberField extends AbstractField
         return TextType::class;
     }
 
+    /** @return string[] */
     public function getTransformerClasses(): array
     {
         return [];
