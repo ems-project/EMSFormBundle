@@ -1,39 +1,9 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsBelgiumPhoneNumberValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsBelgiumPhoneNumberValidator.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsBelgiumPhoneNumberValidator\\:\\:isBelgiumPhoneNumber\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsBelgiumPhoneNumberValidator.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsCompanyNumberMultipleValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsCompanyNumberMultipleValidator.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsCompanyNumberValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsCompanyNumberValidator.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsEmailMultipleValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsEmailMultipleValidator.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsExpression\\:\\:getRequiredOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Components/Constraint/IsExpression.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsExpressionValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsExpressionValidator.php
 
 		-
 			message: "#^Parameter \\#1 \\$expression of method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsExpressionValidator\\:\\:evaluate\\(\\) expects string, string\\|null given\\.$#"
@@ -46,24 +16,9 @@ parameters:
 			path: src/Components/Constraint/IsExpressionValidator.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsNissInszValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsNissInszValidator.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsOnssRszValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsOnssRszValidator.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsRequiredIf\\:\\:getRequiredOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Components/Constraint/IsRequiredIf.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsRequiredIfValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsRequiredIfValidator.php
 
 		-
 			message: "#^Parameter \\#1 \\$expression of method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsRequiredIfValidator\\:\\:isRequiredIf\\(\\) expects string, string\\|null given\\.$#"
@@ -81,19 +36,9 @@ parameters:
 			path: src/Components/Constraint/IsRequiredIfValidator.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsRequiredWithoutValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsRequiredWithoutValidator.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsVerificationCode\\:\\:getRequiredOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Components/Constraint/IsVerificationCode.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Constraint\\\\IsVerificationCodeValidator\\:\\:validate\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Constraint/IsVerificationCodeValidator.php
 
 		-
 			message: "#^PHPDoc tag @var for variable \\$field has no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
@@ -124,21 +69,6 @@ parameters:
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\DataTransformers\\\\ForgivingNumberDataTransformer\\:\\:__construct\\(\\) has parameter \\$transformerClasses with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Components/DataTransformers/ForgivingNumberDataTransformer.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\EventSubscriber\\\\NestedChoiceEventSubscriber\\:\\:getSubscribedEvents\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Components/EventSubscriber/NestedChoiceEventSubscriber.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\EventSubscriber\\\\NestedChoiceEventSubscriber\\:\\:onPreSetData\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/EventSubscriber/NestedChoiceEventSubscriber.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\EventSubscriber\\\\NestedChoiceEventSubscriber\\:\\:onPreSubmit\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/EventSubscriber/NestedChoiceEventSubscriber.php
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\EventSubscriber\\\\NestedChoiceEventSubscriber\\:\\:initialFieldName\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
@@ -281,11 +211,6 @@ parameters:
 			path: src/Components/Field/Time.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\:\\:buildForm\\(\\) has parameter \\$builder with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormBuilderInterface\\.$#"
 			count: 1
 			path: src/Components/Form.php
@@ -296,22 +221,12 @@ parameters:
 			path: src/Components/Form.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\:\\:buildView\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\:\\:buildView\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
 			count: 1
 			path: src/Components/Form.php
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\:\\:buildView\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Components/Form.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Components/Form.php
 
@@ -331,11 +246,6 @@ parameters:
 			path: src/Components/Form.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\MarkupType\\:\\:buildView\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form/MarkupType.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\MarkupType\\:\\:buildView\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
 			count: 1
 			path: src/Components/Form/MarkupType.php
@@ -344,16 +254,6 @@ parameters:
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\MarkupType\\:\\:buildView\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Components/Form/MarkupType.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\MarkupType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form/MarkupType.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\NestedChoiceType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form/NestedChoiceType.php
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\NestedChoiceType\\:\\:buildForm\\(\\) has parameter \\$builder with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormBuilderInterface\\.$#"
@@ -366,22 +266,12 @@ parameters:
 			path: src/Components/Form/NestedChoiceType.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\NestedChoiceType\\:\\:buildView\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form/NestedChoiceType.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\NestedChoiceType\\:\\:buildView\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
 			count: 1
 			path: src/Components/Form/NestedChoiceType.php
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\NestedChoiceType\\:\\:buildView\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Components/Form/NestedChoiceType.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\NestedChoiceType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Components/Form/NestedChoiceType.php
 
@@ -401,22 +291,12 @@ parameters:
 			path: src/Components/Form/SendConfirmationType.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\SubFormType\\:\\:buildView\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/Form/SubFormType.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\SubFormType\\:\\:buildView\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
 			count: 1
 			path: src/Components/Form/SubFormType.php
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\SubFormType\\:\\:buildView\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Components/Form/SubFormType.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\Form\\\\SubFormType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Components/Form/SubFormType.php
 
@@ -476,16 +356,6 @@ parameters:
 			path: src/Components/Validation/VerificationCode.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\BelgiumPhoneNumber\\:\\:validateCountryCode\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/ValueObject/BelgiumPhoneNumber.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\BelgiumPhoneNumber\\:\\:validateLongDistanceCode\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Components/ValueObject/BelgiumPhoneNumber.php
-
-		-
 			message: "#^Property EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\SymfonyFormFieldsByNameArray\\:\\:\\$fields type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Components/ValueObject/SymfonyFormFieldsByNameArray.php
@@ -497,11 +367,6 @@ parameters:
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\SymfonyFormFieldsByNameArray\\:\\:getFieldIdsJson\\(\\) has parameter \\$exclude with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Components/ValueObject/SymfonyFormFieldsByNameArray.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\SymfonyFormFieldsByNameArray\\:\\:flattenWithKeys\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Components/ValueObject/SymfonyFormFieldsByNameArray.php
 
@@ -551,19 +416,9 @@ parameters:
 			path: src/Controller/DebugController.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\DependencyInjection\\\\EMSFormExtension\\:\\:load\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/DependencyInjection/EMSFormExtension.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\DependencyInjection\\\\EMSFormExtension\\:\\:load\\(\\) has parameter \\$configs with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/DependencyInjection/EMSFormExtension.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\EMSFormBundle\\:\\:build\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/EMSFormBundle.php
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\Form\\\\Extension\\\\ConfirmationExtension\\:\\:buildView\\(\\) has parameter \\$form with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormInterface\\.$#"
@@ -686,11 +541,6 @@ parameters:
 			path: src/FormConfig/FieldConfig.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FieldConfig\\:\\:addValidation\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/FieldConfig.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FieldConfig\\:\\:getChoiceList\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/FormConfig/FieldConfig.php
@@ -746,11 +596,6 @@ parameters:
 			path: src/FormConfig/FormConfigFactory.php
 
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FormConfigFactory\\:\\:addFieldChoices\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/FormConfigFactory.php
-
-		-
 			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FormConfigFactory\\:\\:addFieldValidations\\(\\) has parameter \\$fieldValidations with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/FormConfig/FormConfigFactory.php
@@ -782,11 +627,6 @@ parameters:
 
 		-
 			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\ValidationConfig\\:\\:__construct\\(\\) has parameter \\$value with no typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/ValidationConfig.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\ValidationConfig\\:\\:getValue\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/FormConfig/ValidationConfig.php
 

@@ -23,7 +23,8 @@ class SymfonyFormFieldsByNameArray
         return false === $json ? '' : $json;
     }
 
-    private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = [])
+    /** @return mixed[] */
+    private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = []): array
     {
         foreach ($array as $key => $value) {
             if (\is_array($value)) {

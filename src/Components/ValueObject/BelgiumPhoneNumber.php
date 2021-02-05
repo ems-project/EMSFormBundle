@@ -50,7 +50,7 @@ class BelgiumPhoneNumber
         return false;
     }
 
-    private function validateCountryCode(string $numberType)
+    private function validateCountryCode(string $numberType): bool
     {
         if (self::INTERNATIONAL_ZEROS === $numberType) {
             return 2 === \strpos($this->transform(), '32');
@@ -67,7 +67,7 @@ class BelgiumPhoneNumber
         return false;
     }
 
-    private function validateLongDistanceCode(string $numberType)
+    private function validateLongDistanceCode(string $numberType): bool
     {
         if (self::INTERNATIONAL_ZEROS === $numberType) {
             return 4 !== \strpos($this->transform(), '0', 2);

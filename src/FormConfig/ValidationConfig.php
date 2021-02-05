@@ -38,6 +38,7 @@ class ValidationConfig
         return $this->name;
     }
 
+    /** @return mixed|null */
     public function getValue()
     {
         return $this->value ?? $this->defaultValue;

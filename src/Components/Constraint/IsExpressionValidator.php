@@ -18,7 +18,7 @@ class IsExpressionValidator extends ConstraintValidator
         $this->expressionService = $expressionService;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsExpression) {
             throw new UnexpectedTypeException($constraint, IsExpression::class);

@@ -19,7 +19,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
         $this->confirmationService = $confirmationService;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value || !$constraint instanceof IsVerificationCode) {
             return;

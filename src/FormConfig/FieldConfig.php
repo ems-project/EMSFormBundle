@@ -51,7 +51,7 @@ class FieldConfig implements ElementInterface
         $this->class[] = $class;
     }
 
-    public function addValidation(ValidationConfig $validation)
+    public function addValidation(ValidationConfig $validation): void
     {
         $this->validations[$validation->getName()] = $validation;
     }
