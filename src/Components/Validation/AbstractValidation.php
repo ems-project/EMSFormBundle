@@ -6,6 +6,7 @@ use EMS\FormBundle\FormConfig\ValidationConfig;
 
 abstract class AbstractValidation implements ValidationInterface
 {
+    /** @var mixed|null */
     protected $value;
 
     public function __construct(ValidationConfig $config)
