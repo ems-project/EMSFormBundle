@@ -9,8 +9,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsRequiredIf extends Constraint
 {
-    public $expression;
-    public $message = 'This value should not be blank.';
+    public ?string $expression;
+    public string $message = 'This value should not be blank.';
 
     public function getRequiredOptions()
     {
