@@ -16,7 +16,7 @@ class NestedChoiceType extends Form
 {
     /**
      * @param FormBuilderInterface<FormBuilderInterface> $builder
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>                       $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -36,7 +36,7 @@ class NestedChoiceType extends Form
 
     /**
      * @param FormInterface<FormInterface> $form
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {

@@ -6,7 +6,6 @@ use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
 use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
 use EMS\CommonBundle\Common\EMSLink;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
-use phpDocumentor\Reflection\Types\Array_;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
@@ -173,7 +172,7 @@ class FormConfigFactory
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
 
-        throw new \RuntimeException(sprintf('Implementation for configuration with name %s is missing', $element->getContentType()));
+        throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element->getContentType()));
     }
 
     /** @param string[] $elementEmsLinks */

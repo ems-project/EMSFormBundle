@@ -14,7 +14,7 @@ final class FieldExtension extends AbstractTypeExtension
 {
     /**
      * @param FormInterface<FormInterface> $form
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
