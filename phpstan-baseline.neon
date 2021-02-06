@@ -1,22 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\SymfonyFormFieldsByNameArray\\:\\:flattenWithKeys\\(\\) has parameter \\$childPrefix with no typehint specified\\.$#"
-			count: 1
-			path: src/Components/ValueObject/SymfonyFormFieldsByNameArray.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\SymfonyFormFieldsByNameArray\\:\\:flattenWithKeys\\(\\) has parameter \\$result with no typehint specified\\.$#"
-			count: 1
-			path: src/Components/ValueObject/SymfonyFormFieldsByNameArray.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\Components\\\\ValueObject\\\\SymfonyFormFieldsByNameArray\\:\\:flattenWithKeys\\(\\) has parameter \\$root with no typehint specified\\.$#"
-			count: 1
-			path: src/Components/ValueObject/SymfonyFormFieldsByNameArray.php
-
-		-
 			message: "#^Parameter \\#2 \\$cmp_function of function uksort expects callable\\(mixed, mixed\\)\\: int, Closure\\(mixed, mixed\\)\\: int\\|false given\\.$#"
+			count: 1
+			path: src/FormConfig/FieldChoicesConfig.php
+
+		-
+			message: "#^Variable \\$b in PHPDoc tag @var does not exist\\.$#"
 			count: 1
 			path: src/FormConfig/FieldChoicesConfig.php
 
@@ -24,34 +14,4 @@ parameters:
 			message: "#^Parameter \\#2 \\$cmp_function of function uasort expects callable\\(mixed, mixed\\)\\: int, Closure\\(mixed, mixed\\)\\: int\\|false given\\.$#"
 			count: 1
 			path: src/FormConfig/FieldChoicesConfig.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FieldConfig\\:\\:setHelp\\(\\) has parameter \\$help with no typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/FieldConfig.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FieldConfig\\:\\:setLabel\\(\\) has parameter \\$label with no typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/FieldConfig.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\FormConfigFactory\\:\\:createElement\\(\\) should return EMS\\\\FormBundle\\\\FormConfig\\\\ElementInterface but return statement is missing\\.$#"
-			count: 1
-			path: src/FormConfig/FormConfigFactory.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\ValidationConfig\\:\\:__construct\\(\\) has parameter \\$defaultValue with no typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/ValidationConfig.php
-
-		-
-			message: "#^Method EMS\\\\FormBundle\\\\FormConfig\\\\ValidationConfig\\:\\:__construct\\(\\) has parameter \\$value with no typehint specified\\.$#"
-			count: 1
-			path: src/FormConfig/ValidationConfig.php
-
-		-
-			message: "#^Parameter \\#1 \\$name of method EMS\\\\FormBundle\\\\FormConfig\\\\AbstractFormConfig\\:\\:getElementByName\\(\\) expects string, int\\|string given\\.$#"
-			count: 1
-			path: src/Submission/FormData.php
 

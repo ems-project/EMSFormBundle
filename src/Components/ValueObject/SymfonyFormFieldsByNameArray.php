@@ -27,10 +27,11 @@ class SymfonyFormFieldsByNameArray
 
     /**
      * @param mixed[] $array
+     * @param mixed[] $result
      *
      * @return mixed[]
      */
-    private function flattenWithKeys(array $array, $childPrefix = '_', $root = '', $result = []): array
+    private function flattenWithKeys(array $array, string $childPrefix = '_', string $root = '', array $result = []): array
     {
         foreach ($array as $key => $value) {
             if (\is_array($value)) {
