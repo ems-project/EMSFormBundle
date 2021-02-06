@@ -33,8 +33,12 @@ class IsExpressionValidator extends ConstraintValidator
         }
     }
 
-    private function evaluate(string $expression): bool
+    private function evaluate(?string $expression): bool
     {
+        if (null === $expression) {
+            return true;
+        }
+
         /** @var FormInterface<FormInterface> $form */
         $form = $this->context->getRoot();
 

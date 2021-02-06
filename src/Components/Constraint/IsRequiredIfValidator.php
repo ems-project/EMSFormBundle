@@ -29,8 +29,12 @@ class IsRequiredIfValidator extends ConstraintValidator
         }
     }
 
-    private function isRequiredIf(string $expression): bool
+    private function isRequiredIf(?string $expression): bool
     {
+        if (null === $expression) {
+            return true;
+        }
+
         /** @var FormInterface<FormInterface> $form */
         $form = $this->context->getRoot();
         $values = ['data' => $form->getData()];
@@ -50,6 +54,7 @@ class IsRequiredIfValidator extends ConstraintValidator
         }
     }
 
+    /** @param mixed $value */
     private function isEmpty($value): bool
     {
         if (null === $value || '' === $value) {
