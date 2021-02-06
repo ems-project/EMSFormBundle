@@ -34,7 +34,7 @@ final class FormDataFile
         return $this->file;
     }
 
-    /** @return array<string, int|null|string> */
+    /** @return array<string, int|string|null> */
     public function toArray(): array
     {
         $fileName = $this->getFilename($this->file, $this->formElement->getName());

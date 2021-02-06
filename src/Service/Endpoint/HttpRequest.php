@@ -13,7 +13,7 @@ final class HttpRequest
     /** @var mixed[] */
     private array $headers;
     private string $body;
-    /** @var array<string, mixed> $options */
+    /** @var array<string, mixed> */
     private array $options;
 
     /** @param array<string, mixed> $config */
@@ -42,7 +42,7 @@ final class HttpRequest
         return $this->headers;
     }
 
-    /** @return mixed[] */ 
+    /** @return mixed[] */
     public function getOptions(): array
     {
         return $this->options;

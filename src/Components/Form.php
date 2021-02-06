@@ -31,7 +31,7 @@ class Form extends AbstractType
 
     /**
      * @param FormBuilderInterface<FormBuilderInterface> $builder
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>                       $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -48,7 +48,7 @@ class Form extends AbstractType
 
     /**
      * @param FormInterface<FormInterface> $form
-     * @param array<string, mixed> $options
+     * @param array<string, mixed>         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
