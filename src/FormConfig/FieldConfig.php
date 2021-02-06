@@ -126,12 +126,12 @@ class FieldConfig implements ElementInterface
         $this->defaultValue = $defaultValue;
     }
 
-    public function setHelp($help): void
+    public function setHelp(?string $help): void
     {
         $this->help = $help;
     }
 
-    public function setLabel($label): void
+    public function setLabel(?string $label): void
     {
         $this->label = $label;
     }

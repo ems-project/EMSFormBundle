@@ -172,6 +172,8 @@ class FormConfigFactory
             case $this->emsConfig['type-form-subform']:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
+
+        throw new \RuntimeException(sprintf('Implementation for configuration with name %s is missing', $element->getContentType()));
     }
 
     /** @param string[] $elementEmsLinks */

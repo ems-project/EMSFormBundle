@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 final class FormData
 {
     private FormConfig $formConfig;
-    /** @var array<int|string, mixed> */
+    /** @var array<string, mixed> */
     private array $raw;
 
     /**
@@ -27,7 +27,7 @@ final class FormData
         $this->raw = \is_array($formData) ? $formData : [];
     }
 
-    /** @return array<int|string, mixed> */
+    /** @return array<string, mixed> */
     public function raw(): array
     {
         return $this->raw;
