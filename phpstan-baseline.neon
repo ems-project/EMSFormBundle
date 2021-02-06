@@ -71,16 +71,6 @@ parameters:
 			path: src/FormConfig/ValidationConfig.php
 
 		-
-			message: "#^Cannot access offset '_source' on array\\<string, mixed\\>\\|false\\.$#"
-			count: 1
-			path: src/Submission/Client.php
-
-		-
-			message: "#^Parameter \\#1 \\$emsLink of method EMS\\\\ClientHelperBundle\\\\Helper\\\\Elasticsearch\\\\ClientRequest\\:\\:getByEmsKey\\(\\) expects string, EMS\\\\FormBundle\\\\FormConfig\\\\SubmissionConfig given\\.$#"
-			count: 1
-			path: src/Submission/Client.php
-
-		-
 			message: "#^Parameter \\#1 \\$name of method EMS\\\\FormBundle\\\\FormConfig\\\\AbstractFormConfig\\:\\:getElementByName\\(\\) expects string, int\\|string given\\.$#"
 			count: 1
 			path: src/Submission/FormData.php

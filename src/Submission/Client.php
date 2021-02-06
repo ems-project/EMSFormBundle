@@ -36,6 +36,9 @@ class Client
         $responseCollector = new HandleResponseCollector();
 
         foreach ($formConfig->getSubmissions() as $submissionConfig) {
+            if (!$submissionConfig instanceof SubmissionConfig) {
+                continue;
+            }
             $handleRequest = new HandleRequest($form, $formConfig, $responseCollector, $submissionConfig);
             $handler = $this->getHandler($handleRequest);
 
@@ -76,8 +79,17 @@ class Client
         $submissions = [];
 
         foreach ($emsLinkSubmissions as $emsLinkSubmission) {
-            $submission = $this->clientRequest->getByEmsKey($emsLinkSubmission, [])['_source'];
-            $submissions[] = new SubmissionConfig($submission['type'], $submission['endpoint'], $submission['message']);
+            if ($emsLinkSubmission instanceof SubmissionConfig) {
+                $submissions[] = $emsLinkSubmission; //This is here to please phpstan, caused because we use the $config->submissions property for initialisation and the end result!
+                continue;
+            }
+
+            $submission = $this->clientRequest->getByEmsKey($emsLinkSubmission, []);
+            if (false === $submission) {
+                continue;
+            }
+
+            $submissions[] = new SubmissionConfig($submission['_source']['type'], $submission['_source']['endpoint'], $submission['_source']['message']);
         }
 
         $config->setSubmissions($submissions);
