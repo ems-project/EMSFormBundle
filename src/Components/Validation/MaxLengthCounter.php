@@ -7,7 +7,7 @@ class MaxLengthCounter extends MaxLength
     public function getHtml5Attribute(): array
     {
         return [
-            'maxlength' => $this->value,
+            'data-maxlength' => $this->value,
             'class' => ['counter'],
         ];
     }
