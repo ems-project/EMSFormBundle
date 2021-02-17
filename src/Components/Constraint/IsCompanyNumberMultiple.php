@@ -6,5 +6,5 @@ use Symfony\Component\Validator\Constraint;
 
 class IsCompanyNumberMultiple extends Constraint
 {
-    public $message = 'At least one company registration number "{{string}}" is invalid.';
+    public string $message = 'At least one company registration number "{{string}}" is invalid.';
 }

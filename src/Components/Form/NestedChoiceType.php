@@ -14,7 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NestedChoiceType extends Form
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @param FormBuilderInterface<FormBuilderInterface> $builder
+     * @param array<string, mixed>                       $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var FieldConfig $config */
         $config = $this->getFieldConfig($options);
@@ -30,12 +34,16 @@ class NestedChoiceType extends Form
         $builder->addEventSubscriber(new NestedChoiceEventSubscriber($field, $choices));
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed>         $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['field_config'] = $options['field_config'];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setRequired(['field_config'])
@@ -43,6 +51,7 @@ class NestedChoiceType extends Form
         ;
     }
 
+    /** @param array<string, mixed> $options */
     private function getFieldConfig(array $options): FieldConfig
     {
         if (isset($options['field_config'])) {

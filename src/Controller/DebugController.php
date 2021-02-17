@@ -13,17 +13,16 @@ use Twig\Environment;
 
 class DebugController extends AbstractFormController
 {
-    /** @var FormFactory */
-    private $formFactory;
-    /** @var Client */
-    private $client;
-    /** @var Environment */
-    private $twig;
-    /** @var array */
-    private $locales = [];
-    /** @var RouterInterface */
-    private $router;
+    private FormFactory $formFactory;
+    private Client $client;
+    private Environment $twig;
+    /** @var string[] */
+    private array $locales = [];
+    private RouterInterface $router;
 
+    /**
+     * @param string [] $locales
+     */
     public function __construct(FormFactory $formFactory, Client $client, Environment $twig, RouterInterface $router, array $locales)
     {
         $this->formFactory = $formFactory;

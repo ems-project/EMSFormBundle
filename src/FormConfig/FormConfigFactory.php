@@ -17,6 +17,7 @@ class FormConfigFactory
     /** @var array<string, string> */
     private array $emsConfig;
 
+    /** @param array<string, string> $emsConfig */
     public function __construct(
         ClientRequestManager $manager,
         AdapterInterface $cache,
@@ -107,7 +108,7 @@ class FormConfigFactory
         }
     }
 
-    private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale)
+    private function addFieldChoices(FieldConfig $fieldConfig, string $emsLink, string $locale): void
     {
         $choices = $this->getDocument($emsLink, ['values', 'labels_'.$locale, 'choice_sort']);
 
@@ -129,6 +130,10 @@ class FormConfigFactory
         $fieldConfig->setChoices($fieldChoicesConfig);
     }
 
+    /**
+     * @param array<array> $typeValidations
+     * @param array<array> $fieldValidations
+     */
     private function addFieldValidations(FieldConfig $fieldConfig, array $typeValidations = [], array $fieldValidations = []): void
     {
         $allValidations = \array_merge($typeValidations, $fieldValidations);
@@ -166,8 +171,11 @@ class FormConfigFactory
             case $this->emsConfig['type-form-subform']:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
+
+        throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element->getContentType()));
     }
 
+    /** @param string[] $elementEmsLinks */
     private function createElements(AbstractFormConfig $config, array $elementEmsLinks, string $locale): void
     {
         $elements = $this->getElements($elementEmsLinks);
@@ -224,6 +232,7 @@ class FormConfigFactory
         return $subFormConfig;
     }
 
+    /** @param string[] $fields */
     private function getDocument(string $emsLink, array $fields = []): Document
     {
         $document = $this->client->getByEmsKey($emsLink, $fields);

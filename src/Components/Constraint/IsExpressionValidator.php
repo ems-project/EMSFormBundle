@@ -18,7 +18,7 @@ class IsExpressionValidator extends ConstraintValidator
         $this->expressionService = $expressionService;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsExpression) {
             throw new UnexpectedTypeException($constraint, IsExpression::class);
@@ -33,9 +33,13 @@ class IsExpressionValidator extends ConstraintValidator
         }
     }
 
-    private function evaluate(string $expression): bool
+    private function evaluate(?string $expression): bool
     {
-        /** @var FormInterface $form */
+        if (null === $expression) {
+            return true;
+        }
+
+        /** @var FormInterface<FormInterface> $form */
         $form = $this->context->getRoot();
 
         return $this->expressionService->evaluateToBool($expression, [

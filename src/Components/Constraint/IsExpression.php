@@ -9,10 +9,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsExpression extends Constraint
 {
-    public $expression;
-    public $message = 'This value is not valid.';
+    public ?string $expression;
+    public string $message = 'This value is not valid.';
 
-    public function getRequiredOptions()
+    /** @return string[] */
+    public function getRequiredOptions(): array
     {
         return ['expression'];
     }

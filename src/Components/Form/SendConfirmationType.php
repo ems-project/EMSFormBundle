@@ -20,6 +20,10 @@ class SendConfirmationType extends TextType
         $resolver->setRequired(['value_field', 'token_id', 'ems_translation_domain']);
     }
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed>         $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);

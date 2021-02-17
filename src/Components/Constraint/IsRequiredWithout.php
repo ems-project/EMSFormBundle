@@ -9,6 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsRequiredWithout extends Constraint
 {
-    public $otherField;
-    public $message = 'This field is required when {{otherField}} is not present.';
+    public ?string $otherField;
+    public string $message = 'This field is required when {{otherField}} is not present.';
 }

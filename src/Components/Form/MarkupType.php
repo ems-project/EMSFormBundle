@@ -11,14 +11,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MarkupType extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param FormInterface<FormInterface> $form
+     * @param array<string, mixed>         $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['config'] = $options['config'];
 
         parent::buildView($view, $form, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setRequired('config')
@@ -26,12 +30,12 @@ class MarkupType extends AbstractType
         ;
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return FormType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ems_markup';
     }

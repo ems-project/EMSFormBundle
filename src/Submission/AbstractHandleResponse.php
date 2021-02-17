@@ -4,12 +4,10 @@ namespace EMS\FormBundle\Submission;
 
 abstract class AbstractHandleResponse implements HandleResponseInterface
 {
-    /** @var string */
-    protected $status;
-    /** @var string */
-    protected $data;
-    /** @var array */
-    protected $extra = [];
+    protected string $status;
+    protected string $data;
+    /** @var mixed[] */
+    protected array $extra = [];
 
     const STATUS_SUCCESS = 'success';
     const STATUS_ERROR = 'error';
@@ -23,11 +21,13 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
         $this->data = $data;
     }
 
+    /** @return mixed[] */
     public function getExtra(): array
     {
         return $this->extra;
     }
 
+    /** @param mixed[] $extra */
     public function setExtra(array $extra): void
     {
         $this->extra = $extra;

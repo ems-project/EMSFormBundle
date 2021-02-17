@@ -4,19 +4,20 @@ namespace EMS\FormBundle\FormConfig;
 
 class FieldChoicesConfig
 {
-    /** @var string */
-    private $id;
-    /** @var array */
-    private $values;
-    /** @var array */
-    private $labels;
-    /** @var array */
-    private $choices = [];
-    /** @var ?string */
-    private $placeholder;
-    /** @var ?string */
-    private $sort;
+    private string $id;
+    /** @var mixed[] */
+    private array $values;
+    /** @var mixed[] */
+    private array $labels;
+    /** @var mixed[] */
+    private array $choices = [];
+    private ?string $placeholder;
+    private ?string $sort;
 
+    /**
+     * @param mixed[] $values
+     * @param mixed[] $labels
+     */
     public function __construct(string $id, array $values, array $labels)
     {
         if (\count($labels) > \count($values)) {
@@ -48,6 +49,7 @@ class FieldChoicesConfig
         return \array_flip($list)[$choice] ?? '';
     }
 
+    /** @return array<string, string> */
     public function list(): array
     {
         return $this->combineValuesAndLabels($this->values, $this->labels, $this->choices);
@@ -77,6 +79,7 @@ class FieldChoicesConfig
         $this->sort = $sort;
     }
 
+    /** @param mixed[] $choices */
     private function calculateMaxLevel(array $choices): int
     {
         $level = 0;
@@ -92,6 +95,11 @@ class FieldChoicesConfig
         return $level;
     }
 
+    /**
+     * @param mixed[] $elements
+     *
+     * @return mixed[]
+     */
     private function getTopLevel(array $elements): array
     {
         return \array_map(
@@ -106,6 +114,13 @@ class FieldChoicesConfig
         );
     }
 
+    /**
+     * @param mixed[] $values
+     * @param mixed[] $labels
+     * @param mixed[] $choices
+     *
+     * @return mixed[]
+     */
     private function combineValuesAndLabels(array $values, array $labels, array $choices): array
     {
         foreach ($choices as $choice) {
@@ -134,14 +149,12 @@ class FieldChoicesConfig
     }
 
     /**
-     * @param array<string|int, string> $list
+     * @param array<string, ?string> $list
+     *
+     * @return array<string, ?string>
      */
     private function sort(array $list): array
     {
-        if (null == $list) {
-            return $list;
-        }
-
         $firstKey = \array_key_first($list);
         /** @var string|null $firstValue */
         $firstValue = $list[$firstKey] ?? null;
@@ -152,15 +165,11 @@ class FieldChoicesConfig
 
         if ('label_alpha' === $this->sort) {
             $collator = new \Collator('en');
-            \uksort($list, function ($a, $b) use ($collator) {
-                return $collator->compare($a, $b);
-            });
+            \uksort($list, fn ($a, $b) => \intval($collator->compare($a, $b)));
         }
         if ('value_alpha' === $this->sort) {
             $collator = new \Collator('en');
-            \uasort($list, function ($a, $b) use ($collator) {
-                return $collator->compare($a, $b);
-            });
+            \uasort($list, fn ($a, $b) => \intval($collator->compare($a, $b)));
         }
 
         if (null === $firstValue || '' === $firstValue) {
