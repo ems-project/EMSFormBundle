@@ -10,17 +10,16 @@ use Symfony\Component\Form\FormInterface;
 
 final class HandleRequest implements HandleRequestInterface
 {
-    /** @var FormInterface */
-    private $form;
-    /** @var FormData */
-    private $formData;
-    /** @var FormConfig */
-    private $formConfig;
-    /** @var HandleResponseCollector */
-    private $responseCollector;
-    /** @var SubmissionConfig */
-    private $submissionConfig;
+    /** @var FormInterface<FormInterface> */
+    private FormInterface $form;
+    private FormData $formData;
+    private FormConfig $formConfig;
+    private HandleResponseCollector $responseCollector;
+    private SubmissionConfig $submissionConfig;
 
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
     public function __construct(
         FormInterface $form,
         FormConfig $formConfig,
@@ -44,6 +43,7 @@ final class HandleRequest implements HandleRequestInterface
         return $this->submissionConfig->getClass();
     }
 
+    /** @return FormInterface<FormInterface> */
     public function getForm(): FormInterface
     {
         return $this->form;

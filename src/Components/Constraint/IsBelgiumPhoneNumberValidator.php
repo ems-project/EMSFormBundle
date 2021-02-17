@@ -15,7 +15,7 @@ class IsBelgiumPhoneNumberValidator extends AbstractConstraintValidator
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsBelgiumPhoneNumber) {
             throw new UnexpectedTypeException($constraint, IsBelgiumPhoneNumber::class);
@@ -38,7 +38,7 @@ class IsBelgiumPhoneNumberValidator extends AbstractConstraintValidator
         }
     }
 
-    private function isBelgiumPhoneNumber(string $phone)
+    private function isBelgiumPhoneNumber(string $phone): bool
     {
         return $this->canCreateClass(BelgiumPhoneNumber::class, $phone);
     }

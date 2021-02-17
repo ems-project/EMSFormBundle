@@ -19,7 +19,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
         $this->confirmationService = $confirmationService;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value || !$constraint instanceof IsVerificationCode) {
             return;
@@ -29,7 +29,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
             return;
         }
 
-        /** @var FormInterface $field */
+        /** @var FormInterface<FormInterface> $field */
         $field = $this->context->getObject();
         $verificationCode = $this->confirmationService->getVerificationCode($field->getName(), $confirmValue);
 
@@ -46,7 +46,7 @@ class IsVerificationCodeValidator extends ConstraintValidator
 
     private function getConfirmValue(IsVerificationCode $constraint): ?string
     {
-        /** @var FormInterface $form */
+        /** @var FormInterface<FormInterface> $form */
         $form = $this->context->getRoot();
 
         if (!$form instanceof FormInterface) {
@@ -62,8 +62,15 @@ class IsVerificationCodeValidator extends ConstraintValidator
         return $this->getFieldData($data, $constraint->field);
     }
 
-    private function getFieldData(array $data, string $field): ?string
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function getFieldData(array $data, ?string $field): ?string
     {
+        if (null === $field) {
+            return null;
+        }
+
         foreach ($data as $key => $value) {
             if ($key === $field) {
                 return $value;

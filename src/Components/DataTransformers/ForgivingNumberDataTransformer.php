@@ -7,9 +7,12 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ForgivingNumberDataTransformer implements DataTransformerInterface
 {
-    /** @var array */
-    private $transformerClasses;
+    /** @var string[] */
+    private array $transformerClasses;
 
+    /**
+     * @param string[] $transformerClasses
+     */
     public function __construct(array $transformerClasses)
     {
         $this->transformerClasses = $transformerClasses;

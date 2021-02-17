@@ -4,17 +4,18 @@ namespace EMS\FormBundle\FormConfig;
 
 class ValidationConfig
 {
-    /** @var string */
-    private $id;
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $className;
+    private string $id;
+    private string $name;
+    private string $className;
     /** @var mixed */
     private $defaultValue;
     /** @var mixed */
     private $value;
 
+    /**
+     * @param mixed $defaultValue
+     * @param mixed $value
+     */
     public function __construct(string $id, string $name, string $className, $defaultValue = null, $value = null)
     {
         if (!\class_exists($className)) {
@@ -38,6 +39,7 @@ class ValidationConfig
         return $this->name;
     }
 
+    /** @return mixed|null */
     public function getValue()
     {
         return $this->value ?? $this->defaultValue;

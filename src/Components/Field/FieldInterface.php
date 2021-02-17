@@ -8,5 +8,6 @@ interface FieldInterface
 
     public function getFieldClass(): string;
 
+    /** @return mixed[] */
     public function getOptions(): array;
 }

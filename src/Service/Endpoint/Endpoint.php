@@ -20,6 +20,7 @@ final class Endpoint implements EndpointInterface
     /** @var string */
     private $type;
 
+    /** @param array<string, mixed> $config */
     public function __construct(array $config)
     {
         $config = $this->getOptionsResolver()->resolve($config);

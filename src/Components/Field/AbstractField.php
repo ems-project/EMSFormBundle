@@ -6,6 +6,7 @@ use EMS\FormBundle\Components\Validation\ValidationInterface;
 use EMS\FormBundle\FormConfig\FieldConfig;
 use EMS\FormBundle\FormConfig\SubFormConfig;
 use EMS\FormBundle\FormConfig\ValidationConfig;
+use Symfony\Component\Validator\Constraint;
 
 abstract class AbstractField implements FieldInterface
 {
@@ -23,6 +24,7 @@ abstract class AbstractField implements FieldInterface
         }
     }
 
+    /** @return mixed[] */
     public function getOptions(): array
     {
         return [
@@ -57,6 +59,7 @@ abstract class AbstractField implements FieldInterface
         return new $class($config);
     }
 
+    /** @return string[] */
     protected function getAttributes(): array
     {
         $attributes = \array_merge_recursive($this->getValidationHtml5Attribute(), [
@@ -69,6 +72,7 @@ abstract class AbstractField implements FieldInterface
         return $attributes;
     }
 
+    /** @return string[] */
     protected function getLabelAttributes(string $postfix = ''): array
     {
         $parentForm = $this->config->getParentForm();
@@ -83,11 +87,13 @@ abstract class AbstractField implements FieldInterface
         ];
     }
 
+    /** @return ValidationInterface[] */
     protected function getValidations(): array
     {
         return $this->validations;
     }
 
+    /** @return Constraint[] */
     protected function getValidationConstraints(): array
     {
         return \array_map(function (ValidationInterface $validation) {
@@ -95,6 +101,7 @@ abstract class AbstractField implements FieldInterface
         }, $this->validations);
     }
 
+    /** @return array<array<string>> */
     private function getValidationHtml5Attribute(): array
     {
         $html5Attributes = [];

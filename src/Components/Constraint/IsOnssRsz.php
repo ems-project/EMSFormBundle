@@ -9,5 +9,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsOnssRsz extends Constraint
 {
-    public $message = 'The NSSO number "{{string}}" is invalid.';
+    public string $message = 'The NSSO number "{{string}}" is invalid.';
 }
