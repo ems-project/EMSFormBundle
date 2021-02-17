@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsExpression extends Constraint
 {
-    public ?string $expression;
+    public ?string $expression = null;
     public string $message = 'This value is not valid.';
 
     /** @return string[] */
