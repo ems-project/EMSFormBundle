@@ -2,14 +2,27 @@ import {i18n} from "../modules/translations";
 
 export function addMaxLengthCounter(element) {
     let parent = element.parentElement;
-    let max = parseInt(element.getAttribute('maxlength'));
+    let max = parseInt(element.getAttribute('data-maxlength'));
 
     let spanCounter = document.createElement("small");
-    spanCounter.innerText = i18n.trans('max_length_count', {'count': max});
     parent.appendChild(spanCounter);
 
-    element.addEventListener('keyup', function (){
-        let diff = max - parseInt(this.value.length);
-        spanCounter.innerText = i18n.trans('max_length_count', {'count': diff});
+    maxLengthCounterDiff();
+
+    element.addEventListener('keyup', maxLengthCounterDiff);
+    element.addEventListener('paste', function(){
+      // https://stackoverflow.com/questions/13895059/how-to-alert-after-paste-event-in-javascript
+      setTimeout(function(){maxLengthCounterDiff()}, 0);
     });
+
+    function maxLengthCounterDiff() {
+      let diff = max - parseInt(element.value.length);
+      spanCounter.innerText = i18n.trans('max_length_count', {'count': diff});
+
+      if (diff < 0) {
+        spanCounter.classList.add("text-danger");
+      } else {
+        spanCounter.classList.remove("text-danger");
+      }
+    }
 }
