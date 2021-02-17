@@ -10,12 +10,12 @@ class FieldConfig implements ElementInterface
     /** @var string[] */
     private array $class = [];
     private string $className;
-    private ?string $defaultValue;
-    private ?string $label;
-    private ?string $help;
+    private ?string $defaultValue = null;
+    private ?string $label = null;
+    private ?string $help = null;
     /** @var ValidationConfig[] */
     private array $validations = [];
-    private ?FieldChoicesConfig $choices;
+    private ?FieldChoicesConfig $choices = null;
     private AbstractFormConfig $parentForm;
 
     public function __construct(string $id, string $name, string $type, string $className, AbstractFormConfig $parentForm)
