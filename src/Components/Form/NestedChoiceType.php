@@ -27,7 +27,6 @@ class NestedChoiceType extends Form
         $field = $this->createField($config);
         $fieldOptions = $field->getOptions();
 
-
         if (isset($options['data']['level_0']) && \is_string($options['data']['level_0'])) {
             $fieldOptions['data'] = $options['data']['level_0'];
         }
