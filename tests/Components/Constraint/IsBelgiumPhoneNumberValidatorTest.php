@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function createValidator()
+    protected function createValidator(): IsBelgiumPhoneNumberValidator
     {
         return new IsBelgiumPhoneNumberValidator();
     }
@@ -19,7 +19,7 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getInvalidPhoneNumbers
      */
-    public function testInvalidPhoneNumbers(string $phoneNumber)
+    public function testInvalidPhoneNumbers(string $phoneNumber): void
     {
         $constraint = new IsBelgiumPhoneNumber([
             'message' => 'myMessage',
@@ -32,7 +32,10 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function getInvalidPhoneNumbers()
+    /**
+     * @return string[][]
+     */
+    public function getInvalidPhoneNumbers(): array
     {
         return [
             ['+123456789'],
@@ -52,13 +55,16 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getValidPhoneNumbers
      */
-    public function testValidPhoneNumber(string $phoneNumber)
+    public function testValidPhoneNumber(string $phoneNumber): void
     {
         $this->validator->validate($phoneNumber, new IsBelgiumPhoneNumber());
         $this->assertNoViolation();
     }
 
-    public function getValidPhoneNumbers()
+    /**
+     * @return string[][]
+     */
+    public function getValidPhoneNumbers(): array
     {
         return [
             ['+32470123456'],
@@ -95,13 +101,16 @@ class IsBelgiumPhoneNumberValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getTransformPhoneNumbers
      */
-    public function testTransformPhoneNumbers(string $input, string $output)
+    public function testTransformPhoneNumbers(string $input, string $output): void
     {
         $objectValue = new BelgiumPhoneNumber($input);
         $this->assertEquals($output, $objectValue->transform());
     }
 
-    public function getTransformPhoneNumbers()
+    /**
+     * @return string[][]
+     */
+    public function getTransformPhoneNumbers(): array
     {
         return [
             ['+32490732628', '+32490732628'],
