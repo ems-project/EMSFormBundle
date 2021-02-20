@@ -109,7 +109,7 @@ In order to avoid misrouting of the messages to the wrong form it's important to
 * idMessage corresponds to the empty div that can be used for the messages returned after valid submit through the corresponding iframe.
 * idIframe corresponds to the iframe used to communicate (same value as used by the getElementById function).
 * ouuid corresponds to the id of the form instance, this attribute is required if you plan to instantiate more than one form on the same page
-* defaultData: is an optional attribute that can specify a default content for the form (JSON format)
+* defaultData: is an optional attribute that can specify a default content for the form (JS object format)
 
 ## Callback functions
 
