@@ -7,6 +7,7 @@ use EMS\FormBundle\Components\ValueObject\SymfonyFormFieldsByNameArray;
 use EMS\FormBundle\Security\Guard;
 use EMS\FormBundle\Submission\Client;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,14 +55,26 @@ class FormController extends AbstractFormController
             return new JsonResponse($this->client->submit($form, $ouuid));
         }
 
-        $template = $this->getFormConfig($form)->getTemplate();
+        return $this->generateFormResponse($ouuid, $form);
+    }
 
-        return new JsonResponse([
-            'ouuid' => $ouuid,
-            'instruction' => 'form',
-            'response' => $this->twig->render($template, ['form' => $form->createView()]),
-            'difficulty' => $this->guard->getDifficulty(),
-        ]);
+    public function initForm(Request $request, string $ouuid): JsonResponse
+    {
+        $content = $request->getContent();
+        if (!\is_string($content)) {
+            throw new \RuntimeException('Unexpected non-string request content');
+        }
+        $data = \json_decode($content, true);
+        if (null === $data) {
+            $data = [];
+        }
+        if (!\is_array($data)) {
+            throw new \RuntimeException('Unexpected non-array request data');
+        }
+
+        $form = $this->formFactory->create(Form::class, $data, ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
+
+        return $this->generateFormResponse($ouuid, $form);
     }
 
     public function dynamicFieldAjax(Request $request, string $ouuid): Response
@@ -79,6 +92,21 @@ class FormController extends AbstractFormController
                 'form' => $form->createView(),
             ]),
             'dynamicFields' => $dynamicFields->getFieldIdsJson($excludeFields),
+        ]);
+    }
+
+    /**
+     * @param FormInterface<FormInterface> $form
+     */
+    private function generateFormResponse(string $ouuid, FormInterface $form): JsonResponse
+    {
+        $template = $this->getFormConfig($form)->getTemplate();
+
+        return new JsonResponse([
+            'ouuid' => $ouuid,
+            'instruction' => 'form',
+            'response' => $this->twig->render($template, ['form' => $form->createView()]),
+            'difficulty' => $this->guard->getDifficulty(),
         ]);
     }
 }
