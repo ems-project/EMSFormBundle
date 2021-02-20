@@ -39,9 +39,9 @@ export class emsReceiver
 
         switch (data.instruction) {
             case "form": {
-                xhr.open("GET", this.basePath+"/form/"+this.id+'/'+this.lang);
+                xhr.open("POST", this.basePath+"/init-form/"+this.id+'/'+this.lang);
                 xhr.setRequestHeader("Content-Type",  "application/json");
-                xhr.send();
+                xhr.send(JSON.stringify(data.form));
                 break;
             }
             case "submit": {
