@@ -47,4 +47,19 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
 
         return false === $json ? '' : $json;
     }
+
+    /**
+     * @return array{status: string, data: string, success: string}
+     */
+    public function getSummary(): array
+    {
+        /** @var array{status: string, data: string, success: string} $summary */
+        $summary = \array_merge([
+            'status' => $this->status,
+            'data' => $this->data,
+            'success' => (self::STATUS_SUCCESS === $this->status),
+        ], $this->extra);
+
+        return $summary;
+    }
 }
