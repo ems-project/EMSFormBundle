@@ -99,6 +99,25 @@ Passing a placeholder label "Choose an option" for your choice list is as simple
   "Other"
 ]
 ```
+#### Duplicate values
+If your choice contains duplicate values, they will be transformed to unique integer strings. Having duplicate values should therefore be catched and transformed in the submit twig template.
+
+For example, the value list
+```json
+[
+  "true",
+  "false",
+  "false",
+]
+```
+Will be dynamically transformed to
+```json
+[
+  "0",
+  "1",
+  "2",
+]
+```
 
 ### Choice Select Multiple <a name="choiceselectmultiple"/>
 A list of values that can be chosen from using a select box. The end user is allowed to choose multiple values.
