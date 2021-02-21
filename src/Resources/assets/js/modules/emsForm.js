@@ -8,6 +8,7 @@ export const DEFAULT_CONFIG = {
     idIframe: 'ems-form-iframe',
     idForm: 'ems-form',
     idMessage: 'ems-message',
+    defaultData: null,
     ouuid: false,
     onLoad: function(){ console.log('ems-form loaded'); },
     onSubmit: function(){ console.log('ems-form submit') },
@@ -38,6 +39,7 @@ export class emsForm
         this.onSubmit = config.onSubmit;
         this.onError = config.onError;
         this.onResponse = config.onResponse;
+        this.defaultData = config.defaultData;
         this.onConfirmationResponse = config.onConfirmationResponse;
         this.ouuid = config.ouuid;
 
@@ -57,7 +59,7 @@ export class emsForm
     init()
     {
         if (this.isValid()) {
-            this.postMessage({'instruction': 'form'});
+            this.postMessage({'instruction': 'form', 'form': this.defaultData});
         }
     }
 

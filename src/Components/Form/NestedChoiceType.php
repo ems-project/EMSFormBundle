@@ -25,8 +25,13 @@ class NestedChoiceType extends Form
         $config->setClassName(ChoiceSelect::class);
         $choices = $config->getChoices();
         $field = $this->createField($config);
+        $fieldOptions = $field->getOptions();
 
-        $builder->add('level_0', $field->getFieldClass(), $field->getOptions());
+        if (isset($options['data']['level_0']) && \is_string($options['data']['level_0'])) {
+            $fieldOptions['data'] = $options['data']['level_0'];
+        }
+
+        $builder->add('level_0', $field->getFieldClass(), $fieldOptions);
 
         if (null === $choices) {
             return;
