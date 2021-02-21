@@ -39,7 +39,7 @@ class Form extends AbstractType
 
         foreach ($config->getElements() as $element) {
             if ($element instanceof FieldConfig) {
-                $this->addField($builder, $element);
+                $this->addField($builder, $element, $options['data'][$element->getName()] ?? null);
             } elseif ($element instanceof MarkupConfig || $element instanceof SubFormConfig) {
                 $builder->add($element->getName(), $element->getClassName(), ['config' => $element]);
             }
@@ -101,12 +101,16 @@ class Form extends AbstractType
 
     /**
      * @param FormBuilderInterface<FormBuilderInterface> $builder
+     * @param mixed|null                                 $data
      */
-    private function addField(FormBuilderInterface $builder, FieldConfig $element): void
+    private function addField(FormBuilderInterface $builder, FieldConfig $element, $data): void
     {
         $field = $this->createField($element);
         $configOption = ['field_config' => $element];
         $options = ChoiceSelectNested::class !== $element->getClassName() ? $field->getOptions() : \array_merge($field->getOptions(), $configOption);
+        if (null !== $data) {
+            $options['data'] = $data;
+        }
 
         $builder->add($element->getName(), $field->getFieldClass(), $options);
         $this->addModelTransformers($builder, $element, $field);
