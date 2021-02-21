@@ -10,7 +10,7 @@
         </route>
 
         <route id="emsf_form" path="/form/{ouuid}/{_locale}" methods="POST">
-            <default key="_controller">emsf.controller.form::form</default>
+            <default key="_controller">emsf.controller.form::submitForm</default>
             <default key="_locale">%locale%</default>
         </route>
 

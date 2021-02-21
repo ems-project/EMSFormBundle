@@ -42,7 +42,7 @@ class FormController extends AbstractFormController
         ]));
     }
 
-    public function form(Request $request, string $ouuid): JsonResponse
+    public function submitForm(Request $request, string $ouuid): JsonResponse
     {
         if (!$this->guard->checkForm($request)) {
             throw new AccessDeniedHttpException('access denied');
