@@ -118,7 +118,7 @@ export class emsForm
                 this.difficulty = parseInt(data.difficulty);
                 break;
             case 'submitted':
-                this.elementMessage.innerHTML = data.response;
+                this.insertSummaries(data.summaries);
                 if (typeof this.onResponse === 'function') {
                     this.onResponse(data.response);
                 }
@@ -138,6 +138,23 @@ export class emsForm
                 }
                 return;
         }
+    }
+
+    insertSummaries(summaries)
+    {
+        const listContainer = document.createElement('div');
+        listContainer.setAttribute('class', 'emsform-summaries');
+        const listElement = document.createElement('ul');
+
+        for (let i = 0; i < summaries.length; ++i) {
+            const listItem = document.createElement('li');
+            listItem.setAttribute('class', 'emsform-summary-'+(summaries[i].status));
+            listItem.innerHTML = summaries[i].data;
+            listElement.appendChild(listItem);
+        }
+
+        listContainer.appendChild(listElement);
+        this.elementMessage.appendChild(listContainer);
     }
 
     onSubmitForm(e)
