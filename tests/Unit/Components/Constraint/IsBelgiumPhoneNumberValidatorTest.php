@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace EMS\FormBundle\Tests\Components\Constraint;
+namespace EMS\FormBundle\Tests\Unit\Components\Constraint;
 
 use EMS\FormBundle\Components\Constraint\IsBelgiumPhoneNumber;
 use EMS\FormBundle\Components\Constraint\IsBelgiumPhoneNumberValidator;
