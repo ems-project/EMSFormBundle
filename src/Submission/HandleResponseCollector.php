@@ -30,4 +30,14 @@ class HandleResponseCollector
 
         return false !== $json ? $json : '';
     }
+
+    /**
+     * @return array<array{status: string, data: string, success: string}>
+     */
+    public function getSummaries(): array
+    {
+        return \array_map(function (AbstractHandleResponse $response) {
+            return $response->getSummary();
+        }, $this->responses);
+    }
 }

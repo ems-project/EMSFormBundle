@@ -25,7 +25,7 @@ class Client
     /**
      * @param FormInterface<FormInterface> $form
      *
-     * @return array<string, string>
+     * @return array<string, array<array<string, string>>|string>
      */
     public function submit(FormInterface $form, string $ouuid): array
     {
@@ -58,6 +58,7 @@ class Client
             'instruction' => 'submitted',
             'ouuid' => $ouuid,
             'response' => $responseCollector->toJson(),
+            'summaries' => $responseCollector->getSummaries(),
         ];
     }
 
