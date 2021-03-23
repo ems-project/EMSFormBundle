@@ -8,7 +8,7 @@
         <defaults public="false" />
 
         <service id="emsf.form_config.factory" class="EMS\FormBundle\FormConfig\FormConfigFactory">
-            <argument type="service" id="emsch.manager.client_request"/>
+            <argument type="service" id="EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface"/>
             <argument type="service" id="cache.app" />
             <argument type="service" id="logger" />
             <argument type="string">%emsf.ems_config%</argument>
@@ -28,7 +28,7 @@
         </service>
 
         <service id="emsf.submission.client" class="EMS\FormBundle\Submission\Client">
-            <argument type="service" id="EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest"/>
+            <argument type="service" id="EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface"/>
             <argument type="tagged" tag="emsf.handler"/>
         </service>
         <service id="emsf.security.guard" class="EMS\FormBundle\Security\Guard">
@@ -49,8 +49,8 @@
             <argument type="service" id="logger"/>
         </service>
         <service id="emsf.endpoint.confirmation.http" class="EMS\FormBundle\Service\Confirmation\Endpoint\HttpEndpointType">
-            <argument type="service" id="emsch.api"/>
-            <argument type="service" id="emsch.manager.client_request"/>
+            <argument type="service" id="EMS\ClientHelperBundle\Contracts\Api\ApiServiceInterface"/>
+            <argument type="service" id="EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface"/>
             <argument type="service" id="Symfony\Contracts\HttpClient\HttpClientInterface"/>
             <argument type="service" id="session"/>
             <argument type="service" id="translator"/>

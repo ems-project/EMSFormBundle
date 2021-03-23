@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Submission;
 
-use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
+use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
+use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
 use Symfony\Component\Form\FormInterface;
 
 class Client
 {
-    private ClientRequest $clientRequest;
+    private ClientRequestInterface $clientRequest;
     /** @var \Traversable<AbstractHandler> */
     private $handlers;
 
     /** @param \Traversable<AbstractHandler> $handlers */
-    public function __construct(ClientRequest $clientRequest, \Traversable $handlers)
+    public function __construct(ClientRequestManagerInterface $clientRequestManager, \Traversable $handlers)
     {
-        $this->clientRequest = $clientRequest;
+        $this->clientRequest = $clientRequestManager->getDefault();
         $this->handlers = $handlers;
     }
 
