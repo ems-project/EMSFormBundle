@@ -2,7 +2,7 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-use EMS\ClientHelperBundle\Helper\Twig\TwigLoader;
+use EMS\ClientHelperBundle\Contracts\Templating\TemplatingInterface;
 
 class FormConfig extends AbstractFormConfig
 {
@@ -63,6 +63,6 @@ class FormConfig extends AbstractFormConfig
 
     public function setTemplate(string $template): void
     {
-        $this->template = TwigLoader::PREFIX.'/'.$template;
+        $this->template = TemplatingInterface::PREFIX.'/'.$template;
     }
 }
