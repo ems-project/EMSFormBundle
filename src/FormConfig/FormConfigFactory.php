@@ -2,8 +2,8 @@
 
 namespace EMS\FormBundle\FormConfig;
 
-use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequest;
-use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
+use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
+use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\CommonBundle\Common\EMSLink;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
 use Psr\Log\LoggerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class FormConfigFactory
 {
-    private ClientRequest $client;
+    private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
     /** @var array<string, string> */
@@ -19,7 +19,7 @@ class FormConfigFactory
 
     /** @param array<string, string> $emsConfig */
     public function __construct(
-        ClientRequestManager $manager,
+        ClientRequestManagerInterface $manager,
         AdapterInterface $cache,
         LoggerInterface $logger,
         array $emsConfig
