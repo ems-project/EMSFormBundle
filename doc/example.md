@@ -45,12 +45,6 @@ Include the javascript file "form.js" for sending and receiving [postMessage](ht
 <script type="application/javascript" src="https://emsforms-skeleton.example/bundles/emsform/js/form.js"></script>
 ```
 
-Are you using an EMS-skeletons implementation? There is the ems_manifest filter just for that:
-
-```twig
-<script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/js/form.js"></script>
-```
-
 #### Form validation on the frontend
 Whenever supported the bundle implements html5 attributes to validate the form fields on the frontend.
 
