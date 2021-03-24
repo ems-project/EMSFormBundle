@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Confirmation\Endpoint;
 
-use EMS\ClientHelperBundle\Helper\Api\ApiService;
-use EMS\ClientHelperBundle\Helper\Api\Client;
-use EMS\ClientHelperBundle\Helper\Elasticsearch\ClientRequestManager;
+use EMS\ClientHelperBundle\Contracts\Api\ApiClientInterface;
+use EMS\ClientHelperBundle\Contracts\Api\ApiServiceInterface;
+use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\Service\Endpoint\EndpointInterface;
 use EMS\FormBundle\Service\Endpoint\EndpointTypeInterface;
@@ -16,22 +16,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class HttpEndpointType extends ConfirmationEndpointType implements EndpointTypeInterface
 {
-    /** @var ApiService */
-    private $apiService;
-    /** @var ClientRequestManager */
-    private $clientRequestManager;
-    /** @var HttpClientInterface */
-    private $httpClient;
-    /** @var SessionInterface */
-    private $session;
-    /** @var TranslatorInterface */
-    private $translator;
+    private ApiServiceInterface $apiService;
+    private ClientRequestManagerInterface $clientRequestManager;
+    private HttpClientInterface $httpClient;
+    private SessionInterface $session;
+    private TranslatorInterface $translator;
 
     public const NAME = 'http';
 
     public function __construct(
-        ApiService $apiService,
-        ClientRequestManager $clientRequestManager,
+        ApiServiceInterface $apiService,
+        ClientRequestManagerInterface $clientRequestManager,
         HttpClientInterface $httpClient,
         SessionInterface $session,
         TranslatorInterface $translator
@@ -117,7 +112,7 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
         return \sprintf('EMS_CC_[%s]', $value);
     }
 
-    private function getApiClient(): Client
+    private function getApiClient(): ApiClientInterface
     {
         $apiName = $this->clientRequestManager->getDefault()->getOption('[api][name]');
 
