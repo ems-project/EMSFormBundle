@@ -6,6 +6,6 @@ document.addEventListener('DOMContentLoaded', defaultLoad);
 export function defaultLoad() {
     if (defaultCheck()) {
         let form = new emsForm();
-        form.elementIframe.onload = function() { form.init(); };
+        form.init();
     }
 }

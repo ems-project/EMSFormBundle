@@ -42,17 +42,13 @@ Make sure to use the id `"ems-message"` as this is used by our javascript file t
 ### The javascript file
 Include the javascript file "form.js" for sending and receiving [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) between your website [https://your-website.example] and the form skeleton [https://emsforms-skeleton.example].
 ```html
-<script type="application/javascript" src="https://emsforms-skeleton.example/bundles/emsform/js/form.{hash}.js"></script>
+<script type="application/javascript" src="https://emsforms-skeleton.example/bundles/emsform/js/form.js"></script>
 ```
-Replace the `{hash}` by the current version of the javascript file. 
-This hash can be found in the manifest.json file at https://emsforms-skeleton.example/bundles/emsform/manifest.json
-You should get the hash dynamically from this manifest file! If not, you will get broken links whenever a new release happens on [https://emsforms-skeleton.example].
-
 
 Are you using an EMS-skeletons implementation? There is the ems_manifest filter just for that:
 
 ```twig
-<script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+<script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/js/form.js"></script>
 ```
 
 #### Form validation on the frontend
@@ -80,7 +76,7 @@ However, some fields are custom, and require custom validation. The form.js file
         <div id="ems-message"></div>
     </div>
     <iframe id="ems-form-iframe" src="https://emsforms-skeleton.example/iframe/{ouuid}/{locale}"></iframe>
-    <script src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+    <script src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/js/form.js"></script>
 </body>
 </html>
 ```
@@ -90,14 +86,10 @@ If you want to initialize the form and validations yourself, you can simply chan
 The following twig script shows you how to achieve this; 
 
 ```twig
-    <script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/manifest.json'|ems_manifest('form.js') }}"></script>
+    <script type="application/javascript" src="{{ 'https://emsforms-skeleton.example/bundles/emsform/bundles/emsform/js/form.js' }}"></script>
     <script type="application/javascript">
-        document.getElementById('ems-form-iframe-custom').onload = function() {
-            new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom', 'ouuid': '{ouuid}'}).init(); 
-        };
-        document.getElementById('ems-form-iframe-custom-second').onload = function() {
-            new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', 'ouuid': '{ouuid2}', onLoad: function(){ console.log('foobar') }, defaultData: {'surname': 'Doe'} }).init(); 
-        };
+        new emsForm({ 'idForm': 'form-custom', 'idMessage': 'message-custom', 'idIframe': 'ems-form-iframe-custom', 'ouuid': '{ouuid}'}).init();
+        new emsForm({ 'idForm': 'form-custom-second', 'idMessage': 'message-custom-second', 'idIframe': 'ems-form-iframe-custom-second', 'ouuid': '{ouuid2}', onLoad: function(){ console.log('foobar') }, defaultData: {'surname': 'Doe'} }).init();
     </script>
  ```
 
@@ -122,48 +114,46 @@ Here is an example where the callback functions are used to handle the different
 
 ```twig
     <script type="application/javascript">
-        document.getElementById('ems-form-iframe-custom').onload = function() {
-            new emsForm({ 
-                'idForm': 'form-custom', 
-                'idMessage': 'message-custom', 
-                'idIframe': 'ems-form-iframe-custom',
-                'onLoad': function() {
-                    console.log('My onload function');
-                    $(".custom-file-input").on("change", function() {
-                      var fileName = $(this).val().split("\\").pop();
-                      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-                    });
-                },
-                'onSubmit': function() {
-                    console.log('My submit function');
-                    $('#form-custom').find('input,button').attr('disabled',true);
-                    
-                },
-                'onError': function(errorMessage) {
-                    console.log('My error function:' + errorMessage);
-                    $('#form-custom').html("{{ 'form.submit_error'|trans|e('js') }}".replace('%error%', errorMessage));
-                },
-                'onResponse': function(json) {
-                    console.log('My response function');
-                    var response = JSON.parse(json);
-                    $('#form-custom').html("{{ 'form.submitted'|trans|e('js') }}");
-                    var li = '';
-                    $.each(response, function(i) {
-                        var submit = JSON.parse(this);
-                        if (submit.status === 'success') {
-                            li += "<li>{{ 'form.success'|trans|e('js') }}</li>".replace('%data%', submit.data);
-                        }
-                        else {
-                            li += "<li>{{ 'form.failed'|trans|e('js') }}</li>".replace('%data%', submit.data, '%status%', submit.status);
-                        }
-                    });
-                    $('#form-custom').append( "<ul>" + li + "</ul>" );
-                },
-                'onConfirmationResponse': function(response) {
-                    console.log('Response:', response); 
-                },
-            }).init(); 
-        };
+        new emsForm({ 
+            'idForm': 'form-custom', 
+            'idMessage': 'message-custom', 
+            'idIframe': 'ems-form-iframe-custom',
+            'onLoad': function() {
+                console.log('My onload function');
+                $(".custom-file-input").on("change", function() {
+                  var fileName = $(this).val().split("\\").pop();
+                  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                });
+            },
+            'onSubmit': function() {
+                console.log('My submit function');
+                $('#form-custom').find('input,button').attr('disabled',true);
+                
+            },
+            'onError': function(errorMessage) {
+                console.log('My error function:' + errorMessage);
+                $('#form-custom').html("{{ 'form.submit_error'|trans|e('js') }}".replace('%error%', errorMessage));
+            },
+            'onResponse': function(json) {
+                console.log('My response function');
+                var response = JSON.parse(json);
+                $('#form-custom').html("{{ 'form.submitted'|trans|e('js') }}");
+                var li = '';
+                $.each(response, function(i) {
+                    var submit = JSON.parse(this);
+                    if (submit.status === 'success') {
+                        li += "<li>{{ 'form.success'|trans|e('js') }}</li>".replace('%data%', submit.data);
+                    }
+                    else {
+                        li += "<li>{{ 'form.failed'|trans|e('js') }}</li>".replace('%data%', submit.data, '%status%', submit.status);
+                    }
+                });
+                $('#form-custom').append( "<ul>" + li + "</ul>" );
+            },
+            'onConfirmationResponse': function(response) {
+                console.log('Response:', response); 
+            },
+        }).init();
     </script>
 ```
 
