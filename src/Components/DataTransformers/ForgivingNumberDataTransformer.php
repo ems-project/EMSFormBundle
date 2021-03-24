@@ -3,7 +3,6 @@
 namespace EMS\FormBundle\Components\DataTransformers;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class ForgivingNumberDataTransformer implements DataTransformerInterface
 {
@@ -38,6 +37,7 @@ class ForgivingNumberDataTransformer implements DataTransformerInterface
                 continue;
             }
         }
-        throw new TransformationFailedException(\sprintf('Is not a valid number "%s"', $value));
+
+        return $value;
     }
 }
