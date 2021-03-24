@@ -61,12 +61,12 @@ export class emsForm
     {
         const form = this;
         form.elementIframe.onload = function() {
-            form.initPostMessage();
+            form.getForm();
         };
-        form.initPostMessage();
+        form.getForm();
     }
 
-    initPostMessage()
+    getForm()
     {
         if (this.isValid() && !this.initialized) {
             this.postMessage({'instruction': 'form', 'form': this.defaultData});
