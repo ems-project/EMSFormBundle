@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Endpoint;
 
+use EMS\FormBundle\Contracts\EndpointManagerInterface;
 use Psr\Log\LoggerInterface;
 
-final class EndpointManager
+final class EndpointManager implements EndpointManagerInterface
 {
     /** @var array<mixed> */
     private $config;
