@@ -43,6 +43,7 @@
             <argument type="service" id="logger"/>
             <argument type="service" id="emsf.endpoint_manager"/>
         </service>
+        <service id="EMS\FormBundle\Contracts\EndpointManagerInterface" alias="emsf.endpoint_manager" />
         <service id="emsf.endpoint_manager" class="EMS\FormBundle\Service\Endpoint\EndpointManager">
             <argument>%emsf.endpoints%</argument>
             <argument type="tagged" tag="emsf.endpoint.type"/>
