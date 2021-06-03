@@ -29,7 +29,7 @@
 		"twig/twig" : "^2.14"
 	},
 	"require-dev" : {
-		"friendsofphp/php-cs-fixer" : "^2.16",
+		"friendsofphp/php-cs-fixer" : "^2.17.5",
 		"mockery/mockery" : "^0.9",
 		"phpmd/phpmd": "2.8.2",
 		"phpstan/phpstan": "^0.12",
