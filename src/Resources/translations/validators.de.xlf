@@ -12,11 +12,11 @@
             </trans-unit>
             <trans-unit id="confirm_email">
                 <source>The "{{field1}}" and "Confirm {{field2}}" fields must match.</source>
-                <target>Die Felder "{{field1}}" und "Bestätigen {{field2}}" müssen übereinstimmen.</target>
+                <target>Die Felder "{{field1}}" und "{{field2}} bestätigen" müssen übereinstimmen.</target>
             </trans-unit>
             <trans-unit id="confirm_label">
                 <source>Confirm %field%</source>
-                <target>Bestätigen %field%</target>
+                <target>%field% bestätigen</target>
             </trans-unit>
             <trans-unit id="date_label">
                 <source>%label_date% (dd/mm/yyyy)</source>
@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="confirm_code_invalid">
                 <source>The confirmation code "{{code}}" is not valid.</source>
-                <target>Der Bestätigungscode "{{code}}" ist nicht gültig.</target>
+                <target>Der Bestätigungscode "{{code}}" ist ungültig.</target>
             </trans-unit>
             <trans-unit id="confirm_code_missing">
                 <source>You have not requested a confirmation code.</source>
