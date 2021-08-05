@@ -34,6 +34,14 @@
                 <source>You have not requested a confirmation code.</source>
                 <target>Vous n'avez pas demandé de code de confirmation.</target>
             </trans-unit>
+            <trans-unit id="birth_date">
+                <source>The date must be in the past.</source>
+                <target>Veuillez indiquer une date dans le passé.</target>
+            </trans-unit>
+            <trans-unit id="birth_date_age">
+                <source>The date must be earlier than "{{age}}".</source>
+                <target>La date doit être antérieure au {{age}}.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

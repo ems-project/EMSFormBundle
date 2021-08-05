@@ -8,10 +8,12 @@ abstract class AbstractValidation implements ValidationInterface
 {
     /** @var mixed|null */
     protected $value;
+    protected ?string $fieldLabel;
 
     public function __construct(ValidationConfig $config)
     {
         $this->value = $config->getValue();
+        $this->fieldLabel = $config->getFieldLabel();
     }
 
     /** @return array<string, mixed> */
