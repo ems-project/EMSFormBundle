@@ -9,6 +9,9 @@ class BirthDate extends AbstractValidation
 {
     public function getConstraint(): Constraint
     {
-        return new IsBirthDate(['age' => $this->value]);
+        return new IsBirthDate([
+            'age' => $this->value,
+            'fieldLabel' => $this->fieldLabel,
+        ]);
     }
 }

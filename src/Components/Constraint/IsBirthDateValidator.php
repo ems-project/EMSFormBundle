@@ -27,14 +27,15 @@ final class IsBirthDateValidator extends ConstraintValidator
 
         if (\in_array($constraint->age, ['now', 'today'])) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{date}}', $date->format('d/m/Y'))
+                ->setParameter('{{date}}', $constraint->fieldLabel ?? '')
                 ->addViolation()
             ;
+
             return;
         }
 
         $this->context->buildViolation($constraint->messageAge)
-            ->setParameter('{{date}}', $date->format('d/m/Y'))
+            ->setParameter('{{date}}', $constraint->fieldLabel ?? '')
             ->setParameter('{{age}}', $dateLimit->format('d/m/Y'))
             ->addViolation()
         ;
