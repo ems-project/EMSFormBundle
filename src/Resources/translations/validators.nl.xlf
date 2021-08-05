@@ -39,7 +39,7 @@
                 <target>De datum moet in het verleden liggen.</target>
             </trans-unit>
             <trans-unit id="birth_date_age">
-                <source>The date must be at least before "{{age}}".</source>
+                <source>The date must be earlier than "{{age}}".</source>
                 <target>De datum moet vroeger zijn dan {{age}}.</target>
             </trans-unit>
         </body>

@@ -10,7 +10,7 @@ final class IsBirthDate extends Constraint
 {
     public string $age = 'now';
     public string $message = 'The date must be in the past.';
-    public string $messageAge = 'The date must be at least before "{{age}}".';
+    public string $messageAge = 'The date must be earlier than "{{age}}".';
 
     /** @return string[] */
     public function getRequiredOptions(): array

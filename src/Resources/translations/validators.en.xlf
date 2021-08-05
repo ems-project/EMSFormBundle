@@ -39,8 +39,8 @@
                 <target>The date must be in the past.</target>
             </trans-unit>
             <trans-unit id="birth_date_age">
-                <source>The date must be at least before "{{age}}".</source>
-                <target>The date must be at least before "{{age}}".</target>
+                <source>The date must be earlier than "{{age}}".</source>
+                <target>The date must be earlier than "{{age}}".</target>
             </trans-unit>
         </body>
     </file>

@@ -39,7 +39,7 @@
                 <target>Veuillez indiquer une date dans le passé.</target>
             </trans-unit>
             <trans-unit id="birth_date_age">
-                <source>The date must be at least before "{{age}}".</source>
+                <source>The date must be earlier than "{{age}}".</source>
                 <target>La date doit être antérieure au {{age}}.</target>
             </trans-unit>
         </body>
