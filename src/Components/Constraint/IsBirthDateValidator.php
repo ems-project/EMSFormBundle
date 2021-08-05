@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace EMS\FormBundle\Components\Constraint;
 
 use http\Exception\RuntimeException;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class IsBirthDateValidator extends ConstraintValidator
+final class IsBirthDateValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (null === $value || !$constraint instanceof IsBirthDate) {
+        if (!$constraint instanceof IsBirthDate) {
             return;
         }
 
@@ -46,7 +45,7 @@ class IsBirthDateValidator extends ConstraintValidator
         try {
             return new \DateTimeImmutable($dateString);
         } catch (\Exception $exception) {
-            throw new RuntimeException(sprintf('Could not create date from string "%s"', $dateString));
+            throw new RuntimeException(\sprintf('Could not create date from string "%s"', $dateString));
         }
     }
 }
