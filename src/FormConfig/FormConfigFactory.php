@@ -145,6 +145,7 @@ class FormConfigFactory
                     $validation->getId(),
                     $validation->getSource()['name'],
                     $validation->getSource()['classname'],
+                    $fieldConfig->getLabel(),
                     ($validation->getSource()['default_value'] ?? null),
                     ($v['value'] ?? null)
                 ));
@@ -196,8 +197,6 @@ class FormConfigFactory
         $fieldType = $this->getDocument($source['type'], ['name', 'class', 'classname', 'validations'])->getSource();
         $fieldConfig = new FieldConfig($document->getId(), $source['name'], $fieldType['name'], $fieldType['classname'], $config);
 
-        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
-
         if (isset($source['choices'])) {
             $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
         }
@@ -213,6 +212,8 @@ class FormConfigFactory
         if (isset($fieldType['class'])) {
             $fieldConfig->addClass($fieldType['class']);
         }
+
+        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
         return $fieldConfig;
     }
