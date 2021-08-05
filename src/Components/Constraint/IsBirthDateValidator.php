@@ -33,7 +33,7 @@ final class IsBirthDateValidator extends ConstraintValidator
         }
 
         $this->context->buildViolation($constraint->messageAge)
-            ->setParameter('{{age}}', $dateLimit->format('d/m/Y'))
+            ->setParameter('{{age}}', $dateLimit->modify('+1 day')->format('d/m/Y'))
             ->addViolation()
         ;
     }
