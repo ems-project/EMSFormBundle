@@ -9,13 +9,12 @@ use Symfony\Component\Validator\Constraint;
 final class IsBirthDate extends Constraint
 {
     public string $age = 'now';
-    public ?string $fieldLabel = null;
-    public string $message = 'The date "{{date}}" must be in the past.';
-    public string $messageAge = 'The date "{{date}}" must be at least before "{{age}}".';
+    public string $message = 'The date must be in the past.';
+    public string $messageAge = 'The date must be at least before "{{age}}".';
 
     /** @return string[] */
     public function getRequiredOptions(): array
     {
-        return ['age', 'fieldLabel'];
+        return ['age'];
     }
 }
