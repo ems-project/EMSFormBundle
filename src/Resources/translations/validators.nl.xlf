@@ -35,12 +35,12 @@
                 <target>U hebt geen bevestigingscode gevraagd.</target>
             </trans-unit>
             <trans-unit id="birth_date">
-                <source>The date "{{date}}" must be in the past.</source>
-                <target>The date "{{date}}" must be in the past.</target>
+                <source>The date must be in the past.</source>
+                <target>De datum moet in het verleden liggen.</target>
             </trans-unit>
             <trans-unit id="birth_date_age">
-                <source>The date "{{date}}" must be at least before "{{age}}".</source>
-                <target>The date "{{date}}" must be at least before "{{age}}".</target>
+                <source>The date must be at least before "{{age}}".</source>
+                <target>De datum moet vroeger zijn dan {{age}}.</target>
             </trans-unit>
         </body>
     </file>
