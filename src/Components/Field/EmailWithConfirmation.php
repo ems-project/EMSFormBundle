@@ -35,7 +35,10 @@ class EmailWithConfirmation extends AbstractField
             'label_translation_parameters' => ['%field%' => $confirmLabel],
             'translation_domain' => 'validators',
             'attr' => ['class' => \sprintf('%s, repeated', $options['attr']['class'])],
-            ];
+        ];
+        if (!empty($this->config->getPlaceholder())) {
+            $options['second_options']['attr']['placeholder'] = $this->config->getPlaceholder();
+        }
         $options['invalid_message'] = 'The "{{field1}}" and "Confirm {{field2}}" fields must match.';
         $options['invalid_message_parameters'] = [
             '{{field1}}' => $label,
