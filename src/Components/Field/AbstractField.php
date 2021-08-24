@@ -68,6 +68,9 @@ abstract class AbstractField implements FieldInterface
 
         $attributes['class'] = \implode(' ', $attributes['class']);
         $attributes['lang'] = $this->config->getParentForm()->getLocale();
+        if (!empty($this->config->getPlaceholder())) {
+            $attributes['placeholder'] = $this->config->getPlaceholder();
+        }
 
         return $attributes;
     }
