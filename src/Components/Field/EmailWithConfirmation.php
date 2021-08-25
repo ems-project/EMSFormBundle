@@ -36,7 +36,7 @@ class EmailWithConfirmation extends AbstractField
             'translation_domain' => 'validators',
             'attr' => ['class' => \sprintf('%s, repeated', $options['attr']['class'])],
         ];
-        if (!empty($this->config->getPlaceholder())) {
+        if (null !== $this->config->getPlaceholder() && '' !== $this->config->getPlaceholder()) {
             $options['second_options']['attr']['placeholder'] = $this->config->getPlaceholder();
         }
         $options['invalid_message'] = 'The "{{field1}}" and "Confirm {{field2}}" fields must match.';
