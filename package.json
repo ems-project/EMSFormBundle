@@ -4,8 +4,8 @@
   "description": "EMSFormBundle",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --env prod --progress --profile --colors",
-    "start": "webpack --env dev --watch --progress --profile --colors",
+    "build": "webpack --mode production --env prod --progress --profile --colors",
+    "start": "webpack --mode development --env dev --watch --progress --profile --colors",
     "test": "jest"
   },
   "repository": {
