@@ -50,6 +50,7 @@
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.12.1"
+    "@babel/runtime-corejs3": "^7.12.1",
+    "intl-tel-input": "^17.0.13"
   }
 }
