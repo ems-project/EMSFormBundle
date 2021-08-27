@@ -33,6 +33,12 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
+                test: /\.(png|jpg|gif)$/i,
+                use: [
+                    { loader: 'url-loader', options: { limit: 10000, name: 'img/[name].[ext]' } }
+                ]
+            },
+            {
                 enforce: 'pre',
                 test: /\.js$/,
                 exclude: [/node_modules/],
