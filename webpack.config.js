@@ -17,7 +17,7 @@ module.exports = {
     plugins: [
         new ManifestPlugin({'publicPath': 'bundles/emsform/'}),
         new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: ['js/*', '!static/*'],
+            cleanOnceBeforeBuildPatterns: ['**/*', '!static/**'],
         }),
         new webpack.ProvidePlugin({
             Promise: 'core-js-pure/features/promise'
