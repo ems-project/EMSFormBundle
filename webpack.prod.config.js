@@ -11,7 +11,8 @@ module.exports = {
         'debug': './src/Resources/assets/js/debug.js',
         'backend': './src/Resources/assets/js/backend.js',
         'dynamicFields': './src/Resources/assets/js/dynamicFields.js',
-        'validation': './src/Resources/assets/js/validation.js'
+        'validation': './src/Resources/assets/js/validation.js',
+        'fields': './src/Resources/assets/js/fields.js'
     },
     plugins: [
         new ManifestPlugin({'publicPath': 'bundles/emsform/'}),
