@@ -45,9 +45,7 @@ function validateInternationalPhoneField(event) {
     const HTMLInputElement = event.target
     const internationalPhoneField = this
 
-    console.log('validateInternationalPhoneField')
-
-    if(HTMLInputElement.value === '') {
+    if (HTMLInputElement.value === '') {
         HTMLInputElement.setCustomValidity('')
         return undefined
     }
