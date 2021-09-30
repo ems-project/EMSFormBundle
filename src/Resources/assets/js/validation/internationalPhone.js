@@ -22,7 +22,7 @@ const errorMap = [
 ]
 
 function initializeInternationalPhoneField(element) {
-    let options = {
+    const options = {
         allowDropdown: true,
         autoHideDialCode: true,
         autoPlaceholder: 'polite',
