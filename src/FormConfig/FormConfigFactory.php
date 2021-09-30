@@ -203,6 +203,9 @@ class FormConfigFactory
         if (isset($source['default'])) {
             $fieldConfig->setDefaultValue($source['default']);
         }
+        if (isset($source['placeholder_'.$locale])) {
+            $fieldConfig->setPlaceholder($source['placeholder_'.$locale]);
+        }
         if (isset($source['label_'.$locale])) {
             $fieldConfig->setLabel($source['label_'.$locale]);
         }
