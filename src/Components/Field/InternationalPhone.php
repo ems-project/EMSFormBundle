@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace EMS\FormBundle\Components\Field;
 
 use EMS\FormBundle\Components\ValueObject\InternationalPhoneNumber;
@@ -21,7 +23,7 @@ final class InternationalPhone extends AbstractForgivingNumberField
     {
         $options = parent::getOptions();
 
-        if (!empty($this->config->getChoiceList())) {
+        if (\count($this->config->getChoiceList()) > 0) {
             $options['attr']['data-allowed-countries'] = \implode(',', $this->config->getChoiceList());
         }
 
