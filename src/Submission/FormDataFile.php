@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Submission;
 
-use EMS\CommonBundle\Twig\RequestRuntime;
 use EMS\FormBundle\FormConfig\ElementInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mime\MimeTypes;
@@ -52,10 +51,20 @@ final class FormDataFile
     {
         $filename = $uploadedFile->getClientOriginalName();
         $extension = MimeTypes::getDefault()->getExtensions($uploadedFile->getClientMimeType())[0] ?? null;
-        if (null !== $extension && !RequestRuntime::endsWith($filename, $extension)) {
+        if (null !== $extension && !$this->helperEndsWith($filename, $extension)) {
             $filename .= \sprintf('.%s', $extension);
         }
 
         return \sprintf('%s.%s', \uniqid(\sprintf('%s.', $fieldName), false), $filename);
+    }
+
+    private function helperEndsWith(string $haystack, string $needle): bool
+    {
+        $length = \strlen($needle);
+        if (0 === $length) {
+            return true;
+        }
+
+        return \substr($haystack, -$length) === $needle;
     }
 }
