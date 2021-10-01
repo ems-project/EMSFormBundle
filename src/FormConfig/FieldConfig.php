@@ -10,6 +10,7 @@ class FieldConfig implements ElementInterface
     /** @var string[] */
     private array $class = [];
     private string $className;
+    private ?string $placeholder = null;
     private ?string $defaultValue = null;
     private ?string $label = null;
     private ?string $help = null;
@@ -88,6 +89,11 @@ class FieldConfig implements ElementInterface
         $this->className = $classname;
     }
 
+    public function getPlaceholder(): ?string
+    {
+        return $this->placeholder;
+    }
+
     public function getDefaultValue(): ?string
     {
         return $this->defaultValue;
@@ -119,6 +125,11 @@ class FieldConfig implements ElementInterface
     public function setChoices(FieldChoicesConfig $choices): void
     {
         $this->choices = $choices;
+    }
+
+    public function setPlaceholder(string $placeholder): void
+    {
+        $this->placeholder = $placeholder;
     }
 
     public function setDefaultValue(string $defaultValue): void

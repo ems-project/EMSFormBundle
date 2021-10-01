@@ -4,5 +4,8 @@
   "dynamicFields.js": "bundles/emsform/js/dynamicFields.js",
   "form.js": "bundles/emsform/js/form.js",
   "formDebug.js": "bundles/emsform/js/formDebug.js",
-  "validation.js": "bundles/emsform/js/validation.js"
+  "validation.js": "bundles/emsform/js/validation.js",
+  "img/flags.png": "bundles/emsform/img/flags.png",
+  "img/flags@2x.png": "bundles/emsform/img/flags@2x.png",
+  "vendor/intl-tel-input/utils.js": "bundles/emsform/vendor/intl-tel-input/utils.js"
 }
