@@ -6,8 +6,9 @@ namespace EMS\FormBundle\Twig;
 
 use EMS\FormBundle\Service\Endpoint\EndpointManager;
 use Psr\Log\LoggerInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class EndpointRuntime
+class EndpointRuntime implements RuntimeExtensionInterface
 {
     private EndpointManager $endpointManager;
     private LoggerInterface $logger;

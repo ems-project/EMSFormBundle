@@ -8,9 +8,8 @@ use EMS\CommonBundle\Common\Standard\Json;
 use EMS\FormBundle\Contracts\EndpointManagerInterface;
 use EMS\FormBundle\Service\Confirmation\Endpoint\HttpEndpointType;
 use Psr\Log\LoggerInterface;
-use Twig\Extension\RuntimeExtensionInterface;
 
-final class EndpointManager implements EndpointManagerInterface, RuntimeExtensionInterface
+final class EndpointManager implements EndpointManagerInterface
 {
     /** @var array<mixed> */
     private array $config;
