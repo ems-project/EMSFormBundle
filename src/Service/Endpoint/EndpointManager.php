@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Endpoint;
 
+use EMS\CommonBundle\Common\Standard\Json;
 use EMS\FormBundle\Contracts\EndpointManagerInterface;
+use EMS\FormBundle\Service\Confirmation\Endpoint\HttpEndpointType;
 use Psr\Log\LoggerInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-final class EndpointManager implements EndpointManagerInterface
+final class EndpointManager implements EndpointManagerInterface, RuntimeExtensionInterface
 {
     /** @var array<mixed> */
-    private $config;
-    /** @var LoggerInterface */
-    private $logger;
+    private array $config;
+    private LoggerInterface $logger;
     /** @var EndpointInterface[] */
-    private $endpoints = [];
+    private array $endpoints = [];
     /** @var \Traversable|EndpointTypeInterface[] */
     private $endpointTypes;
 
@@ -52,6 +54,24 @@ final class EndpointManager implements EndpointManagerInterface
         }
 
         throw new \Exception(\sprintf('No endpoint found for form field %s', $fieldName));
+    }
+
+    /**
+     * @param array<string, string> $replaceBody
+     *
+     * @return array<string, mixed>
+     */
+    public function callHttpEndpoint(string $fieldName, array $replaceBody, int $timeout = 5): array
+    {
+        $endpoint = $this->getEndpointByFieldName($fieldName);
+        $httpEndpoint = $this->getEndpointType($endpoint);
+        if (!$httpEndpoint instanceof HttpEndpointType) {
+            throw new \RuntimeException('Unexpected non HTTP endpoint');
+        }
+        $response = $httpEndpoint->request($endpoint, $replaceBody, $timeout);
+        $result = Json::decode($response->getContent());
+
+        return $result;
     }
 
     /**

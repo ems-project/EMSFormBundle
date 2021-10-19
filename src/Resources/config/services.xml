@@ -48,6 +48,7 @@
             <argument>%emsf.endpoints%</argument>
             <argument type="tagged" tag="emsf.endpoint.type"/>
             <argument type="service" id="logger"/>
+            <tag name="twig.runtime" />
         </service>
         <service id="emsf.endpoint.confirmation.http" class="EMS\FormBundle\Service\Confirmation\Endpoint\HttpEndpointType">
             <argument type="service" id="EMS\ClientHelperBundle\Contracts\Api\ApiServiceInterface"/>
@@ -98,6 +99,9 @@
             <argument type="service" id="emsf.security.guard"/>
             <argument type="service" id="emsf.service.confirmation"/>
             <argument type="service" id="logger"/>
+        </service>
+        <service id="emsf.twig.extension.form" class="EMS\FormBundle\Twig\FormExtension">
+            <tag name="twig.extension" />
         </service>
     </services>
 </container>
