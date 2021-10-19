@@ -59,19 +59,29 @@ final class EndpointManager implements EndpointManagerInterface, RuntimeExtensio
     /**
      * @param array<string, string> $replaceBody
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null
      */
-    public function callHttpEndpoint(string $fieldName, array $replaceBody, int $timeout = 5): array
+    public function callHttpEndpoint(string $fieldName, array $replaceBody, int $timeout = 5): ?array
     {
-        $endpoint = $this->getEndpointByFieldName($fieldName);
-        $httpEndpoint = $this->getEndpointType($endpoint);
-        if (!$httpEndpoint instanceof HttpEndpointType) {
-            throw new \RuntimeException('Unexpected non HTTP endpoint');
-        }
-        $response = $httpEndpoint->request($endpoint, $replaceBody, $timeout);
-        $result = Json::decode($response->getContent());
+        try {
+            $endpoint = $this->getEndpointByFieldName($fieldName);
+            $httpEndpoint = $this->getEndpointType($endpoint);
+            if (!$httpEndpoint instanceof HttpEndpointType) {
+                throw new \RuntimeException('Unexpected non HTTP endpoint');
+            }
+            $response = $httpEndpoint->request($endpoint, $replaceBody, $timeout);
+            $result = Json::decode($response->getContent());
 
-        return $result;
+            return $result;
+        } catch (\Throwable $e) {
+            $this->logger->error('Error during the HTTP request', [
+                'field' => $fieldName,
+                'config' => $replaceBody,
+                'error' => $e->getMessage(),
+            ]);
+
+            return null;
+        }
     }
 
     /**
