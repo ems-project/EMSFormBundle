@@ -12,6 +12,7 @@ use EMS\FormBundle\Service\Endpoint\EndpointInterface;
 use EMS\FormBundle\Service\Endpoint\EndpointTypeInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class HttpEndpointType extends ConfirmationEndpointType implements EndpointTypeInterface
@@ -69,12 +70,7 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
             $replaceBody = \array_merge(['%message_translation%' => $messageTranslation], $replaceBody);
         }
 
-        $httpRequest = $endpoint->getHttpRequest();
-
-        $response = $this->httpClient->request($httpRequest->getMethod(), $httpRequest->getUrl(), [
-            'headers' => $httpRequest->getHeaders(),
-            'body' => $httpRequest->createBody($replaceBody),
-        ]);
+        $response = $this->request($endpoint, $replaceBody);
 
         $result = \json_decode($response->getContent(), true);
 
@@ -83,6 +79,20 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
         }
 
         return true;
+    }
+
+    /**
+     * @param array<string, string> $replaceBody
+     */
+    public function request(EndpointInterface $endpoint, array $replaceBody, int $timeout = 20): ResponseInterface
+    {
+        $httpRequest = $endpoint->getHttpRequest();
+
+        return $this->httpClient->request($httpRequest->getMethod(), $httpRequest->getUrl(), [
+            'headers' => $httpRequest->getHeaders(),
+            'body' => $httpRequest->createBody($replaceBody),
+            'max_duration' => $timeout,
+        ]);
     }
 
     private function createVerificationCode(EndpointInterface $endpoint, string $confirmValue): string
