@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
@@ -19,9 +18,6 @@ module.exports = {
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*', '!static/**'],
         }),
-        new CopyWebpackPlugin([
-            { from: 'node_modules/intl-tel-input/build/js/utils.js', to: 'vendor/intl-tel-input' },
-        ]),
         new webpack.ProvidePlugin({
             Promise: 'core-js-pure/features/promise'
         })

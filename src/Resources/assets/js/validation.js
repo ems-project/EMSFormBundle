@@ -6,7 +6,6 @@ import {preventCopyPaste} from "./validation/copyPaste";
 import {setBelgiumCompanyNumberValidation} from "./validation/belgiumCompanyNumber";
 import {setBelgiumCompanyNumberMultipleValidation} from "./validation/belgiumCompanyNumberMultiple";
 import {setBelgiumOnssRszValidation} from "./validation/belgiumOnssRszNumber";
-import {initializeInternationalPhoneFieldAndSetValidation} from "./validation/internationalPhone";
 
 export function addValidation(form)
 {
@@ -30,9 +29,6 @@ export function addValidation(form)
     });
     Array.from(form.getElementsByClassName("onss-rsz")).forEach(function(item) {
         setBelgiumOnssRszValidation(item);
-    });
-    Array.from(form.getElementsByClassName("phone-international")).forEach(function(item) {
-        initializeInternationalPhoneFieldAndSetValidation(item);
     });
 }
 
