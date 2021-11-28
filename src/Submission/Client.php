@@ -6,7 +6,6 @@ namespace EMS\FormBundle\Submission;
 
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
-use EMS\CommonBundle\Common\Standard\Json;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\FormConfig\SubmissionConfig;
 use Symfony\Component\Form\FormInterface;
@@ -36,12 +35,8 @@ class Client
         $this->loadSubmissions($formConfig);
 
         $responseCollector = new HandleResponseCollector();
-        $submissions = $formConfig->getSubmissions();
-        if (!\is_array($submissions)) {
-            throw new \RuntimeException('Unexpected not loaded submissions (Still in JSON serialized format)');
-        }
 
-        foreach ($submissions as $submissionConfig) {
+        foreach ($formConfig->getSubmissions() as $submissionConfig) {
             if (!$submissionConfig instanceof SubmissionConfig) {
                 throw new \RuntimeException('Unexpected not loaded submissions');
             }
@@ -81,30 +76,22 @@ class Client
 
     private function loadSubmissions(FormConfig $config): void
     {
-        $submissionsConfig = $config->getSubmissions();
-        if (\is_string($submissionsConfig)) {
-            $submissionsConfig = Json::decode($submissionsConfig);
-        }
+        $emsLinkSubmissions = $config->getSubmissions();
 
         $submissions = [];
 
-        foreach ($submissionsConfig as $submission) {
-            if ($submission instanceof SubmissionConfig) {
-                $submissions[] = $submission; //This is here to please phpstan, caused because we use the $config->submissions property for initialisation and the end result!
+        foreach ($emsLinkSubmissions as $emsLinkSubmission) {
+            if ($emsLinkSubmission instanceof SubmissionConfig) {
+                $submissions[] = $emsLinkSubmission; //This is here to please phpstan, caused because we use the $config->submissions property for initialisation and the end result!
                 continue;
             }
 
-            if (\is_string($submission)) {
-                $submission = $this->clientRequest->getByEmsKey($submission, []);
-                if (false === $submission) {
-                    continue;
-                }
-                $submission = $submission['_source'];
-            } else {
-                $submission = $submission['object'];
+            $submission = $this->clientRequest->getByEmsKey($emsLinkSubmission, []);
+            if (false === $submission) {
+                continue;
             }
 
-            $submissions[] = new SubmissionConfig($submission['type'], $submission['endpoint'], $submission['message']);
+            $submissions[] = new SubmissionConfig($submission['_source']['type'], $submission['_source']['endpoint'], $submission['_source']['message']);
         }
 
         $config->setSubmissions($submissions);

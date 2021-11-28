@@ -11,17 +11,15 @@ class FormConfig extends AbstractFormConfig
     private string $template;
     /** @var string[] */
     private array $themes = [];
-    /** @var array<SubmissionConfig|string>|string */
-    private $submissions = [];
-    private bool $loadFormJson;
+    /** @var array<SubmissionConfig|string> */
+    private array $submissions = [];
 
-    public function __construct(string $id, string $locale, string $translationDomain, bool $loadFormJson)
+    public function __construct(string $id, string $locale, string $translationDomain)
     {
         parent::__construct($id, $locale, $translationDomain);
 
         $this->template = '@EMSForm/form.html.twig';
         $this->themes[] = '@EMSForm/form_theme.html.twig';
-        $this->loadFormJson = $loadFormJson;
     }
 
     public function addDomain(string $domain): void
@@ -40,8 +38,8 @@ class FormConfig extends AbstractFormConfig
         return $this->domains;
     }
 
-    /** @return array<SubmissionConfig|string>|string */
-    public function getSubmissions()
+    /** @return array<SubmissionConfig|string> */
+    public function getSubmissions(): array
     {
         return $this->submissions;
     }
@@ -57,8 +55,8 @@ class FormConfig extends AbstractFormConfig
         return $this->themes;
     }
 
-    /** @param array<SubmissionConfig|string>|string $submissions */
-    public function setSubmissions($submissions): void
+    /** @param array<SubmissionConfig|string> $submissions */
+    public function setSubmissions(array $submissions): void
     {
         $this->submissions = $submissions;
     }
@@ -66,10 +64,5 @@ class FormConfig extends AbstractFormConfig
     public function setTemplate(string $template): void
     {
         $this->template = TemplatingInterface::PREFIX.'/'.$template;
-    }
-
-    public function loadFormJson(): bool
-    {
-        return $this->loadFormJson;
     }
 }

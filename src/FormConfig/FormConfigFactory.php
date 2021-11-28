@@ -81,7 +81,7 @@ class FormConfigFactory
     private function build(string $ouuid, string $locale): FormConfig
     {
         $source = $this->client->get($this->emsConfig[Configuration::TYPE], $ouuid)['_source'];
-        $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey(), $this->loadFromJson);
+        $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
 
         if (isset($source[$this->emsConfig[Configuration::THEME_FIELD]])) {
             $formConfig->addTheme($source[$this->emsConfig[Configuration::THEME_FIELD]]);
