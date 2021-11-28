@@ -391,14 +391,14 @@ class FormConfigFactory
                 continue;
             }
             try {
-//                $fieldConfig->addValidation(new ValidationConfig(
-//                    $validation->getId(),
-//                    $validation->getSource()['name'],
-//                    $validation->getSource()['classname'],
-//                    $fieldConfig->getLabel(),
-//                    ($validation->getSource()['default_value'] ?? null),
-//                    ($v['value'] ?? null)
-//                ));
+                $fieldConfig->addValidation(new ValidationConfig(
+                    $child->getId(),
+                    $child->getLabel(),
+                    $child->getObject()['classname'],
+                    $child->getLabel(),
+                    null,
+                    ($child->getObject()['value'] ?? null)
+                ));
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), [$e]);
             }
