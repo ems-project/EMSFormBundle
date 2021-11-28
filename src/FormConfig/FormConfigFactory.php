@@ -63,6 +63,7 @@ class FormConfigFactory
             'validity_tags' => $validityTags,
             'form_config' => $formConfig,
         ]));
+        dump($formConfig);
 
         return $formConfig;
     }
@@ -127,9 +128,9 @@ class FormConfigFactory
         if (isset($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]])) {
             $this->loadJsonSubmissions($formConfig, $source[$this->emsConfig[Configuration::SUBMISSION_FIELD]]);
         }
-//        if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
-//            $this->addForm($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
-//        }
+        if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
+            $this->loadFormFromJson($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
+        }
 
         return $formConfig;
     }
@@ -326,5 +327,62 @@ class FormConfigFactory
         foreach ($submissions as $submission) {
             $formConfig->addSubmissions(new SubmissionConfig($submission['object']['type'], $submission['object']['endpoint'], $submission['object']['message']));
         }
+    }
+
+    private function loadFormFromJson(FormConfig $formConfig, string $json, string $locale): void
+    {
+        $config = Json::decode($json);
+        foreach ($config as $element) {
+            try {
+                $element = $this->createElementFromJson($element, $locale, $formConfig);
+                $formConfig->addElement($element);
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
+    }
+
+    /**
+     * @param array<mixed> $element
+     */
+    private function createElementFromJson(array $element, string $locale, FormConfig $formConfig): FieldConfig
+    {
+        switch ($element['type']) {
+            case $this->emsConfig['type-form-field']:
+                return $this->createFieldConfigFromJson($element, $locale, $formConfig);
+        }
+
+        throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element['type']));
+    }
+
+    /**
+     * @param array<mixed> $document
+     */
+    private function createFieldConfigFromJson(array $document, string $locale, AbstractFormConfig $config): FieldConfig
+    {
+        $fieldConfig = new FieldConfig($document['id'], $document['object']['name'], $document['object']['name'], $document['object']['classname'], $config);
+
+        //TODO: migrate following commented code
+//        if (isset($source['choices'])) {
+//            $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
+//        }
+//        if (isset($source['default'])) {
+//            $fieldConfig->setDefaultValue($source['default']);
+//        }
+//        if (isset($source['placeholder_'.$locale])) {
+//            $fieldConfig->setPlaceholder($source['placeholder_'.$locale]);
+//        }
+//        if (isset($source['label_'.$locale])) {
+//            $fieldConfig->setLabel($source['label_'.$locale]);
+//        }
+//        if (isset($source['help_'.$locale])) {
+//            $fieldConfig->setHelp($source['help_'.$locale]);
+//        }
+//        if (isset($fieldType['class'])) {
+//            $fieldConfig->addClass($fieldType['class']);
+//        }
+//        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
+
+        return $fieldConfig;
     }
 }
