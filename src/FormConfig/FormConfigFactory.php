@@ -6,6 +6,7 @@ use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\CommonBundle\Common\EMSLink;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
+use EMS\FormBundle\DependencyInjection\Configuration;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
@@ -14,10 +15,13 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array<string, string> */
+    /** @var array{domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
     private array $emsConfig;
+    private bool $loadFromJson;
 
-    /** @param array<string, string> $emsConfig */
+    /**
+     * @param array{domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
+     */
     public function __construct(
         ClientRequestManagerInterface $manager,
         AdapterInterface $cache,
@@ -27,6 +31,7 @@ class FormConfigFactory
         $this->client = $manager->getDefault();
         $this->cache = $cache;
         $this->logger = $logger;
+        $this->loadFromJson = $emsConfig[Configuration::LOAD_FROM_JSON];
         $this->emsConfig = $emsConfig;
     }
 
@@ -65,7 +70,7 @@ class FormConfigFactory
                 continue;
             }
 
-            if (null !== $contentType = $this->client->getContentType($value)) {
+            if (\is_string($value) && null !== $contentType = $this->client->getContentType($value)) {
                 $validityTags .= $contentType->getCacheValidityTag();
             }
         }
@@ -75,24 +80,24 @@ class FormConfigFactory
 
     private function build(string $ouuid, string $locale): FormConfig
     {
-        $source = $this->client->get($this->emsConfig['type'], $ouuid)['_source'];
+        $source = $this->client->get($this->emsConfig[Configuration::TYPE], $ouuid)['_source'];
         $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
 
-        if (isset($source[$this->emsConfig['theme-field']])) {
-            $formConfig->addTheme($source[$this->emsConfig['theme-field']]);
+        if (isset($source[$this->emsConfig[Configuration::THEME_FIELD]])) {
+            $formConfig->addTheme($source[$this->emsConfig[Configuration::THEME_FIELD]]);
         }
-        if (isset($source[$this->emsConfig['form-template-field']])) {
-            $formConfig->setTemplate($source[$this->emsConfig['form-template-field']]);
+        if (isset($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]])) {
+            $formConfig->setTemplate($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]]);
         }
-        if (isset($source['domain'])) {
-            $this->addDomain($formConfig, $source['domain']);
+        if (isset($source[$this->emsConfig[Configuration::DOMAIN]])) {
+            $this->addDomain($formConfig, $source[$this->emsConfig[Configuration::DOMAIN]]);
         }
-        if (isset($source[$this->emsConfig['submission-field']])) {
-            $formConfig->setSubmissions($source[$this->emsConfig['submission-field']]);
+        if (isset($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]])) {
+            $formConfig->setSubmissions($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]]);
         }
 
-        if (isset($source[$this->emsConfig['form-field']])) {
-            $this->addForm($formConfig, $source[$this->emsConfig['form-field']], $locale);
+        if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
+            $this->addForm($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
         }
 
         return $formConfig;

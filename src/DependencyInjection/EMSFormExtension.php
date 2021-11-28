@@ -22,19 +22,20 @@ class EMSFormExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('emsf.hashcash.difficulty', $config['hashcash_difficulty']);
-        $container->setParameter('emsf.endpoints', $config['endpoints']);
+        $container->setParameter('emsf.hashcash.difficulty', $config[Configuration::HASHCASH_DIFFICULTY]);
+        $container->setParameter('emsf.endpoints', $config[Configuration::ENDPOINTS]);
         $container->setParameter('emsf.ems_config', [
-            'type' => $config['instance']['type'],
-            'type-form-field' => $config['instance']['type-form-field'],
-            'type-form-markup' => $config['instance']['type-form-markup'],
-            'type-form-subform' => $config['instance']['type-form-subform'],
-            'type-form-choice' => $config['instance']['type-form-choice'],
-            'form-field' => $config['instance']['form-field'],
-            'form-template-field' => $config['instance']['form-template-field'],
-            'theme-field' => $config['instance']['theme-field'],
-            'submission-field' => $config['instance']['submission-field'],
-            'load-from-json' => $config['instance']['load-from-json'],
+            Configuration::TYPE => $config['instance'][Configuration::TYPE],
+            Configuration::TYPE_FORM_FIELD => $config['instance'][Configuration::TYPE_FORM_FIELD],
+            Configuration::TYPE_FORM_MARKUP => $config['instance'][Configuration::TYPE_FORM_MARKUP],
+            Configuration::TYPE_FORM_SUBFORM => $config['instance'][Configuration::TYPE_FORM_SUBFORM],
+            Configuration::TYPE_FORM_CHOICE => $config['instance'][Configuration::TYPE_FORM_CHOICE],
+            Configuration::FORM_FIELD => $config['instance'][Configuration::FORM_FIELD],
+            Configuration::FORM_TEMPLATE_FIELD => $config['instance'][Configuration::FORM_TEMPLATE_FIELD],
+            Configuration::THEME_FIELD => $config['instance'][Configuration::THEME_FIELD],
+            Configuration::SUBMISSION_FIELD => $config['instance'][Configuration::SUBMISSION_FIELD],
+            Configuration::DOMAIN => $config['instance'][Configuration::DOMAIN],
+            Configuration::LOAD_FROM_JSON => $config['instance'][Configuration::LOAD_FROM_JSON],
         ]);
     }
 }
