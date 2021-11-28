@@ -5,6 +5,7 @@ namespace EMS\FormBundle\FormConfig;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\CommonBundle\Common\EMSLink;
+use EMS\CommonBundle\Common\Standard\Json;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
 use EMS\CommonBundle\Json\JsonMenuNested;
 use EMS\CommonBundle\Twig\TextRuntime;
@@ -375,10 +376,7 @@ class FormConfigFactory
         if (isset($document->getObject()[$locale]['help'])) {
             $fieldConfig->setHelp($document->getObject()[$locale]['help']);
         }
-        //TODO: add field choices
-//        if (isset($source['choices'])) {
-//            $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
-//        }
+        $this->addFieldChoicesFromJson($fieldConfig, $document, $locale);
         $this->addFieldValidationsFromJson($fieldConfig, $document);
 
         return $fieldConfig;
@@ -402,6 +400,41 @@ class FormConfigFactory
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), [$e]);
             }
+        }
+    }
+
+    private function addFieldChoicesFromJson(FieldConfig $fieldConfig, JsonMenuNested $document, string $locale): void
+    {
+        $values = [];
+        $labels = [];
+        $sort = null;
+        $id = null;
+        foreach ($document->getChildren() as $child) {
+            if ($child->getType() !== $this->emsConfig[Configuration::TYPE_FORM_CHOICE]) {
+                continue;
+            }
+            try {
+                $id = $child->getId();
+                $values = \array_merge($values, Json::decode($child->getObject()['values']));
+                $labels = \array_merge($labels, Json::decode($child->getObject()[$locale]['labels']));
+                if (isset($child->getObject()['choice_sort'])) {
+                    $sort = $child->getObject()['choice_sort'];
+                }
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
+
+        if (!empty($values) && null !== $id) {
+            $fieldChoicesConfig = new FieldChoicesConfig(
+                $id,
+                $values,
+                $labels
+            );
+            if (null !== $sort) {
+                $fieldChoicesConfig->setSort($sort);
+            }
+            $fieldConfig->setChoices($fieldChoicesConfig);
         }
     }
 }
