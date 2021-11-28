@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('form-template-field')->defaultValue('form_template')->end()
                         ->scalarNode('theme-field')->defaultValue('theme_template')->end()
                         ->scalarNode('submission-field')->defaultValue('submissions')->end()
+                        ->scalarNode('load-from-json')->defaultValue(false)->end()
                     ->end()
                 ->end()
             ->end()
