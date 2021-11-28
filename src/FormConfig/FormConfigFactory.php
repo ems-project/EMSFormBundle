@@ -17,13 +17,13 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array{name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
+    /** @var array{type-form_validation: string, name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
     private TextRuntime $textRuntime;
 
     /**
-     * @param array{name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
+     * @param array{type-form_validation: string, name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
      */
     public function __construct(
         ClientRequestManagerInterface $manager,
@@ -379,9 +379,29 @@ class FormConfigFactory
 //        if (isset($source['choices'])) {
 //            $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
 //        }
-        //TODO: add field validations
-//        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
+        $this->addFieldValidationsFromJson($fieldConfig, $document);
 
         return $fieldConfig;
+    }
+
+    private function addFieldValidationsFromJson(FieldConfig $fieldConfig, JsonMenuNested $document): void
+    {
+        foreach ($document->getChildren() as $child) {
+            if ($child->getType() !== $this->emsConfig[Configuration::TYPE_FORM_VALIDATION]) {
+                continue;
+            }
+            try {
+//                $fieldConfig->addValidation(new ValidationConfig(
+//                    $validation->getId(),
+//                    $validation->getSource()['name'],
+//                    $validation->getSource()['classname'],
+//                    $fieldConfig->getLabel(),
+//                    ($validation->getSource()['default_value'] ?? null),
+//                    ($v['value'] ?? null)
+//                ));
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
     }
 }

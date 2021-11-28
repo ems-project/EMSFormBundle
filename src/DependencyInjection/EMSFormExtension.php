@@ -38,6 +38,7 @@ class EMSFormExtension extends Extension
             Configuration::LOAD_FROM_JSON => $config['instance'][Configuration::LOAD_FROM_JSON],
             Configuration::CACHEABLE => $config['instance'][Configuration::CACHEABLE],
             Configuration::NAME_FIELD => $config['instance'][Configuration::NAME_FIELD],
+            Configuration::TYPE_FORM_VALIDATION => $config['instance'][Configuration::TYPE_FORM_VALIDATION],
         ]);
     }
 }

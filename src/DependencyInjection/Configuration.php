@@ -17,6 +17,7 @@ class Configuration implements ConfigurationInterface
     public const TYPE_FORM_SUBFORM = 'type-form-subform';
     public const TYPE_FORM_MARKUP = 'type-form-markup';
     public const TYPE_FORM_FIELD = 'type-form-field';
+    public const TYPE_FORM_VALIDATION = 'type-form_validation';
     public const TYPE = 'type';
     public const HASHCASH_DIFFICULTY = 'hashcash_difficulty';
     public const ENDPOINTS = 'endpoints';
@@ -48,6 +49,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode(self::TYPE_FORM_MARKUP)->defaultValue('form_structure_markup')->end()
                         ->scalarNode(self::TYPE_FORM_SUBFORM)->defaultValue('form_structure')->end()
                         ->scalarNode(self::TYPE_FORM_CHOICE)->defaultValue('form_choice')->end()
+                        ->scalarNode(self::TYPE_FORM_VALIDATION)->defaultValue('form_validation')->end()
                         ->scalarNode(self::FORM_FIELD)->defaultValue('form')->end()
                         ->scalarNode(self::FORM_TEMPLATE_FIELD)->defaultValue('form_template')->end()
                         ->scalarNode(self::THEME_FIELD)->defaultValue('theme_template')->end()
