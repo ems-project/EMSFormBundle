@@ -375,10 +375,11 @@ class FormConfigFactory
         if (isset($document->getObject()[$locale]['help'])) {
             $fieldConfig->setHelp($document->getObject()[$locale]['help']);
         }
-        //TODO: migrate following commented code
+        //TODO: add field choices
 //        if (isset($source['choices'])) {
 //            $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
 //        }
+        //TODO: add field validations
 //        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
         return $fieldConfig;
