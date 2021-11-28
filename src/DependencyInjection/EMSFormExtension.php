@@ -34,6 +34,7 @@ class EMSFormExtension extends Extension
             'form-template-field' => $config['instance']['form-template-field'],
             'theme-field' => $config['instance']['theme-field'],
             'submission-field' => $config['instance']['submission-field'],
+            'load-from-json' => $config['instance']['load-from-json'],
         ]);
     }
 }
