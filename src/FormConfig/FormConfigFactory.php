@@ -329,7 +329,7 @@ class FormConfigFactory
     {
         $submissions = $this->textRuntime->jsonMenuNestedDecode($submissionsJson);
         foreach ($submissions as $submission) {
-            $formConfig->addSubmissions(new SubmissionConfig($submission->getType(), $submission->getObject()['endpoint'], $submission->getObject()['message']));
+            $formConfig->addSubmissions(new SubmissionConfig($submission->getObject()['type'], $submission->getObject()['endpoint'], $submission->getObject()['message']));
         }
     }
 
