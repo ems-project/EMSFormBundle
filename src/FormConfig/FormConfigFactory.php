@@ -15,12 +15,12 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array{domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
+    /** @var array{cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
 
     /**
-     * @param array{domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
+     * @param array{cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
      */
     public function __construct(
         ClientRequestManagerInterface $manager,
@@ -41,7 +41,7 @@ class FormConfigFactory
         $cacheKey = $this->client->getCacheKey(\sprintf('formconfig_%s_%s_', $ouuid, $locale));
         $cacheItem = $this->cache->getItem($cacheKey);
 
-        if ($cacheItem->isHit()) {
+        if ($this->emsConfig[Configuration::CACHEABLE] && $cacheItem->isHit()) {
             $data = $cacheItem->get();
 
             $cacheValidityTags = $data['validity_tags'] ?? null;

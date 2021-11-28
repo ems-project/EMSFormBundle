@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
     public const HASHCASH_DIFFICULTY = 'hashcash_difficulty';
     public const ENDPOINTS = 'endpoints';
     public const DOMAIN = 'domain';
+    public const CACHEABLE = 'cacheable';
 
     /**
      * {@inheritdoc}
@@ -51,7 +52,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode(self::THEME_FIELD)->defaultValue('theme_template')->end()
                         ->scalarNode(self::SUBMISSION_FIELD)->defaultValue('submissions')->end()
                         ->scalarNode(self::DOMAIN)->defaultValue('domain')->end()
-                        ->scalarNode(self::LOAD_FROM_JSON)->defaultValue(false)->end()
+                        ->scalarNode(self::LOAD_FROM_JSON)->defaultValue(true)->end()
+                        ->scalarNode(self::CACHEABLE)->defaultValue(false)->end()
                     ->end()
                 ->end()
             ->end()

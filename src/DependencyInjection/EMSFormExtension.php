@@ -36,6 +36,7 @@ class EMSFormExtension extends Extension
             Configuration::SUBMISSION_FIELD => $config['instance'][Configuration::SUBMISSION_FIELD],
             Configuration::DOMAIN => $config['instance'][Configuration::DOMAIN],
             Configuration::LOAD_FROM_JSON => $config['instance'][Configuration::LOAD_FROM_JSON],
+            Configuration::CACHEABLE => $config['instance'][Configuration::CACHEABLE],
         ]);
     }
 }
