@@ -68,7 +68,6 @@ class FormConfigFactory
             'validity_tags' => $validityTags,
             'form_config' => $formConfig,
         ]));
-        dump($formConfig);
 
         return $formConfig;
     }
