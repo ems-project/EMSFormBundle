@@ -11,8 +11,8 @@ class FormConfig extends AbstractFormConfig
     private string $template;
     /** @var string[] */
     private array $themes = [];
-    /** @var array<SubmissionConfig|string> */
-    private array $submissions = [];
+    /** @var array<SubmissionConfig|string>|string */
+    private $submissions = [];
 
     public function __construct(string $id, string $locale, string $translationDomain)
     {
@@ -38,8 +38,8 @@ class FormConfig extends AbstractFormConfig
         return $this->domains;
     }
 
-    /** @return array<SubmissionConfig|string> */
-    public function getSubmissions(): array
+    /** @return array<SubmissionConfig|string>|string */
+    public function getSubmissions()
     {
         return $this->submissions;
     }
@@ -55,8 +55,8 @@ class FormConfig extends AbstractFormConfig
         return $this->themes;
     }
 
-    /** @param array<SubmissionConfig|string> $submissions */
-    public function setSubmissions(array $submissions): void
+    /** @param array<SubmissionConfig|string>|string $submissions */
+    public function setSubmissions($submissions): void
     {
         $this->submissions = $submissions;
     }
