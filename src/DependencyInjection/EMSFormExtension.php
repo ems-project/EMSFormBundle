@@ -34,9 +34,10 @@ class EMSFormExtension extends Extension
             Configuration::FORM_TEMPLATE_FIELD => $config['instance'][Configuration::FORM_TEMPLATE_FIELD],
             Configuration::THEME_FIELD => $config['instance'][Configuration::THEME_FIELD],
             Configuration::SUBMISSION_FIELD => $config['instance'][Configuration::SUBMISSION_FIELD],
-            Configuration::DOMAIN => $config['instance'][Configuration::DOMAIN],
+            Configuration::DOMAIN_FIELD => $config['instance'][Configuration::DOMAIN_FIELD],
             Configuration::LOAD_FROM_JSON => $config['instance'][Configuration::LOAD_FROM_JSON],
             Configuration::CACHEABLE => $config['instance'][Configuration::CACHEABLE],
+            Configuration::NAME_FIELD => $config['instance'][Configuration::NAME_FIELD],
         ]);
     }
 }

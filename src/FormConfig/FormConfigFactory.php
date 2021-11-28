@@ -5,6 +5,7 @@ namespace EMS\FormBundle\FormConfig;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\CommonBundle\Common\EMSLink;
+use EMS\CommonBundle\Common\Standard\Json;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
 use EMS\FormBundle\DependencyInjection\Configuration;
 use Psr\Log\LoggerInterface;
@@ -15,12 +16,12 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array{cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
+    /** @var array{name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
 
     /**
-     * @param array{cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
+     * @param array{name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
      */
     public function __construct(
         ClientRequestManagerInterface $manager,
@@ -52,7 +53,11 @@ class FormConfigFactory
             }
         }
 
-        $formConfig = $this->build($ouuid, $locale);
+        if ($this->loadFromJson) {
+            $formConfig = $this->buildFromJson($ouuid, $locale);
+        } else {
+            $formConfig = $this->buildFromDocuments($ouuid, $locale);
+        }
 
         $this->cache->save($cacheItem->set([
             'validity_tags' => $validityTags,
@@ -78,7 +83,7 @@ class FormConfigFactory
         return $validityTags;
     }
 
-    private function build(string $ouuid, string $locale): FormConfig
+    private function buildFromDocuments(string $ouuid, string $locale): FormConfig
     {
         $source = $this->client->get($this->emsConfig[Configuration::TYPE], $ouuid)['_source'];
         $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
@@ -89,8 +94,8 @@ class FormConfigFactory
         if (isset($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]])) {
             $formConfig->setTemplate($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]]);
         }
-        if (isset($source[$this->emsConfig[Configuration::DOMAIN]])) {
-            $this->addDomain($formConfig, $source[$this->emsConfig[Configuration::DOMAIN]]);
+        if (isset($source[$this->emsConfig[Configuration::DOMAIN_FIELD]])) {
+            $this->addDomain($formConfig, $source[$this->emsConfig[Configuration::DOMAIN_FIELD]]);
         }
         if (isset($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]])) {
             $formConfig->setSubmissions($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]]);
@@ -99,6 +104,32 @@ class FormConfigFactory
         if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
             $this->addForm($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
         }
+
+        return $formConfig;
+    }
+
+    private function buildFromJson(string $ouuid, string $locale): FormConfig
+    {
+        $source = $this->client->get($this->emsConfig[Configuration::TYPE], $ouuid)['_source'];
+        $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
+        if (isset($source[$this->emsConfig[Configuration::THEME_FIELD]])) {
+            $formConfig->addTheme($source[$this->emsConfig[Configuration::THEME_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]])) {
+            $formConfig->setTemplate($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::DOMAIN_FIELD]])) {
+            $this->addDomain($formConfig, $source[$this->emsConfig[Configuration::DOMAIN_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::NAME_FIELD]])) {
+            $formConfig->setName($source[$this->emsConfig[Configuration::NAME_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]])) {
+            $this->loadJsonSubmissions($formConfig, $source[$this->emsConfig[Configuration::SUBMISSION_FIELD]]);
+        }
+//        if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
+//            $this->addForm($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
+//        }
 
         return $formConfig;
     }
@@ -287,5 +318,13 @@ class FormConfigFactory
 
             return $carry;
         }, []);
+    }
+
+    private function loadJsonSubmissions(FormConfig $formConfig, string $submissionsJson): void
+    {
+        $submissions = Json::decode($submissionsJson);
+        foreach ($submissions as $submission) {
+            $formConfig->addSubmissions(new SubmissionConfig($submission['object']['type'], $submission['object']['endpoint'], $submission['object']['message']));
+        }
     }
 }
