@@ -5,8 +5,9 @@ namespace EMS\FormBundle\FormConfig;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\CommonBundle\Common\EMSLink;
-use EMS\CommonBundle\Common\Standard\Json;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
+use EMS\CommonBundle\Json\JsonMenuNested;
+use EMS\CommonBundle\Twig\TextRuntime;
 use EMS\FormBundle\DependencyInjection\Configuration;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
@@ -19,6 +20,7 @@ class FormConfigFactory
     /** @var array{name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
+    private TextRuntime $textRuntime;
 
     /**
      * @param array{name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
@@ -27,11 +29,13 @@ class FormConfigFactory
         ClientRequestManagerInterface $manager,
         AdapterInterface $cache,
         LoggerInterface $logger,
+        TextRuntime $textRuntime,
         array $emsConfig
     ) {
         $this->client = $manager->getDefault();
         $this->cache = $cache;
         $this->logger = $logger;
+        $this->textRuntime = $textRuntime;
         $this->loadFromJson = $emsConfig[Configuration::LOAD_FROM_JSON];
         $this->emsConfig = $emsConfig;
     }
@@ -323,15 +327,15 @@ class FormConfigFactory
 
     private function loadJsonSubmissions(FormConfig $formConfig, string $submissionsJson): void
     {
-        $submissions = Json::decode($submissionsJson);
+        $submissions = $this->textRuntime->jsonMenuNestedDecode($submissionsJson);
         foreach ($submissions as $submission) {
-            $formConfig->addSubmissions(new SubmissionConfig($submission['object']['type'], $submission['object']['endpoint'], $submission['object']['message']));
+            $formConfig->addSubmissions(new SubmissionConfig($submission->getType(), $submission->getObject()['endpoint'], $submission->getObject()['message']));
         }
     }
 
     private function loadFormFromJson(FormConfig $formConfig, string $json, string $locale): void
     {
-        $config = Json::decode($json);
+        $config = $this->textRuntime->jsonMenuNestedDecode($json);
         foreach ($config as $element) {
             try {
                 $element = $this->createElementFromJson($element, $locale, $formConfig);
@@ -342,44 +346,38 @@ class FormConfigFactory
         }
     }
 
-    /**
-     * @param array<mixed> $element
-     */
-    private function createElementFromJson(array $element, string $locale, FormConfig $formConfig): FieldConfig
+    private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): FieldConfig
     {
-        switch ($element['type']) {
+        switch ($element->getType()) {
             case $this->emsConfig['type-form-field']:
                 return $this->createFieldConfigFromJson($element, $locale, $formConfig);
         }
 
-        throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element['type']));
+        throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element->getType()));
     }
 
-    /**
-     * @param array<mixed> $document
-     */
-    private function createFieldConfigFromJson(array $document, string $locale, AbstractFormConfig $config): FieldConfig
+    private function createFieldConfigFromJson(JsonMenuNested $document, string $locale, AbstractFormConfig $config): FieldConfig
     {
-        $fieldConfig = new FieldConfig($document['id'], $document['object']['name'], $document['object']['name'], $document['object']['classname'], $config);
+        $fieldConfig = new FieldConfig($document->getId(), $document->getObject()['name'], $document->getObject()['name'], $document->getObject()['classname'], $config);
 
+        if (isset($document->getObject()['class'])) {
+            $fieldConfig->addClass($document->getObject()['class']);
+        }
+        if (isset($document->getObject()['default'])) {
+            $fieldConfig->setDefaultValue($document->getObject()['default']);
+        }
+        if (isset($document->getObject()[$locale]['placeholder'])) {
+            $fieldConfig->setPlaceholder($document->getObject()[$locale]['placeholder']);
+        }
+        if (isset($document->getObject()[$locale]['label'])) {
+            $fieldConfig->setLabel($document->getObject()[$locale]['label']);
+        }
+        if (isset($document->getObject()[$locale]['help'])) {
+            $fieldConfig->setHelp($document->getObject()[$locale]['help']);
+        }
         //TODO: migrate following commented code
 //        if (isset($source['choices'])) {
 //            $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
-//        }
-//        if (isset($source['default'])) {
-//            $fieldConfig->setDefaultValue($source['default']);
-//        }
-//        if (isset($source['placeholder_'.$locale])) {
-//            $fieldConfig->setPlaceholder($source['placeholder_'.$locale]);
-//        }
-//        if (isset($source['label_'.$locale])) {
-//            $fieldConfig->setLabel($source['label_'.$locale]);
-//        }
-//        if (isset($source['help_'.$locale])) {
-//            $fieldConfig->setHelp($source['help_'.$locale]);
-//        }
-//        if (isset($fieldType['class'])) {
-//            $fieldConfig->addClass($fieldType['class']);
 //        }
 //        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
