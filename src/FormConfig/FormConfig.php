@@ -13,13 +13,15 @@ class FormConfig extends AbstractFormConfig
     private array $themes = [];
     /** @var array<SubmissionConfig|string>|string */
     private $submissions = [];
+    private bool $loadFormJson;
 
-    public function __construct(string $id, string $locale, string $translationDomain)
+    public function __construct(string $id, string $locale, string $translationDomain, bool $loadFormJson)
     {
         parent::__construct($id, $locale, $translationDomain);
 
         $this->template = '@EMSForm/form.html.twig';
         $this->themes[] = '@EMSForm/form_theme.html.twig';
+        $this->loadFormJson = $loadFormJson;
     }
 
     public function addDomain(string $domain): void
@@ -64,5 +66,10 @@ class FormConfig extends AbstractFormConfig
     public function setTemplate(string $template): void
     {
         $this->template = TemplatingInterface::PREFIX.'/'.$template;
+    }
+
+    public function loadFormJson(): bool
+    {
+        return $this->loadFormJson;
     }
 }
