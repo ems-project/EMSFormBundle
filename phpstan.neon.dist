@@ -6,3 +6,5 @@ parameters:
         - %currentWorkingDirectory%/src/DependencyInjection/Configuration.php
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
+    parallel:
+        maximumNumberOfProcesses: 2
