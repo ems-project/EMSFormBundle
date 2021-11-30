@@ -22,7 +22,7 @@ class RrNumber
     /** @var string */
     private $controlNumber;
 
-    const RRN = '/(?<base>(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)(?<dayCounter>\d\d\d))(?<controlNumber>\d\d)/m';
+    public const RRN = '/(?<base>(?<year>\d\d)(?<month>\d\d)(?<day>\d\d)(?<dayCounter>\d\d\d))(?<controlNumber>\d\d)/m';
 
     /**
      * Rijksregisternummer.
