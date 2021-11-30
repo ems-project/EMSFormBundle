@@ -21,7 +21,7 @@
 		"symfony/framework-bundle": "^4.4",
 		"symfony/http-client": "^4.4",
 		"symfony/http-foundation": "^4.4",
-		"symfony/intl": "^5.1",
+		"symfony/intl": "^4.4",
 		"symfony/options-resolver": "^4.4",
 		"symfony/routing": "^4.4",
 		"symfony/security": "^4.4",
@@ -30,12 +30,11 @@
 		"twig/twig": "^2.14"
 	},
 	"require-dev" : {
-		"friendsofphp/php-cs-fixer" : "^2.17.5",
-		"mockery/mockery" : "^0.9",
-		"phpmd/phpmd": "2.8.2",
+		"friendsofphp/php-cs-fixer": "^3.0",
+		"phpmd/phpmd": "^2.11",
 		"phpstan/phpstan": "^0.12",
-		"phpunit/phpunit" : "^8.5",
-		"symfony/phpunit-bridge": "^5.1"
+		"phpunit/phpunit": "^9.5",
+		"symfony/test-pack": "^1.0"
 	},
 	"autoload" : {
 		"psr-4" : {

@@ -9,8 +9,8 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
     /** @var mixed[] */
     protected array $extra = [];
 
-    const STATUS_SUCCESS = 'success';
-    const STATUS_ERROR = 'error';
+    public const STATUS_SUCCESS = 'success';
+    public const STATUS_ERROR = 'error';
 
     public function __construct(string $status, string $data)
     {
