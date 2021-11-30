@@ -37,7 +37,7 @@ class DebugController extends AbstractFormController
         $form = $this->formFactory->create(Form::class, [], $this->getFormOptions($ouuid, $request->getLocale()));
 
         return new Response($this->twig->render('@EMSForm/debug/iframe.html.twig', [
-            'config' => $this->getFormConfig($form),
+            'config' => $this->getFormConfig($form, $request),
             'locales' => $this->locales,
             'url' => $request->getSchemeAndHttpHost().$request->getBasePath(),
         ]));
