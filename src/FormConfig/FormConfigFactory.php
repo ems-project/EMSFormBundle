@@ -349,7 +349,7 @@ class FormConfigFactory
     private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): FieldConfig
     {
         switch ($element->getType()) {
-            case $this->emsConfig['type-form-field']:
+            case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfigFromJson($element, $locale, $formConfig);
         }
 
