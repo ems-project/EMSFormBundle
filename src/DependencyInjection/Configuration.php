@@ -8,16 +8,16 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    public const LOAD_FROM_JSON = 'load-from-json';
-    public const SUBMISSION_FIELD = 'submission-field';
-    public const THEME_FIELD = 'theme-field';
-    public const FORM_TEMPLATE_FIELD = 'form-template-field';
-    public const FORM_FIELD = 'form-field';
-    public const TYPE_FORM_CHOICE = 'type-form-choice';
-    public const TYPE_FORM_SUBFORM = 'type-form-subform';
-    public const TYPE_FORM_MARKUP = 'type-form-markup';
-    public const TYPE_FORM_FIELD = 'type-form-field';
-    public const TYPE_FORM_VALIDATION = 'type-form_validation';
+    public const LOAD_FROM_JSON = 'load_from_json';
+    public const SUBMISSION_FIELD = 'submission_field';
+    public const THEME_FIELD = 'theme_field';
+    public const FORM_TEMPLATE_FIELD = 'form_template_field';
+    public const FORM_FIELD = 'form_field';
+    public const TYPE_FORM_CHOICE = 'type_form_choice';
+    public const TYPE_FORM_SUBFORM = 'type_form_subform';
+    public const TYPE_FORM_MARKUP = 'type_form_markup';
+    public const TYPE_FORM_FIELD = 'type_form_field';
+    public const TYPE_FORM_VALIDATION = 'type_form_validation';
     public const TYPE = 'type';
     public const HASHCASH_DIFFICULTY = 'hashcash_difficulty';
     public const ENDPOINTS = 'endpoints';

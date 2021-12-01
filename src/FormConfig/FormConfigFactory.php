@@ -18,13 +18,13 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array{type-form_validation: string, name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} */
+    /** @var array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
     private TextRuntime $textRuntime;
 
     /**
-     * @param array{type-form_validation: string, name: string, cacheable: bool, domain: string, load-from-json: bool, submission-field: string, theme-field: string, form-template-field: string, form-field: string, type-form-choice: string, type-form-subform: string, type-form-markup: string, type-form-field: string, type: string} $emsConfig
+     * @param array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} $emsConfig
      */
     public function __construct(
         ClientRequestManagerInterface $manager,
@@ -206,11 +206,11 @@ class FormConfigFactory
     private function createElement(Document $element, string $locale, AbstractFormConfig $config): ElementInterface
     {
         switch ($element->getContentType()) {
-            case $this->emsConfig['type-form-field']:
+            case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfig($element, $locale, $config);
-            case $this->emsConfig['type-form-markup']:
+            case $this->emsConfig[Configuration::TYPE_FORM_MARKUP]:
                 return new MarkupConfig($element->getId(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
-            case $this->emsConfig['type-form-subform']:
+            case $this->emsConfig[Configuration::TYPE_FORM_SUBFORM]:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
 
@@ -349,7 +349,7 @@ class FormConfigFactory
     private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): FieldConfig
     {
         switch ($element->getType()) {
-            case $this->emsConfig['type-form-field']:
+            case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfigFromJson($element, $locale, $formConfig);
         }
 
