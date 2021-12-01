@@ -206,11 +206,11 @@ class FormConfigFactory
     private function createElement(Document $element, string $locale, AbstractFormConfig $config): ElementInterface
     {
         switch ($element->getContentType()) {
-            case $this->emsConfig['type-form-field']:
+            case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfig($element, $locale, $config);
-            case $this->emsConfig['type-form-markup']:
+            case $this->emsConfig[Configuration::TYPE_FORM_MARKUP]:
                 return new MarkupConfig($element->getId(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
-            case $this->emsConfig['type-form-subform']:
+            case $this->emsConfig[Configuration::TYPE_FORM_SUBFORM]:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
 
