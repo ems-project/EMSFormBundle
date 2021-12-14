@@ -336,7 +336,7 @@ class FormConfigFactory
     private function loadFormFromJson(FormConfig $formConfig, string $json, string $locale): void
     {
         $config = $this->textRuntime->jsonMenuNestedDecode($json);
-        foreach ($config as $element) {
+        foreach ($config->getChildren() as $element) {
             try {
                 $element = $this->createElementFromJson($element, $locale, $formConfig);
                 $formConfig->addElement($element);
@@ -346,14 +346,21 @@ class FormConfigFactory
         }
     }
 
-    private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): FieldConfig
+    private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): ElementInterface
     {
         switch ($element->getType()) {
             case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfigFromJson($element, $locale, $formConfig);
+            case $this->emsConfig[Configuration::TYPE_FORM_MARKUP]:
+                return $this->createMarkupFromJson($element, $locale);
         }
 
         throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element->getType()));
+    }
+
+    private function createMarkupFromJson(JsonMenuNested $document, string $locale): MarkupConfig
+    {
+        return new MarkupConfig($document->getId(), $document->getObject()['name'] ?? $document->getLabel(), $document->getObject()[$locale]['markup'] ?? '');
     }
 
     private function createFieldConfigFromJson(JsonMenuNested $document, string $locale, AbstractFormConfig $config): FieldConfig
