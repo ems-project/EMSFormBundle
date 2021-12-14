@@ -68,7 +68,7 @@ class FormConfig extends AbstractFormConfig
 
     public function setTemplate(string $template): void
     {
-        if (0 === strpos($template, '@')) {
+        if (0 === \strpos($template, '@')) {
             $this->template = $template;
         } else {
             $this->template = TemplatingInterface::PREFIX.'/'.$template;
