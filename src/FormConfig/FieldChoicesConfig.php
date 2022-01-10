@@ -39,6 +39,16 @@ class FieldChoicesConfig
         return $this->placeholder;
     }
 
+    public function getLabel(string $value): string
+    {
+        $index = \array_search($value, $this->values);
+        if (!\is_string($index) || !isset($this->labels[$index]) || !\is_string($this->labels[$index])) {
+            return $value;
+        }
+
+        return $this->labels[$index];
+    }
+
     public function listLabel(): string
     {
         $choices = $this->choices;
