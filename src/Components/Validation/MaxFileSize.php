@@ -9,10 +9,11 @@ class MaxFileSize extends AbstractValidation
 {
     public function getHtml5Attribute(): array
     {
+        /** @var File */
         $constraint = $this->getConstraint();
 
         return [
-            'data-maxfilesize' => $constraint->maxSize
+            'data-maxfilesize' => $constraint->maxSize,
         ];
     }
 
