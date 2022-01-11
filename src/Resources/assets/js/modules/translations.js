@@ -19,7 +19,9 @@ class Translator
                         "repeated": "The field \"{{string}}\" should have the same value as the previous field.",
                         "belgium_company_number": "The company registration number \"{{string}}\" is invalid.",
                         "belgium_company_number_multiple": "At least one company registration number \"{{string}}\" is invalid.",
-                        "belgium_onss_rsz" : "NSSO number \"{{string}}\" is invalid."
+                        "belgium_onss_rsz" : "NSSO number \"{{string}}\" is invalid.",
+                        "max_single_file_size": "The file is too large. Allowed maximum size is {{ max_allowed_size }}MB.",
+                        "max_multiple_file_size": "The files are too large. Allowed maximum size is {{ max_allowed_size }}MB."
                     }
                 },
                 "fr": {
@@ -34,7 +36,9 @@ class Translator
                         "repeated": "Le champ \"{{string}}\" doit avoir la même valeur que le champ précédent.",
                         "belgium_company_number": "Le numéro d'entreprise \"{{string}}\" est invalide.",
                         "belgium_company_number_multiple": "Au moins un numéro d'entreprise \"{{string}}\" est invalide.",
-                        "belgium_onss_rsz" : "Le numéro ONSS \"{{string}}\" est invalide."
+                        "belgium_onss_rsz" : "Le numéro ONSS \"{{string}}\" est invalide.",
+                        "max_single_file_size": "Le fichier est trop volumineux. La taille maximale autorisée est de {{ max_allowed_size }}MB.",
+                        "max_multiple_file_size": "Les fichiers sont trop volumineux. La taille maximale autorisée est de {{ max_allowed_size }}MB."
                     }
                 },
                 "nl": {
@@ -49,7 +53,9 @@ class Translator
                         "repeated": "Het veld \"{{string}}\" moet dezelfde waarde hebben als het vorige veld.",
                         "belgium_company_number": "Het ondernemingsnummer \"{{string}}\" is ongeldig.",
                         "belgium_company_number_multiple": "Minstens één ondernemingsnummer \"{{string}}\" is ongeldig.",
-                        "belgium_onss_rsz" : "RSZ number \"{{string}}\" is ongeldig."
+                        "belgium_onss_rsz" : "RSZ number \"{{string}}\" is ongeldig.",
+                        "max_single_file_size": "Het bestand is te groot. Toegestane maximum grootte is {{ max_allowed_size }}MB.",
+                        "max_multiple_file_size": "De bestanden zijn te groot. Toegestane maximum grootte is {{ max_allowed_size }}MB."
                     }
                 },
                 "de": {
@@ -64,7 +70,9 @@ class Translator
                         "repeated": "Der Feld  \"{{string}}\" sollte den gleichen Wert wie das vorherige Feld haben.",
                         "belgium_company_number": "Die Firmenregistrierungsnummer \"{{string}}\" ist ungültig.",
                         "belgium_company_number_multiple": "Mindestens eine Firmenregistrierungsnummer \"{{string}}\" ist ungültig.",
-                        "belgium_onss_rsz" : "LSS-Nummer \"{{string}}\" ist ungültig."
+                        "belgium_onss_rsz" : "LSS-Nummer \"{{string}}\" ist ungültig.",
+                        "max_single_file_size": "Die Datei ist zu groß. Die zulässige Höchstgröße beträgt {{ max_allowed_size }}MB.",
+                        "max_multiple_file_size": "Die Dateien sind zu groß. Die zulässige Höchstgröße beträgt {{ max_allowed_size }}MB."
                     }
                 }
             }

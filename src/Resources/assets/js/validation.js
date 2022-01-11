@@ -6,6 +6,7 @@ import {preventCopyPaste} from "./validation/copyPaste";
 import {setBelgiumCompanyNumberValidation} from "./validation/belgiumCompanyNumber";
 import {setBelgiumCompanyNumberMultipleValidation} from "./validation/belgiumCompanyNumberMultiple";
 import {setBelgiumOnssRszValidation} from "./validation/belgiumOnssRszNumber";
+import {setMaxFileSizeValidation} from "./validation/maxFileSize";
 
 export function addValidation(form)
 {
@@ -29,6 +30,9 @@ export function addValidation(form)
     });
     Array.from(form.getElementsByClassName("onss-rsz")).forEach(function(item) {
         setBelgiumOnssRszValidation(item);
+    });
+    Array.from(form.querySelectorAll('[data-maxfilesize]')).forEach(function(item) {
+        setMaxFileSizeValidation(item);
     });
 }
 
