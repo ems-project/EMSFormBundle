@@ -47,23 +47,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            [
-                                '@babel/preset-env',
-                                { 'targets': { 'browsers': [ "> 1%", "last 2 versions", "IE 10" ] } }
-                            ]
-                        ],
-                        plugins: [
-                            [
-                                '@babel/plugin-transform-runtime',
-                                { 'corejs': 3 }
-                            ],
-                        ],
-                    }
-                }
+                use: { loader: 'babel-loader' }
             }
         ],
     }
