@@ -5,6 +5,7 @@ export function addMaxLengthCounter(element) {
     let max = parseInt(element.getAttribute('data-maxlength'));
 
     let spanCounter = document.createElement("small");
+    spanCounter.setAttribute('aria-hidden', 'true');
     parent.appendChild(spanCounter);
 
     maxLengthCounterDiff();
