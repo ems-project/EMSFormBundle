@@ -365,7 +365,7 @@ class FormConfigFactory
 
     private function createFieldConfigFromJson(JsonMenuNested $document, string $locale, AbstractFormConfig $config): FieldConfig
     {
-        $fieldConfig = new FieldConfig($document->getId(), $document->getObject()['name'], $document->getObject()['name'], $document->getObject()['classname'], $config);
+        $fieldConfig = new FieldConfig($document->getId(), $document->getObject()['name'], $document->getObject()['name'], $document->getObject()['classname'], $config, $document->getObject());
 
         if (isset($document->getObject()['class'])) {
             $fieldConfig->addClass($document->getObject()['class']);
