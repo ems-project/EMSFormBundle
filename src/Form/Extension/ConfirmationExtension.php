@@ -48,7 +48,7 @@ final class ConfirmationExtension extends AbstractTypeExtension
     }
 
     /** @return string[] */
-    public function getExtendedTypes(): iterable
+    public static function getExtendedTypes(): iterable
     {
         return [NumberType::class, HiddenType::class];
     }

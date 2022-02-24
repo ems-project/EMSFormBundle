@@ -5,7 +5,11 @@ namespace EMS\FormBundle\FormConfig;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestInterface;
 use EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface;
 use EMS\CommonBundle\Common\EMSLink;
+use EMS\CommonBundle\Common\Standard\Json;
 use EMS\CommonBundle\Elasticsearch\Document\Document;
+use EMS\CommonBundle\Json\JsonMenuNested;
+use EMS\CommonBundle\Twig\TextRuntime;
+use EMS\FormBundle\DependencyInjection\Configuration;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
@@ -14,19 +18,26 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array<string, string> */
+    /** @var array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} */
     private array $emsConfig;
+    private bool $loadFromJson;
+    private TextRuntime $textRuntime;
 
-    /** @param array<string, string> $emsConfig */
+    /**
+     * @param array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} $emsConfig
+     */
     public function __construct(
         ClientRequestManagerInterface $manager,
         AdapterInterface $cache,
         LoggerInterface $logger,
+        TextRuntime $textRuntime,
         array $emsConfig
     ) {
         $this->client = $manager->getDefault();
         $this->cache = $cache;
         $this->logger = $logger;
+        $this->textRuntime = $textRuntime;
+        $this->loadFromJson = $emsConfig[Configuration::LOAD_FROM_JSON];
         $this->emsConfig = $emsConfig;
     }
 
@@ -36,7 +47,7 @@ class FormConfigFactory
         $cacheKey = $this->client->getCacheKey(\sprintf('formconfig_%s_%s_', $ouuid, $locale));
         $cacheItem = $this->cache->getItem($cacheKey);
 
-        if ($cacheItem->isHit()) {
+        if ($this->emsConfig[Configuration::CACHEABLE] && $cacheItem->isHit()) {
             $data = $cacheItem->get();
 
             $cacheValidityTags = $data['validity_tags'] ?? null;
@@ -47,7 +58,11 @@ class FormConfigFactory
             }
         }
 
-        $formConfig = $this->build($ouuid, $locale);
+        if ($this->loadFromJson) {
+            $formConfig = $this->buildFromJson($ouuid, $locale);
+        } else {
+            $formConfig = $this->buildFromDocuments($ouuid, $locale);
+        }
 
         $this->cache->save($cacheItem->set([
             'validity_tags' => $validityTags,
@@ -65,7 +80,7 @@ class FormConfigFactory
                 continue;
             }
 
-            if (null !== $contentType = $this->client->getContentType($value)) {
+            if (\is_string($value) && null !== $contentType = $this->client->getContentType($value)) {
                 $validityTags .= $contentType->getCacheValidityTag();
             }
         }
@@ -73,26 +88,52 @@ class FormConfigFactory
         return $validityTags;
     }
 
-    private function build(string $ouuid, string $locale): FormConfig
+    private function buildFromDocuments(string $ouuid, string $locale): FormConfig
     {
-        $source = $this->client->get($this->emsConfig['type'], $ouuid)['_source'];
+        $source = $this->client->get($this->emsConfig[Configuration::TYPE], $ouuid)['_source'];
         $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
 
-        if (isset($source[$this->emsConfig['theme-field']])) {
-            $formConfig->addTheme($source[$this->emsConfig['theme-field']]);
+        if (isset($source[$this->emsConfig[Configuration::THEME_FIELD]])) {
+            $formConfig->addTheme($source[$this->emsConfig[Configuration::THEME_FIELD]]);
         }
-        if (isset($source[$this->emsConfig['form-template-field']])) {
-            $formConfig->setTemplate($source[$this->emsConfig['form-template-field']]);
+        if (isset($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]])) {
+            $formConfig->setTemplate($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]]);
         }
-        if (isset($source['domain'])) {
-            $this->addDomain($formConfig, $source['domain']);
+        if (isset($source[$this->emsConfig[Configuration::DOMAIN_FIELD]])) {
+            $this->addDomain($formConfig, $source[$this->emsConfig[Configuration::DOMAIN_FIELD]]);
         }
-        if (isset($source[$this->emsConfig['submission-field']])) {
-            $formConfig->setSubmissions($source[$this->emsConfig['submission-field']]);
+        if (isset($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]])) {
+            $formConfig->setSubmissions($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]]);
         }
 
-        if (isset($source[$this->emsConfig['form-field']])) {
-            $this->addForm($formConfig, $source[$this->emsConfig['form-field']], $locale);
+        if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
+            $this->addForm($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
+        }
+
+        return $formConfig;
+    }
+
+    private function buildFromJson(string $ouuid, string $locale): FormConfig
+    {
+        $source = $this->client->get($this->emsConfig[Configuration::TYPE], $ouuid)['_source'];
+        $formConfig = new FormConfig($ouuid, $locale, $this->client->getCacheKey());
+        if (isset($source[$this->emsConfig[Configuration::THEME_FIELD]])) {
+            $formConfig->addTheme($source[$this->emsConfig[Configuration::THEME_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]])) {
+            $formConfig->setTemplate($source[$this->emsConfig[Configuration::FORM_TEMPLATE_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::DOMAIN_FIELD]])) {
+            $this->addDomain($formConfig, $source[$this->emsConfig[Configuration::DOMAIN_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::NAME_FIELD]])) {
+            $formConfig->setName($source[$this->emsConfig[Configuration::NAME_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::SUBMISSION_FIELD]])) {
+            $this->loadJsonSubmissions($formConfig, $source[$this->emsConfig[Configuration::SUBMISSION_FIELD]]);
+        }
+        if (isset($source[$this->emsConfig[Configuration::FORM_FIELD]])) {
+            $this->loadFormFromJson($formConfig, $source[$this->emsConfig[Configuration::FORM_FIELD]], $locale);
         }
 
         return $formConfig;
@@ -145,6 +186,7 @@ class FormConfigFactory
                     $validation->getId(),
                     $validation->getSource()['name'],
                     $validation->getSource()['classname'],
+                    $fieldConfig->getLabel(),
                     ($validation->getSource()['default_value'] ?? null),
                     ($v['value'] ?? null)
                 ));
@@ -164,11 +206,11 @@ class FormConfigFactory
     private function createElement(Document $element, string $locale, AbstractFormConfig $config): ElementInterface
     {
         switch ($element->getContentType()) {
-            case $this->emsConfig['type-form-field']:
+            case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfig($element, $locale, $config);
-            case $this->emsConfig['type-form-markup']:
+            case $this->emsConfig[Configuration::TYPE_FORM_MARKUP]:
                 return new MarkupConfig($element->getId(), $element->getSource()['name'], $element->getSource()['markup_'.$locale]);
-            case $this->emsConfig['type-form-subform']:
+            case $this->emsConfig[Configuration::TYPE_FORM_SUBFORM]:
                 return $this->createSubFormConfig($element, $locale, $config->getTranslationDomain());
         }
 
@@ -196,13 +238,14 @@ class FormConfigFactory
         $fieldType = $this->getDocument($source['type'], ['name', 'class', 'classname', 'validations'])->getSource();
         $fieldConfig = new FieldConfig($document->getId(), $source['name'], $fieldType['name'], $fieldType['classname'], $config);
 
-        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
-
         if (isset($source['choices'])) {
             $this->addFieldChoices($fieldConfig, $source['choices'], $locale);
         }
         if (isset($source['default'])) {
             $fieldConfig->setDefaultValue($source['default']);
+        }
+        if (isset($source['placeholder_'.$locale])) {
+            $fieldConfig->setPlaceholder($source['placeholder_'.$locale]);
         }
         if (isset($source['label_'.$locale])) {
             $fieldConfig->setLabel($source['label_'.$locale]);
@@ -213,6 +256,8 @@ class FormConfigFactory
         if (isset($fieldType['class'])) {
             $fieldConfig->addClass($fieldType['class']);
         }
+
+        $this->addFieldValidations($fieldConfig, $fieldType['validations'] ?? [], $source['validations'] ?? []);
 
         return $fieldConfig;
     }
@@ -278,5 +323,124 @@ class FormConfigFactory
 
             return $carry;
         }, []);
+    }
+
+    private function loadJsonSubmissions(FormConfig $formConfig, string $submissionsJson): void
+    {
+        $submissions = $this->textRuntime->jsonMenuNestedDecode($submissionsJson);
+        foreach ($submissions as $submission) {
+            $formConfig->addSubmissions(new SubmissionConfig($submission->getObject()['type'], $submission->getObject()['endpoint'], $submission->getObject()['message']));
+        }
+    }
+
+    private function loadFormFromJson(FormConfig $formConfig, string $json, string $locale): void
+    {
+        $config = $this->textRuntime->jsonMenuNestedDecode($json);
+        foreach ($config->getChildren() as $element) {
+            try {
+                $element = $this->createElementFromJson($element, $locale, $formConfig);
+                $formConfig->addElement($element);
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
+    }
+
+    private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): ElementInterface
+    {
+        switch ($element->getType()) {
+            case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
+                return $this->createFieldConfigFromJson($element, $locale, $formConfig);
+            case $this->emsConfig[Configuration::TYPE_FORM_MARKUP]:
+                return $this->createMarkupFromJson($element, $locale);
+        }
+
+        throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element->getType()));
+    }
+
+    private function createMarkupFromJson(JsonMenuNested $document, string $locale): MarkupConfig
+    {
+        return new MarkupConfig($document->getId(), $document->getObject()['name'] ?? $document->getLabel(), $document->getObject()[$locale]['markup'] ?? '');
+    }
+
+    private function createFieldConfigFromJson(JsonMenuNested $document, string $locale, AbstractFormConfig $config): FieldConfig
+    {
+        $fieldConfig = new FieldConfig($document->getId(), $document->getObject()['name'], $document->getObject()['name'], $document->getObject()['classname'], $config, $document->getObject());
+
+        if (isset($document->getObject()['class'])) {
+            $fieldConfig->addClass($document->getObject()['class']);
+        }
+        if (isset($document->getObject()['default'])) {
+            $fieldConfig->setDefaultValue($document->getObject()['default']);
+        }
+        if (isset($document->getObject()[$locale]['placeholder'])) {
+            $fieldConfig->setPlaceholder($document->getObject()[$locale]['placeholder']);
+        }
+        if (isset($document->getObject()[$locale]['label'])) {
+            $fieldConfig->setLabel($document->getObject()[$locale]['label']);
+        }
+        if (isset($document->getObject()[$locale]['help'])) {
+            $fieldConfig->setHelp($document->getObject()[$locale]['help']);
+        }
+        $this->addFieldChoicesFromJson($fieldConfig, $document, $locale);
+        $this->addFieldValidationsFromJson($fieldConfig, $document);
+
+        return $fieldConfig;
+    }
+
+    private function addFieldValidationsFromJson(FieldConfig $fieldConfig, JsonMenuNested $document): void
+    {
+        foreach ($document->getChildren() as $child) {
+            if ($child->getType() !== $this->emsConfig[Configuration::TYPE_FORM_VALIDATION]) {
+                continue;
+            }
+            try {
+                $fieldConfig->addValidation(new ValidationConfig(
+                    $child->getId(),
+                    $child->getLabel(),
+                    $child->getObject()['classname'],
+                    $child->getLabel(),
+                    null,
+                    ($child->getObject()['value'] ?? null)
+                ));
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
+    }
+
+    private function addFieldChoicesFromJson(FieldConfig $fieldConfig, JsonMenuNested $document, string $locale): void
+    {
+        $values = [];
+        $labels = [];
+        $sort = null;
+        $id = null;
+        foreach ($document->getChildren() as $child) {
+            if ($child->getType() !== $this->emsConfig[Configuration::TYPE_FORM_CHOICE]) {
+                continue;
+            }
+            try {
+                $id = $child->getId();
+                $values = \array_merge($values, Json::decode($child->getObject()['values']));
+                $labels = \array_merge($labels, Json::decode($child->getObject()[$locale]['labels']));
+                if (isset($child->getObject()['choice_sort'])) {
+                    $sort = $child->getObject()['choice_sort'];
+                }
+            } catch (\Exception $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
+
+        if (!empty($values) && null !== $id) {
+            $fieldChoicesConfig = new FieldChoicesConfig(
+                $id,
+                $values,
+                $labels
+            );
+            if (null !== $sort) {
+                $fieldChoicesConfig->setSort($sort);
+            }
+            $fieldConfig->setChoices($fieldChoicesConfig);
+        }
     }
 }

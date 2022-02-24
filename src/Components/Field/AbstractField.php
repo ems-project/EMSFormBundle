@@ -38,6 +38,7 @@ abstract class AbstractField implements FieldInterface
             'translation_domain' => false,
             'ems_config_id' => $this->config->getId(),
             'ems_translation_domain' => $this->config->getParentForm()->getTranslationDomain(),
+            'ems_meta' => $this->config->getMeta(),
         ];
     }
 
@@ -68,6 +69,9 @@ abstract class AbstractField implements FieldInterface
 
         $attributes['class'] = \implode(' ', $attributes['class']);
         $attributes['lang'] = $this->config->getParentForm()->getLocale();
+        if (null !== $this->config->getPlaceholder() && '' !== $this->config->getPlaceholder()) {
+            $attributes['placeholder'] = $this->config->getPlaceholder();
+        }
 
         return $attributes;
     }

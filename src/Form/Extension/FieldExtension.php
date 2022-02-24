@@ -22,6 +22,7 @@ final class FieldExtension extends AbstractTypeExtension
 
         $view->vars['ems_config_id'] = $options['ems_config_id'];
         $view->vars['ems_translation_domain'] = $options['ems_translation_domain'];
+        $view->vars['ems_meta'] = $options['ems_meta'];
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -30,11 +31,12 @@ final class FieldExtension extends AbstractTypeExtension
         $resolver->setDefaults([
             'ems_config_id' => null,
             'ems_translation_domain' => null,
+            'ems_meta' => [],
         ]);
     }
 
     /** @return string[] */
-    public function getExtendedTypes(): iterable
+    public static function getExtendedTypes(): iterable
     {
         return [FormType::class];
     }

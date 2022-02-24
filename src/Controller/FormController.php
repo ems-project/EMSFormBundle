@@ -38,7 +38,7 @@ class FormController extends AbstractFormController
         $form = $this->formFactory->create(Form::class, [], ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
 
         return new Response($this->twig->render('@EMSForm/iframe.html.twig', [
-            'config' => $this->getFormConfig($form),
+            'config' => $this->getFormConfig($form, $request),
         ]));
     }
 
@@ -55,7 +55,7 @@ class FormController extends AbstractFormController
             return new JsonResponse($this->client->submit($form, $ouuid));
         }
 
-        return $this->generateFormResponse($ouuid, $form);
+        return $this->generateFormResponse($ouuid, $form, $request);
     }
 
     public function initForm(Request $request, string $ouuid): JsonResponse
@@ -74,7 +74,7 @@ class FormController extends AbstractFormController
 
         $form = $this->formFactory->create(Form::class, $data, ['ouuid' => $ouuid, 'locale' => $request->getLocale()]);
 
-        return $this->generateFormResponse($ouuid, $form);
+        return $this->generateFormResponse($ouuid, $form, $request);
     }
 
     public function dynamicFieldAjax(Request $request, string $ouuid): Response
@@ -98,9 +98,9 @@ class FormController extends AbstractFormController
     /**
      * @param FormInterface<FormInterface> $form
      */
-    private function generateFormResponse(string $ouuid, FormInterface $form): JsonResponse
+    private function generateFormResponse(string $ouuid, FormInterface $form, Request $request): JsonResponse
     {
-        $template = $this->getFormConfig($form)->getTemplate();
+        $template = $this->getFormConfig($form, $request)->getTemplate();
 
         return new JsonResponse([
             'ouuid' => $ouuid,

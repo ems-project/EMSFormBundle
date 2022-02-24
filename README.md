@@ -38,9 +38,10 @@ npm run start
 
 ## Documentation
 
-* [Installation](../master/Resources/doc/install.md)
-* [Configuration](../master/Resources/doc/config.md)
-* [How to implement?](../master/Resources/doc/example.md)
-* [Handle Submitted data](../master/Resources/doc/handlers.md)
-* [Supported fields](../master/Resources/doc/fields.md)
-* [Supported validations](../master/Resources/doc/validations.md)
+* [Installation](../master/doc/install.md)
+* [Configuration](../master/doc/config.md)
+* [How to implement?](../master/doc/example.md)
+* [Handle Submitted data](../master/doc/handlers.md)
+* [Supported fields](../master/doc/fields.md)
+* [Supported validations](../master/doc/validations.md)
+* [Tips](../master/doc/tips.md)

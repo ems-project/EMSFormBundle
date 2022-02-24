@@ -7,9 +7,9 @@ class BelgiumPhoneNumber
     /** @var NumberValue */
     private $number;
 
-    const LOCAL = 'local';
-    const INTERNATIONAL_PLUS = 'plus';
-    const INTERNATIONAL_ZEROS = 'zeros';
+    public const LOCAL = 'local';
+    public const INTERNATIONAL_PLUS = 'plus';
+    public const INTERNATIONAL_ZEROS = 'zeros';
 
     public function __construct(string $phone)
     {

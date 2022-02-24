@@ -1,4 +1,4 @@
-import {BelgiumPhoneNumberValidator} from '../../../Resources/assets/js/validation/belgiumPhone.js'
+import { BelgiumPhoneNumberValidator } from '../../../src/Resources/assets/js/validation/belgiumPhoneValidator'
 
 describe('Belgium phone validation', () => {
 

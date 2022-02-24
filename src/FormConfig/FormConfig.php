@@ -61,8 +61,17 @@ class FormConfig extends AbstractFormConfig
         $this->submissions = $submissions;
     }
 
+    public function addSubmissions(SubmissionConfig $submission): void
+    {
+        $this->submissions[] = $submission;
+    }
+
     public function setTemplate(string $template): void
     {
-        $this->template = TemplatingInterface::PREFIX.'/'.$template;
+        if (0 === \strpos($template, '@')) {
+            $this->template = $template;
+        } else {
+            $this->template = TemplatingInterface::PREFIX.'/'.$template;
+        }
     }
 }

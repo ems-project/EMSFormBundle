@@ -11,6 +11,7 @@
             <argument type="service" id="EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface"/>
             <argument type="service" id="cache.app" />
             <argument type="service" id="logger" />
+            <argument type="service" id="ems_common.twig.runtime.text" />
             <argument type="string">%emsf.ems_config%</argument>
             <tag name="monolog.logger" channel="ems_common"/>
         </service>
@@ -43,6 +44,7 @@
             <argument type="service" id="logger"/>
             <argument type="service" id="emsf.endpoint_manager"/>
         </service>
+        <service id="EMS\FormBundle\Contracts\EndpointManagerInterface" alias="emsf.endpoint_manager" />
         <service id="emsf.endpoint_manager" class="EMS\FormBundle\Service\Endpoint\EndpointManager">
             <argument>%emsf.endpoints%</argument>
             <argument type="tagged" tag="emsf.endpoint.type"/>
@@ -97,6 +99,14 @@
             <argument type="service" id="emsf.security.guard"/>
             <argument type="service" id="emsf.service.confirmation"/>
             <argument type="service" id="logger"/>
+        </service>
+        <service id="emsf.twig.extension.form" class="EMS\FormBundle\Twig\FormExtension">
+            <tag name="twig.extension" />
+        </service>
+        <service id="emsf.twig.endpoint_runtime" class="EMS\FormBundle\Twig\EndpointRuntime">
+            <argument type="service" id="logger"/>
+            <argument type="service" id="emsf.endpoint_manager"/>
+            <tag name="twig.runtime" />
         </service>
     </services>
 </container>

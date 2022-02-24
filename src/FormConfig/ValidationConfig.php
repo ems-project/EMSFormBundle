@@ -11,12 +11,13 @@ class ValidationConfig
     private $defaultValue;
     /** @var mixed */
     private $value;
+    private ?string $fieldLabel = null;
 
     /**
      * @param mixed $defaultValue
      * @param mixed $value
      */
-    public function __construct(string $id, string $name, string $className, $defaultValue = null, $value = null)
+    public function __construct(string $id, string $name, string $className, ?string $fieldLabel, $defaultValue = null, $value = null)
     {
         if (!\class_exists($className)) {
             throw new \Exception(\sprintf('Error validation class "%s" does not exists!', $className));
@@ -25,6 +26,7 @@ class ValidationConfig
         $this->id = $id;
         $this->name = $name;
         $this->className = $className;
+        $this->fieldLabel = $fieldLabel;
         $this->defaultValue = $defaultValue;
         $this->value = $value;
     }
@@ -37,6 +39,11 @@ class ValidationConfig
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getFieldLabel(): ?string
+    {
+        return $this->fieldLabel;
     }
 
     /** @return mixed|null */

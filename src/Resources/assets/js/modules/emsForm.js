@@ -42,6 +42,7 @@ export class emsForm
         this.defaultData = config.defaultData;
         this.onConfirmationResponse = config.onConfirmationResponse;
         this.ouuid = config.ouuid;
+        this.initialized = false;
 
         if (this.elementIframe !== null) {
             const url = new URL(this.elementIframe.getAttribute('src'));
@@ -58,7 +59,16 @@ export class emsForm
 
     init()
     {
-        if (this.isValid()) {
+        const form = this;
+        form.elementIframe.onload = function() {
+            form.getForm();
+        };
+        form.getForm();
+    }
+
+    getForm()
+    {
+        if (this.isValid() && !this.initialized) {
             this.postMessage({'instruction': 'form', 'form': this.defaultData});
         }
     }
@@ -114,6 +124,7 @@ export class emsForm
         switch (data.instruction) {
             case 'form':
             case 'validation-error':
+                this.initialized = true;
                 this.insertForm(data.response);
                 this.difficulty = parseInt(data.difficulty);
                 break;
