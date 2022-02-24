@@ -18,8 +18,13 @@ class FieldConfig implements ElementInterface
     private array $validations = [];
     private ?FieldChoicesConfig $choices = null;
     private AbstractFormConfig $parentForm;
+    /** @var mixed[] */
+    private array $meta;
 
-    public function __construct(string $id, string $name, string $type, string $className, AbstractFormConfig $parentForm)
+    /**
+     * @param mixed[] $meta
+     */
+    public function __construct(string $id, string $name, string $type, string $className, AbstractFormConfig $parentForm, array $meta = [])
     {
         if (!\class_exists($className)) {
             throw new \Exception(\sprintf('Error field class "%s" does not exists!', $className));
@@ -31,6 +36,7 @@ class FieldConfig implements ElementInterface
         $this->className = $className;
         $this->class[] = $name;
         $this->parentForm = $parentForm;
+        $this->meta = $meta;
     }
 
     public function getId(): string
@@ -150,5 +156,21 @@ class FieldConfig implements ElementInterface
     public function getParentForm(): AbstractFormConfig
     {
         return $this->parentForm;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getMeta(): array
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param mixed[] $meta
+     */
+    public function setMeta(array $meta): void
+    {
+        $this->meta = $meta;
     }
 }
