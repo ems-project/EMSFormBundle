@@ -18,7 +18,7 @@ class FieldConfig implements ElementInterface
     private array $validations = [];
     private ?FieldChoicesConfig $choices = null;
     private AbstractFormConfig $parentForm;
-    /** @var mixed[]  */
+    /** @var mixed[] */
     private array $meta;
 
     /**
