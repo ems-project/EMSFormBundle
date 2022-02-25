@@ -360,7 +360,7 @@ class FormConfigFactory
 
     private function createMarkupFromJson(JsonMenuNested $document, string $locale): MarkupConfig
     {
-        return new MarkupConfig($document->getId(), $document->getObject()['name'] ?? $document->getLabel(), $document->getObject()[$locale]['markup'] ?? '');
+        return new MarkupConfig($document->getId(), $document->getObject()['name'] ?? $document->getLabel(), $document->getObject()[$locale]['markup'] ?? '', $document->getObject());
     }
 
     private function createFieldConfigFromJson(JsonMenuNested $document, string $locale, AbstractFormConfig $config): FieldConfig

@@ -6,6 +6,7 @@ namespace EMS\FormBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,6 +39,6 @@ final class FieldExtension extends AbstractTypeExtension
     /** @return string[] */
     public static function getExtendedTypes(): iterable
     {
-        return [FormType::class];
+        return [FormType::class, SubmitType::class];
     }
 }

@@ -22,6 +22,9 @@ class Submit extends AbstractField
             'attr' => $this->getAttributes(),
             'label' => $this->config->getLabel(),
             'translation_domain' => false,
+            'ems_config_id' => $this->config->getId(),
+            'ems_translation_domain' => $this->config->getParentForm()->getTranslationDomain(),
+            'ems_meta' => $this->config->getMeta(),
         ];
     }
 }

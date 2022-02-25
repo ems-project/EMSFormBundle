@@ -9,6 +9,7 @@ export const DEFAULT_CONFIG = {
     idForm: 'ems-form',
     idMessage: 'ems-message',
     defaultData: null,
+    context: null,
     ouuid: false,
     onLoad: function(){ console.log('ems-form loaded'); },
     onSubmit: function(){ console.log('ems-form submit') },
@@ -40,6 +41,7 @@ export class emsForm
         this.onError = config.onError;
         this.onResponse = config.onResponse;
         this.defaultData = config.defaultData;
+        this.context = config.context;
         this.onConfirmationResponse = config.onConfirmationResponse;
         this.ouuid = config.ouuid;
         this.initialized = false;
