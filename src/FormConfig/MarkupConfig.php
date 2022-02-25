@@ -12,12 +12,20 @@ class MarkupConfig implements ElementInterface
     private $name;
     /** @var string */
     private $markup;
+    /**
+     * @var mixed[]
+     */
+    private array $meta;
 
-    public function __construct(string $id, string $name, string $markup)
+    /**
+     * @param mixed[] $meta
+     */
+    public function __construct(string $id, string $name, string $markup, array $meta = [])
     {
         $this->id = $id;
         $this->name = $name;
         $this->markup = $markup;
+        $this->meta = $meta;
     }
 
     public function getId(): string
@@ -38,5 +46,21 @@ class MarkupConfig implements ElementInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function getMeta(): array
+    {
+        return $this->meta;
+    }
+
+    /**
+     * @param mixed[] $meta
+     */
+    public function setMeta(array $meta): void
+    {
+        $this->meta = $meta;
     }
 }
