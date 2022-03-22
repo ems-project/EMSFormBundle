@@ -5,14 +5,14 @@
 {% block ems_subform_row -%}
     <div role="group" aria-labelledby="{{ form.vars.config.name }}">
         <div id="{{ config.name }}">{{ form.vars.config.label }}</div>
-        {% for child in form.children if not child.rendered %}
+        {% for child in form.children|filter(child => not child.rendered) %}
             {{ form_row(child) }}
         {% endfor %}
     </div>
 {%- endblock ems_subform_row %}
 
 {%- block ems_nested_choice_row %}
-    {% for child in form.children if not child.rendered %}
+    {% for child in form.children|filter(child => not child.rendered) %}
         {{ form_row(child) }}
     {% endfor %}
 {%- endblock ems_nested_choice_row %}
