@@ -4,34 +4,30 @@ declare(strict_types=1);
 
 namespace EMS\FormBundle\Service\Confirmation\Endpoint;
 
-use EMS\CommonBundle\Contracts\CoreApi\CoreApiInterface;
+use EMS\FormBundle\Contracts\Confirmation\VerificationCodeGeneratorInterface;
 use EMS\FormBundle\FormConfig\FormConfig;
 use EMS\FormBundle\Service\Endpoint\EndpointInterface;
 use EMS\FormBundle\Service\Endpoint\EndpointTypeInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class HttpEndpointType extends ConfirmationEndpointType implements EndpointTypeInterface
 {
-    private CoreApiInterface $coreApi;
     private HttpClientInterface $httpClient;
-    private SessionInterface $session;
     private TranslatorInterface $translator;
+    private VerificationCodeGeneratorInterface $verificationCodeGenerator;
 
     public const NAME = 'http';
 
     public function __construct(
-        CoreApiInterface $coreApi,
         HttpClientInterface $httpClient,
-        SessionInterface $session,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        VerificationCodeGeneratorInterface $verificationCodeGenerator
     ) {
-        $this->coreApi = $coreApi;
         $this->httpClient = $httpClient;
-        $this->session = $session;
         $this->translator = $translator;
+        $this->verificationCodeGenerator = $verificationCodeGenerator;
     }
 
     public function canExecute(EndpointInterface $endpoint): bool
@@ -41,18 +37,12 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
 
     public function getVerificationCode(EndpointInterface $endpoint, string $confirmValue): ?string
     {
-        if ($endpoint->saveInSession()) {
-            $verificationCode = $this->session->get($this->getSessionKey($confirmValue), false);
-        } else {
-            $verificationCode = $this->coreApi->form()->getVerification($confirmValue);
-        }
-
-        return \is_string($verificationCode) ? $verificationCode : null;
+        return $this->verificationCodeGenerator->getVerificationCode($endpoint, $confirmValue);
     }
 
     public function confirm(EndpointInterface $endpoint, FormConfig $formConfig, string $confirmValue): bool
     {
-        $verificationCode = $this->createVerificationCode($endpoint, $confirmValue);
+        $verificationCode = $this->verificationCodeGenerator->generate($endpoint, $confirmValue);
         $replaceBody = ['%value%' => $confirmValue, '%verification_code%' => $verificationCode];
 
         if (null !== $messageTranslationKey = $endpoint->getMessageTranslationKey()) {
@@ -88,26 +78,5 @@ final class HttpEndpointType extends ConfirmationEndpointType implements Endpoin
             'body' => $httpRequest->createBody($replaceBody),
             'max_duration' => $timeout,
         ]);
-    }
-
-    private function createVerificationCode(EndpointInterface $endpoint, string $confirmValue): string
-    {
-        if (!$endpoint->saveInSession()) {
-            return $this->coreApi->form()->createVerification($confirmValue);
-        }
-
-        $verificationCode = $this->session->get($this->getSessionKey($confirmValue));
-
-        if (null === $verificationCode) {
-            $verificationCode = \sprintf('%d%05d', \mt_rand(1, 9), \mt_rand(0, 99999));
-            $this->session->set($this->getSessionKey($confirmValue), $verificationCode);
-        }
-
-        return $verificationCode;
-    }
-
-    private function getSessionKey(string $value): string
-    {
-        return \sprintf('EMS_CC_[%s]', $value);
     }
 }
