@@ -51,8 +51,7 @@
             <argument type="service" id="logger"/>
         </service>
         <service id="emsf.endpoint.confirmation.http" class="EMS\FormBundle\Service\Confirmation\Endpoint\HttpEndpointType">
-            <argument type="service" id="EMS\ClientHelperBundle\Contracts\Api\ApiServiceInterface"/>
-            <argument type="service" id="EMS\ClientHelperBundle\Contracts\Elasticsearch\ClientRequestManagerInterface"/>
+            <argument type="service" id="EMS\CommonBundle\Contracts\CoreApi\CoreApiInterface"/>
             <argument type="service" id="Symfony\Contracts\HttpClient\HttpClientInterface"/>
             <argument type="service" id="session"/>
             <argument type="service" id="translator"/>
