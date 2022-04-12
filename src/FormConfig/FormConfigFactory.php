@@ -390,9 +390,10 @@ class FormConfigFactory
         return $fieldConfig;
     }
 
-    private function createSubFormConfigFromJson(JsonMenuNested $document, string $locale, string $translationDomain): SubFormConfig
+    private function createSubFormConfigFromJson(JsonMenuNested $jsonMenuNested, string $locale, string $translationDomain): SubFormConfig
     {
-        $emsLink = $document->getObject()[$this->emsConfig[Configuration::FORM_SUBFORM_FIELD]];
+        $jsonObject = $jsonMenuNested->getObject();
+        $emsLink = $jsonObject[$this->emsConfig[Configuration::FORM_SUBFORM_FIELD]];
         $document = $this->getDocument($emsLink);
         $source = $document->getSource();
 
@@ -401,7 +402,7 @@ class FormConfigFactory
             $locale,
             $translationDomain,
             $source['name'],
-            $source['name']
+            $jsonObject[$locale]['label'] ?? $source['name']
         );
 
         $subFormJson = $source[$this->emsConfig[Configuration::FORM_FIELD]];
