@@ -18,13 +18,13 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} */
+    /** @var array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, form_subform_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
     private TextRuntime $textRuntime;
 
     /**
-     * @param array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} $emsConfig
+     * @param array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, form_subform_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} $emsConfig
      */
     public function __construct(
         ClientRequestManagerInterface $manager,
