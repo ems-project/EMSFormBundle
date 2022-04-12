@@ -18,13 +18,13 @@ class FormConfigFactory
     private ClientRequestInterface $client;
     private AdapterInterface $cache;
     private LoggerInterface $logger;
-    /** @var array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} */
+    /** @var array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, form_subform_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} */
     private array $emsConfig;
     private bool $loadFromJson;
     private TextRuntime $textRuntime;
 
     /**
-     * @param array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} $emsConfig
+     * @param array{type_form_validation: string, name: string, cacheable: bool, domain: string, load_from_json: bool, submission_field: string, theme_field: string, form_template_field: string, form_field: string, form_subform_field: string, type_form_choice: string, type_form_subform: string, type_form_markup: string, type_form_field: string, type: string} $emsConfig
      */
     public function __construct(
         ClientRequestManagerInterface $manager,
@@ -346,13 +346,15 @@ class FormConfigFactory
         }
     }
 
-    private function createElementFromJson(JsonMenuNested $element, string $locale, FormConfig $formConfig): ElementInterface
+    private function createElementFromJson(JsonMenuNested $element, string $locale, AbstractFormConfig $formConfig): ElementInterface
     {
         switch ($element->getType()) {
             case $this->emsConfig[Configuration::TYPE_FORM_FIELD]:
                 return $this->createFieldConfigFromJson($element, $locale, $formConfig);
             case $this->emsConfig[Configuration::TYPE_FORM_MARKUP]:
                 return $this->createMarkupFromJson($element, $locale);
+            case $this->emsConfig[Configuration::TYPE_FORM_SUBFORM]:
+                return $this->createSubFormConfigFromJson($element, $locale, $formConfig->getTranslationDomain());
         }
 
         throw new \RuntimeException(\sprintf('Implementation for configuration with name %s is missing', $element->getType()));
@@ -386,6 +388,36 @@ class FormConfigFactory
         $this->addFieldValidationsFromJson($fieldConfig, $document);
 
         return $fieldConfig;
+    }
+
+    private function createSubFormConfigFromJson(JsonMenuNested $jsonMenuNested, string $locale, string $translationDomain): SubFormConfig
+    {
+        $jsonObject = $jsonMenuNested->getObject();
+        $emsLink = $jsonObject[$this->emsConfig[Configuration::FORM_SUBFORM_FIELD]];
+        $document = $this->getDocument($emsLink);
+        $source = $document->getSource();
+
+        $subFormConfig = new SubFormConfig(
+            $document->getId(),
+            $locale,
+            $translationDomain,
+            $source['name'],
+            $jsonObject[$locale]['label'] ?? $source['name']
+        );
+
+        $subFormJson = $source[$this->emsConfig[Configuration::FORM_FIELD]];
+
+        $config = $this->textRuntime->jsonMenuNestedDecode($subFormJson);
+        foreach ($config->getChildren() as $element) {
+            try {
+                $element = $this->createElementFromJson($element, $locale, $subFormConfig);
+                $subFormConfig->addElement($element);
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage(), [$e]);
+            }
+        }
+
+        return $subFormConfig;
     }
 
     private function addFieldValidationsFromJson(FieldConfig $fieldConfig, JsonMenuNested $document): void
