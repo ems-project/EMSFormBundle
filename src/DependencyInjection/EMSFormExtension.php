@@ -31,6 +31,7 @@ class EMSFormExtension extends Extension
             Configuration::TYPE_FORM_SUBFORM => $config['instance'][Configuration::TYPE_FORM_SUBFORM],
             Configuration::TYPE_FORM_CHOICE => $config['instance'][Configuration::TYPE_FORM_CHOICE],
             Configuration::FORM_FIELD => $config['instance'][Configuration::FORM_FIELD],
+            Configuration::FORM_SUBFORM_FIELD => $config['instance'][Configuration::FORM_SUBFORM_FIELD],
             Configuration::FORM_TEMPLATE_FIELD => $config['instance'][Configuration::FORM_TEMPLATE_FIELD],
             Configuration::THEME_FIELD => $config['instance'][Configuration::THEME_FIELD],
             Configuration::SUBMISSION_FIELD => $config['instance'][Configuration::SUBMISSION_FIELD],
