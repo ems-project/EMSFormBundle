@@ -9,16 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class Endpoint implements EndpointInterface
 {
-    /** @var string */
-    private $fieldName;
-    /** @var string|null */
-    private $messageTranslationKey;
-    /** @var HttpRequest */
-    private $httpRequest;
-    /** @var bool */
-    private $saveSession;
-    /** @var string */
-    private $type;
+    private string $fieldName;
+    private ?string $messageTranslationKey;
+    private HttpRequest $httpRequest;
+    private bool $saveSession;
+    private string $type;
+    /** @var array<mixed> */
+    private array $options;
 
     /** @param array<string, mixed> $config */
     public function __construct(array $config)
@@ -30,6 +27,15 @@ final class Endpoint implements EndpointInterface
         $this->messageTranslationKey = $config['message_translation_key'] ?? null;
         $this->saveSession = $config['save_session'] ?? true;
         $this->type = $config['type'];
+        $this->options = $config['options'];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 
     public function getType(): string
@@ -67,6 +73,7 @@ final class Endpoint implements EndpointInterface
                 'http_request' => [],
                 'type' => HttpEndpointType::NAME,
                 'save_session' => true,
+                'options' => [],
             ]);
 
         return $optionsResolver;
