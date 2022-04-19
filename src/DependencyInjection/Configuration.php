@@ -13,6 +13,7 @@ class Configuration implements ConfigurationInterface
     public const THEME_FIELD = 'theme_field';
     public const FORM_TEMPLATE_FIELD = 'form_template_field';
     public const FORM_FIELD = 'form_field';
+    public const FORM_SUBFORM_FIELD = 'form_subform_field';
     public const TYPE_FORM_CHOICE = 'type_form_choice';
     public const TYPE_FORM_SUBFORM = 'type_form_subform';
     public const TYPE_FORM_MARKUP = 'type_form_markup';
@@ -51,6 +52,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode(self::TYPE_FORM_CHOICE)->defaultValue('form_choice')->end()
                         ->scalarNode(self::TYPE_FORM_VALIDATION)->defaultValue('form_validation')->end()
                         ->scalarNode(self::FORM_FIELD)->defaultValue('form')->end()
+                        ->scalarNode(self::FORM_SUBFORM_FIELD)->defaultValue('sub_form')->end()
                         ->scalarNode(self::FORM_TEMPLATE_FIELD)->defaultValue('form_template')->end()
                         ->scalarNode(self::THEME_FIELD)->defaultValue('theme_template')->end()
                         ->scalarNode(self::SUBMISSION_FIELD)->defaultValue('submissions')->end()

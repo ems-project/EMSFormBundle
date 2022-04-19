@@ -16,14 +16,10 @@ use Twig\Environment;
 
 class FormController extends AbstractFormController
 {
-    /** @var FormFactory */
-    private $formFactory;
-    /** @var Client */
-    private $client;
-    /** @var Guard */
-    private $guard;
-    /** @var Environment */
-    private $twig;
+    private FormFactory $formFactory;
+    private Client $client;
+    private Guard $guard;
+    private Environment $twig;
 
     public function __construct(FormFactory $formFactory, Client $client, Guard $guard, Environment $twig)
     {

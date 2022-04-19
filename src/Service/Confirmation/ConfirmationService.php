@@ -16,14 +16,10 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 final class ConfirmationService
 {
-    /** @var FormConfigFactory */
-    private $configFactory;
-    /** @var CsrfTokenManager */
-    private $csrfTokenManager;
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var EndpointManager */
-    private $endpointManager;
+    private FormConfigFactory $configFactory;
+    private CsrfTokenManager $csrfTokenManager;
+    private LoggerInterface $logger;
+    private EndpointManager $endpointManager;
 
     public function __construct(
         FormConfigFactory $configFactory,
