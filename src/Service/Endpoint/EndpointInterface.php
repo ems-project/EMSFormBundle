@@ -15,4 +15,9 @@ interface EndpointInterface
     public function saveInSession(): bool;
 
     public function getMessageTranslationKey(): ?string;
+
+    /**
+     * @return array<mixed>
+     */
+    public function getOptions(): array;
 }
