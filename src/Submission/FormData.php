@@ -62,14 +62,7 @@ final class FormData
 
     public function filesAsUUid(): void
     {
-        foreach ($this->raw  as $key => &$data) {
-            if (!$data instanceof UploadedFile) {
-                continue;
-            }
-            $uuid = Uuid::uuid1()->toString();
-            $this->files[$uuid] = $this->raw[$key];
-            $this->raw[$key] = $uuid;
-        }
+        $this->recursiveFilesAsUuid($this->raw);
     }
 
     public function isFileUuid(string $uuid): bool
@@ -84,5 +77,24 @@ final class FormData
         }
 
         return $this->files[$uuid];
+    }
+
+    /**
+     * @param mixed[] $raw
+     */
+    private function recursiveFilesAsUuid(array &$raw): void
+    {
+        foreach ($raw  as $key => &$data) {
+            if (\is_array($data)) {
+                $this->recursiveFilesAsUuid($data);
+                continue;
+            }
+            if (!$data instanceof UploadedFile) {
+                continue;
+            }
+            $uuid = Uuid::uuid1()->toString();
+            $this->files[$uuid] = $raw[$key];
+            $raw[$key] = $uuid;
+        }
     }
 }
