@@ -15,7 +15,7 @@
 	"require" : {
 		"php": "^7.4",
 		"ext-json": "*",
-		"elasticms/client-helper-bundle": "^3.5|^3.6",
+		"elasticms/client-helper-bundle": "5.0.x-dev",
 		"giggsey/libphonenumber-for-php": "^8.12",
 		"ramsey/uuid-doctrine": "^1.6",
 		"symfony/form": "^4.4",
