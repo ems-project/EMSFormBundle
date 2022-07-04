@@ -8,8 +8,8 @@
 	"license" : "MIT",
 	"authors" : [
 		{
-			"name" : "David Meert",
-			"email" : "david.meert@smals.be"
+			"name" : "EMS Community",
+			"homepage" : "https://github.com/ems-project/EMSFormBundle/contributors"
 		}
 	],
 	"minimum-stability": "dev",
