@@ -1,4 +1,5 @@
 parameters:
+  locale: 'en'
   env(EMSCH_LOCALES): '["fr","nl"]'
   env(EMSCH_ENVS): '{"preview":{"regex":"/.*/","alias":"test_preview","backend":"https://localhost"}}'
 
@@ -7,7 +8,7 @@ framework:
   session:
     handler_id: ~
   router:
-    resource: 'routes.yml'
+    resource: 'config/routes.yml'
     strict_requirements: ~
 
 doctrine:
