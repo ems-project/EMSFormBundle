@@ -15,19 +15,14 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 final class Kernel extends BaseKernel
 {
-    public static function getPath(): string
-    {
-        return __DIR__.'/var';
-    }
-
     public function getCacheDir(): string
     {
-        return self::getPath().'/cache/'.$this->environment;
+        return \sys_get_temp_dir().'/cache-'.\spl_object_hash($this);
     }
 
     public function getLogDir(): string
     {
-        return self::getPath().'/log';
+        return \sys_get_temp_dir().'/log-'.\spl_object_hash($this);
     }
 
     public function registerBundles(): array
