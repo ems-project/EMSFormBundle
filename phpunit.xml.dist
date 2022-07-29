@@ -29,8 +29,4 @@
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
     </listeners>
-
-    <extensions>
-        <extension class="EMS\FormBundle\Tests\Integration\App\ClearLogCacheListener"/>
-    </extensions>
 </phpunit>
