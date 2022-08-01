@@ -17,7 +17,7 @@
 	"require" : {
 		"php": "^7.4",
 		"ext-json": "*",
-		"elasticms/client-helper-bundle": "5.0.x-dev",
+		"elasticms/client-helper-bundle": "4.0.x-dev",
 		"giggsey/libphonenumber-for-php": "^8.12",
 		"ramsey/uuid-doctrine": "^1.6",
 		"symfony/form": "^4.4|^5.0",
@@ -46,10 +46,7 @@
 	},
 	"config": {
 		"lock": false,
-		"sort-packages": true,
-		"allow-plugins": {
-			"phpstan/extension-installer": true
-		}
+		"sort-packages": true
 	},
 	"scripts": {
 		"phpcs": "php-cs-fixer fix",
