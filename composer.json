@@ -12,11 +12,10 @@
 			"homepage" : "https://github.com/ems-project/EMSFormBundle/contributors"
 		}
 	],
-	"minimum-stability": "dev",
-	"prefer-stable" : true,
 	"require" : {
 		"php": "^7.4",
-		"elasticms/client-helper-bundle": "4.0.x-dev",
+		"elasticms/client-helper-bundle": "4.0.*@dev",
+		"elasticms/common-bundle": "@dev",
 		"giggsey/libphonenumber-for-php": "^8.12",
 		"symfony/form": "^4.4|^5.4",
 		"symfony/intl": "^4.4|^5.4",
