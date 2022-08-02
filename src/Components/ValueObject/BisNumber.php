@@ -36,6 +36,7 @@ class BisNumber extends RrNumber
 
         //augment twice for person with known sex
         $this->base = \sprintf('%d', ($baseInt + $baseModifier + $baseModifier));
+        /* @phpstan-ignore-next-line */
         if (parent::validate()) {
             return true;
         }

@@ -172,8 +172,8 @@ class FormConfigFactory
     }
 
     /**
-     * @param array<array> $typeValidations
-     * @param array<array> $fieldValidations
+     * @param array<array<mixed>> $typeValidations
+     * @param array<array<mixed>> $fieldValidations
      */
     private function addFieldValidations(FieldConfig $fieldConfig, array $typeValidations = [], array $fieldValidations = []): void
     {

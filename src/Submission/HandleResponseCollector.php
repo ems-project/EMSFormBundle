@@ -22,7 +22,7 @@ class HandleResponseCollector
 
     public function toJson(): string
     {
-        $responses = \array_map(function (AbstractHandleResponse $response) {
+        $responses = \array_map(function (HandleResponseInterface $response) {
             return $response->getResponse();
         }, $this->responses);
 
@@ -36,7 +36,7 @@ class HandleResponseCollector
      */
     public function getSummaries(): array
     {
-        return \array_map(function (AbstractHandleResponse $response) {
+        return \array_map(function (HandleResponseInterface $response) {
             return $response->getSummary();
         }, $this->responses);
     }

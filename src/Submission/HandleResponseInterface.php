@@ -9,4 +9,9 @@ interface HandleResponseInterface
     public function getStatus(): string;
 
     public function getResponse(): string;
+
+    /**
+     * @return array{status: string, data: string, success: string}
+     */
+    public function getSummary(): array;
 }

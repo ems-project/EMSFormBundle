@@ -47,7 +47,7 @@ class DebugController extends AbstractFormController
     {
         $formOptions = $this->getFormOptions($ouuid, $request->getLocale());
 
-        if (!$request->query->get('validate', true)) {
+        if (!$request->query->getBoolean('validate', true)) {
             $formOptions['attr'] = ['novalidate' => 'novalidate'];
         }
 

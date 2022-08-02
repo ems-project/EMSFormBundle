@@ -16,22 +16,18 @@
 	"prefer-stable" : true,
 	"require" : {
 		"php": "^7.4",
-		"ext-json": "*",
 		"elasticms/client-helper-bundle": "4.0.x-dev",
 		"giggsey/libphonenumber-for-php": "^8.12",
-		"ramsey/uuid-doctrine": "^1.6",
-		"symfony/form": "^4.4|^5.0",
-		"symfony/framework-bundle": "^4.4|^5.0",
-		"symfony/http-client": "^4.4|^5.0",
-		"symfony/intl": "^4.4|^5.0",
-		"symfony/security": "^4.4|^5.0",
-		"symfony/twig-bundle": "4.4|^5.0",
-		"symfony/validator": "^4.4|^5.0",
-		"twig/twig": "^2.14"
+		"symfony/form": "^4.4|^5.4",
+		"symfony/intl": "^4.4|^5.4",
+		"symfony/security": "^4.4|^5.4",
+		"symfony/twig-bundle": "4.4|^5.4",
+		"symfony/validator": "^4.4|^5.4"
 	},
 	"require-dev" : {
-		"friendsofphp/php-cs-fixer" : "^3.0",
-		"phpstan/phpstan": "^0.12",
+		"friendsofphp/php-cs-fixer": "^3.0",
+		"phpstan/phpstan": "^1.0",
+		"phpstan/phpstan-symfony": "^1.2",
 		"symfony/test-pack": "^1.0"
 	},
 	"autoload" : {
