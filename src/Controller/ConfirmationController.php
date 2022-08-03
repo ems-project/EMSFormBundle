@@ -14,14 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-final class ConfirmationController extends AbstractController
+final class ConfirmationController
 {
-    /** @var Guard */
-    private $guard;
-    /** @var ConfirmationService */
-    private $confirmationService;
-    /** @var LoggerInterface */
-    private $logger;
+    private Guard $guard;
+    private ConfirmationService $confirmationService;
+    private LoggerInterface $logger;
 
     public function __construct(Guard $guard, ConfirmationService $confirmationService, LoggerInterface $logger)
     {
