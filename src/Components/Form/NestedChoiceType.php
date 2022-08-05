@@ -66,12 +66,12 @@ class NestedChoiceType extends Form
         throw new \Exception('Could not build form, nested choice field config missing!');
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return FormType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): ?string
     {
         return 'ems_nested_choice';
     }

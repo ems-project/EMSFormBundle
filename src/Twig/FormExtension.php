@@ -9,7 +9,7 @@ use Twig\TwigFunction;
 
 class FormExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('emsf_http_call', [EndpointRuntime::class, 'callHttpEndpoint']),

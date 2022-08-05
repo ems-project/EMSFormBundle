@@ -19,6 +19,6 @@ class Email extends AbstractValidation
 
     public function getHtml5Attribute(): array
     {
-        return []; //Symfony framework.validation config handles this case.
+        return []; // Symfony framework.validation config handles this case.
     }
 }

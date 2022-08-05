@@ -28,12 +28,12 @@ class SubFormType extends Form
         ;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return FormType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): ?string
     {
         return 'ems_subform';
     }

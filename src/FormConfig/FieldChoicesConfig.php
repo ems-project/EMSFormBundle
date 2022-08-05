@@ -175,7 +175,7 @@ class FieldChoicesConfig
         $firstValue = $list[$firstKey] ?? null;
 
         if (null === $firstValue || '' === $firstValue) {
-            \array_shift($list); //do not sort placeholder
+            \array_shift($list); // do not sort placeholder
         }
 
         if ('label_alpha' === $this->sort) {

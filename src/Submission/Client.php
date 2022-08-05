@@ -82,7 +82,7 @@ class Client
 
         foreach ($emsLinkSubmissions as $emsLinkSubmission) {
             if ($emsLinkSubmission instanceof SubmissionConfig) {
-                $submissions[] = $emsLinkSubmission; //This is here to please phpstan, caused because we use the $config->submissions property for initialisation and the end result!
+                $submissions[] = $emsLinkSubmission; // This is here to please phpstan, caused because we use the $config->submissions property for initialisation and the end result!
                 continue;
             }
 

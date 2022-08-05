@@ -187,8 +187,8 @@ class FormConfigFactory
                     $validation->getSource()['name'],
                     $validation->getSource()['classname'],
                     $fieldConfig->getLabel(),
-                    ($validation->getSource()['default_value'] ?? null),
-                    ($v['value'] ?? null)
+                    $validation->getSource()['default_value'] ?? null,
+                    $v['value'] ?? null
                 ));
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), [$e]);
@@ -433,7 +433,7 @@ class FormConfigFactory
                     $child->getObject()['classname'],
                     $child->getLabel(),
                     null,
-                    ($child->getObject()['value'] ?? null)
+                    $child->getObject()['value'] ?? null
                 ));
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), [$e]);
