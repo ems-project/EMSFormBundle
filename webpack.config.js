@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -13,8 +14,13 @@ module.exports = {
         'dynamicFields': './src/Resources/assets/js/dynamicFields.js',
         'validation': './src/Resources/assets/js/validation.js'
     },
+    optimization: {
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+        })],
+    },
     plugins: [
-        new ManifestPlugin({'publicPath': 'bundles/emsform/'}),
+        new WebpackManifestPlugin({'publicPath': 'bundles/emsform/'}),
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*', '!static/**'],
         }),
@@ -25,6 +31,13 @@ module.exports = {
     output: {
         filename: 'js/[name].js',
         path: path.resolve(__dirname, 'src/Resources/public')
+    },
+    resolve: {
+        fallback: {
+            "crypto": require.resolve("crypto-browserify"),
+            "buffer": require.resolve("buffer"),
+            "stream": require.resolve("stream-browserify"),
+        }
     },
     module: {
         rules: [
@@ -41,7 +54,7 @@ module.exports = {
             {
                 enforce: 'pre',
                 test: /\.js$/,
-                exclude: [/node_modules/],
+                exclude: /node_modules/,
                 loader: 'eslint-loader',
             },
             {
