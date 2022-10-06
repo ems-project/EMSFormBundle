@@ -6,19 +6,6 @@ class RrNumber
 {
     /** @var string */
     protected $base;
-
-    /** @var string */
-    private $year;
-
-    /** @var string */
-    private $month;
-
-    /** @var string */
-    private $day;
-
-    /** @var string */
-    private $dayCounter;
-
     /** @var string */
     private $controlNumber;
 
@@ -46,10 +33,6 @@ class RrNumber
 
         $data = $matches[0];
         $this->base = $data['base'];
-        $this->year = $data['year'];
-        $this->month = $data['month'];
-        $this->day = $data['day'];
-        $this->dayCounter = $data['dayCounter'];
         $this->controlNumber = $data['controlNumber'];
 
         if (!$this->validate() || \strlen($rrn) > 11) {

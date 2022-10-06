@@ -19,6 +19,9 @@ abstract class AbstractForgivingNumberField extends AbstractField
         return [];
     }
 
+    /**
+     * @return DataTransformerInterface<mixed, mixed>
+     */
     public function getDataTransformer(): DataTransformerInterface
     {
         return new ForgivingNumberDataTransformer($this->getTransformerClasses());

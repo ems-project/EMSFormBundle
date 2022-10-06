@@ -31,6 +31,11 @@ class ValidationConfig
         $this->value = $value;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function getClassName(): string
     {
         return $this->className;

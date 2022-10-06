@@ -8,20 +8,16 @@ use EMS\FormBundle\Security\Guard;
 use EMS\FormBundle\Service\Confirmation\ConfirmationRequest;
 use EMS\FormBundle\Service\Confirmation\ConfirmationService;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-final class ConfirmationController extends AbstractController
+final class ConfirmationController
 {
-    /** @var Guard */
-    private $guard;
-    /** @var ConfirmationService */
-    private $confirmationService;
-    /** @var LoggerInterface */
-    private $logger;
+    private Guard $guard;
+    private ConfirmationService $confirmationService;
+    private LoggerInterface $logger;
 
     public function __construct(Guard $guard, ConfirmationService $confirmationService, LoggerInterface $logger)
     {

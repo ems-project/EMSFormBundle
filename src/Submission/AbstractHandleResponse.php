@@ -49,7 +49,7 @@ abstract class AbstractHandleResponse implements HandleResponseInterface
     }
 
     /**
-     * @return array{status: string, data: string, success: string}
+     * {@inheritDoc}
      */
     public function getSummary(): array
     {

@@ -26,10 +26,7 @@ class Configuration implements ConfigurationInterface
     public const CACHEABLE = 'cacheable';
     public const NAME_FIELD = 'name';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('ems_form');
         /* @var $rootNode ArrayNodeDefinition */
