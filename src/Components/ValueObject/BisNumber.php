@@ -28,14 +28,15 @@ class BisNumber extends RrNumber
         $baseInt = (int) $this->base;
         $baseModifier = 2000000;
 
-        //augment once for person with unknown sex
-        $this->base = \sprintf('%d', ($baseInt + $baseModifier));
+        // augment once for person with unknown sex
+        $this->base = \sprintf('%d', $baseInt + $baseModifier);
         if (parent::validate()) {
             return true;
         }
 
-        //augment twice for person with known sex
-        $this->base = \sprintf('%d', ($baseInt + $baseModifier + $baseModifier));
+        // augment twice for person with known sex
+        $this->base = \sprintf('%d', $baseInt + $baseModifier + $baseModifier);
+        /* @phpstan-ignore-next-line */
         if (parent::validate()) {
             return true;
         }

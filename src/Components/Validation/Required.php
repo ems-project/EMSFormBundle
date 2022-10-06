@@ -19,6 +19,6 @@ class Required extends AbstractValidation
 
     public function getHtml5Attribute(): array
     {
-        return []; //Symfony Forms handles this case.
+        return []; // Symfony Forms handles this case.
     }
 }

@@ -75,7 +75,7 @@ class NestedChoiceEventSubscriber implements EventSubscriberInterface
     {
         $split = \explode('_', $name);
 
-        return \sprintf('level_%d', ((int) $split[1] + 1));
+        return \sprintf('level_%d', (int) $split[1] + 1);
     }
 
     /**

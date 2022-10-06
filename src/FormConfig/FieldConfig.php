@@ -44,6 +44,11 @@ class FieldConfig implements ElementInterface
         return $this->id;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function addClass(string $class): void
     {
         $this->class[] = $class;

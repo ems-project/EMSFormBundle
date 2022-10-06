@@ -56,8 +56,10 @@ abstract class AbstractField implements FieldInterface
     private function createValidation(ValidationConfig $config): ValidationInterface
     {
         $class = $config->getClassName();
+        /** @var ValidationInterface $validation */
+        $validation = new $class($config);
 
-        return new $class($config);
+        return $validation;
     }
 
     /** @return string[] */

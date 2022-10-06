@@ -5,6 +5,9 @@ namespace EMS\FormBundle\Components\DataTransformers;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @implements DataTransformerInterface<mixed, mixed>
+ */
 class ForgivingNumberDataTransformer implements DataTransformerInterface
 {
     /** @var string[] */
@@ -33,7 +36,9 @@ class ForgivingNumberDataTransformer implements DataTransformerInterface
             try {
                 $validation = new $class($value);
 
-                return $validation->transform();
+                if (\method_exists($validation, 'transform')) {
+                    return $validation->transform();
+                }
             } catch (\Exception $exception) {
                 continue;
             }

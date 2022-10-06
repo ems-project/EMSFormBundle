@@ -34,6 +34,11 @@ class FieldChoicesConfig
         $this->sort = null;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
     public function getPlaceholder(): ?string
     {
         return $this->placeholder;
@@ -159,7 +164,7 @@ class FieldChoicesConfig
     }
 
     /**
-     * @param array<string, ?string> $list
+     * @param array<string, string> $list
      *
      * @return array<string, ?string>
      */
@@ -170,7 +175,7 @@ class FieldChoicesConfig
         $firstValue = $list[$firstKey] ?? null;
 
         if (null === $firstValue || '' === $firstValue) {
-            \array_shift($list); //do not sort placeholder
+            \array_shift($list); // do not sort placeholder
         }
 
         if ('label_alpha' === $this->sort) {
